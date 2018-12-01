@@ -2,6 +2,7 @@
   <div class="h">
     <div class="h_brand">
       <nuxt-link
+        :title="brand.title + ', ' + brand.subtitle"
         to="/"
         class="h_brand_title">
         {{ brand.title }}

@@ -1,18 +1,18 @@
 <template>
   <nuxt-link 
-    :to="'/' + profile.url"
-    :title="'Şahyr ' + profile.name"
+    :to="'/' + data.url"
+    :title="'Şahyr ' + data.name"
     class="a">
     <div class="pc">
       <div class="pc_media">
         <img 
-          :src="profile.avatar" 
-          :alt="profile.name"
+          :src="data.avatar" 
+          :alt="data.name"
           class="pc_media_avatar">
       </div>
       <div class="pc_info">
         <p class="pc_info_title">
-          {{ profile.name }}
+          {{ data.name }}
         </p>
         <p class="pc_info_subtitle">
           {{ total }} goşgy
@@ -25,7 +25,7 @@
 <script>
   export default {
     props: {
-      profile: {
+      data: {
         type: Object,
         required: true
       },
@@ -38,14 +38,14 @@
 </script>
 
 <style>
+.a,
+.a:hover,
+.a:active,
+.a:visited {
+  color: inherit;
+  text-decoration: none;
+}
 @media (max-width: 480px) {
-  .a,
-  .a:hover,
-  .a:active,
-  .a:visited {
-    color: inherit;
-    text-decoration: none;
-  }
   .pc {
     width: 100%;
     height: 80px;
@@ -92,13 +92,6 @@
   }
 }
 @media (min-width: 481px) and (max-width: 767px) {
-  .a,
-  .a:hover,
-  .a:active,
-  .a:visited {
-    color: inherit;
-    text-decoration: none;
-  }
   .pc {
     width: 100%;
     height: 80px;
@@ -145,13 +138,6 @@
   }
 }
 @media (min-width: 768px) and (max-width: 1087px) {
-  .a,
-  .a:hover,
-  .a:active,
-  .a:visited {
-    color: inherit;
-    text-decoration: none;
-  }
   .pc {
     width: 100%;
     height: 80px;
@@ -198,13 +184,6 @@
   }
 }
 @media (min-width: 1088px) {
-  .a,
-  .a:hover,
-  .a:active,
-  .a:visited {
-    color: inherit;
-    text-decoration: none;
-  }
   .pc {
     min-width: 288px;
     width: 100%;

@@ -7,7 +7,7 @@
       <profile-card 
         v-for="(poet, i) in poets"
         :key="i"
-        :profile="poet"
+        :data="poet"
         :total="poet.total" />
     </div> 
   </div>
@@ -30,14 +30,6 @@ export default {
 
 <style>
 @media (max-width: 480px) {
-  .title {
-    color: #080808;
-    font-size: 1.4em;
-    font-weight: 700;
-    font-family: 'Inria Serif', Georgia, serif;
-    line-height: 1;
-    display: inline-block;
-  }
   .poets {
     width: 100%;
     display: grid;
@@ -48,14 +40,6 @@ export default {
   }
 }
 @media (min-width: 481px) and (max-width: 767px) {
-  .title {
-    color: #080808;
-    font-size: 1.4em;
-    font-weight: 700;
-    font-family: 'Inria Serif', Georgia, serif;
-    line-height: 1;
-    display: inline-block;
-  }
   .poets {
     width: 100%;
     display: grid;
@@ -66,14 +50,6 @@ export default {
   }
 }
 @media (min-width: 768px) and (max-width: 1087px) {
-  .title {
-    color: #080808;
-    font-size: 1.5em;
-    font-weight: 700;
-    font-family: 'Inria Serif', Georgia, serif;
-    line-height: 1;
-    display: inline-block;
-  }
   .poets {
     width: 100%;
     display: grid;
@@ -85,14 +61,6 @@ export default {
   }
 }
 @media (min-width: 1088px) {
-  .title {
-    color: #080808;
-    font-size: 1.6em;
-    font-weight: 700;
-    font-family: 'Inria Serif', Georgia, serif;
-    line-height: 1;
-    display: inline-block;
-  }
   .poets {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;

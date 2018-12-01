@@ -84,12 +84,28 @@ html {
     width: 100vw;
     padding: 16px;
   }
+  .title {
+    color: #080808;
+    font-size: 1.4em;
+    font-weight: 700;
+    font-family: 'Inria Serif', Georgia, serif;
+    line-height: 1;
+    display: inline-block;
+  }
 }
 @media (min-width: 481px) and (max-width: 767px) {
   .container {
     min-height: 100vh;
     width: 100vw;
     padding: 16px 24px;
+  }
+  .title {
+    color: #080808;
+    font-size: 1.4em;
+    font-weight: 700;
+    font-family: 'Inria Serif', Georgia, serif;
+    line-height: 1;
+    display: inline-block;
   }
 }
 @media (min-width: 768px) and (max-width: 1087px) {
@@ -98,6 +114,14 @@ html {
     width: 100vw;
     padding: 32px;
   }
+  .title {
+    color: #080808;
+    font-size: 1.5em;
+    font-weight: 700;
+    font-family: 'Inria Serif', Georgia, serif;
+    line-height: 1;
+    display: inline-block;
+  }
 }
 @media (min-width: 1088px) {
   .container {
@@ -105,6 +129,14 @@ html {
     width: 1024px;
     margin: 0 auto;
     padding: 32px 0;
+  }
+  .title {
+    color: #080808;
+    font-size: 1.6em;
+    font-weight: 700;
+    font-family: 'Inria Serif', Georgia, serif;
+    line-height: 1;
+    display: inline-block;
   }
 }
 </style>

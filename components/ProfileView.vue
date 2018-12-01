@@ -1,13 +1,13 @@
 <template>
   <div class="pv">
     <div class="pv_info">
-      <h1 class="pv_info_title">{{ profile.name }}</h1>
-      <p class="pv_info_description">{{ profile.bio }}</p>
+      <h1 class="pv_info_title">{{ data.name }}</h1>
+      <p class="pv_info_description">{{ data.bio }}</p>
     </div>
     <div class="pv_media">
       <img 
-        :src="profile.avatar" 
-        :alt="profile.name"
+        :src="data.avatar" 
+        :alt="data.name"
         class="pv_media_avatar">
     </div>
   </div>
@@ -16,7 +16,7 @@
 <script>
   export default {
     props: {
-      profile: {
+      data: {
         type: Object,
         required: true
       }
