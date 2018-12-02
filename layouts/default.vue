@@ -20,7 +20,7 @@ export default {
 		return {
 			brand: {
 				title: 'Serpaý',
-				subtitle: 'Goşgylar Çemeni'
+				subtitle: 'Goşgular Çemeni'
 			}
 		}
 	}
