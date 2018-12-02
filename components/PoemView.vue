@@ -9,7 +9,7 @@
         {{ data.year ? `${data.year}, ` : '' }}{{ data.author }}
       </div>
       <div 
-        v-if="data.category.length > 0"
+        v-if="data.category && data.category.length > 0"
         class="poem_category">
         <div
           v-for="c in data.category"

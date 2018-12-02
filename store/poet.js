@@ -19,7 +19,7 @@ export const state = () => ({
       url: 'magtymguly'
     },
     {
-      name: 'Berdinazar Hudaýnazarow Serdarogly',
+      name: 'Berdinazar Hudaýnazarow',
       avatar: 'http://gollanma.com/wp-content/uploads/2012/02/Berdinazar-Hudaynazarow-new.jpg',
       total: 127,
       url: 'berdinazar-hudaynazarow'
@@ -37,7 +37,7 @@ export const state = () => ({
       url: 'magtymguly'
     },
     {
-      name: 'Berdinazar Hudaýnazarow Serdarogly',
+      name: 'Berdinazar Hudaýnazarow',
       avatar: 'http://gollanma.com/wp-content/uploads/2012/02/Berdinazar-Hudaynazarow-new.jpg',
       total: 127,
       url: 'berdinazar-hudaynazarow'
@@ -64,15 +64,5 @@ export const mutations = {
 }
 
 export const actions = {
-  fetchOne({ commit }, poetUrl) {
-    console.log(poetUrl)
-    // return this.$axios.$get(`/posts/${postId}`)
-    // .then((response) => {
-    //   commit('setOne', response.post);
-    //   return true;
-    // })
-    // .catch((err) => {
-    //   return false;
-    // });
-  },
+  
 }

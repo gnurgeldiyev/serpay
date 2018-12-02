@@ -27,7 +27,6 @@ import PoemList from '@/components/PoemList'
     },
     beforeCreate() {
       const poetUrl = this.$route.params.poetUrl
-      this.$store.dispatch('poet/fetchOne', poetUrl)
     }
   }
 </script>

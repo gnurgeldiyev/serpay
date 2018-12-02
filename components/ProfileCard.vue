@@ -1,6 +1,6 @@
 <template>
   <nuxt-link 
-    :to="'/' + data.url"
+    :to="'/p/' + data.url"
     :title="'Şahyr ' + data.name"
     class="a">
     <div class="pc">

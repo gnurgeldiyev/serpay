@@ -7,7 +7,7 @@
         :key="i"
         class="list_item">
         <nuxt-link 
-          :to="'/' + poet.url + '/' + poem.url"
+          :to="'/p/' + poet.url + '/' + poem.url"
           :title="poem.title"
           class="a">
           {{ i+1 }}. {{ poem.title }}
@@ -118,6 +118,10 @@
     font-weight: 400;
     line-height: 1.3;
   }
+  .list_item .a,
+  .list_item .a *:hover {
+    cursor: pointer;
+  }
 }
 @media (min-width: 1088px) {
   .list {
@@ -144,6 +148,10 @@
     font-family: inherit;
     font-weight: 400;
     line-height: 1.3;
+  }
+  .list_item .a,
+  .list_item .a *:hover {
+    cursor: pointer;
   }
 }
 </style>
