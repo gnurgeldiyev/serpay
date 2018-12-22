@@ -1,4 +1,9 @@
 export const state = () => ({
+  addFormDialogVisibility: false,
+  viewFormDialogVisibility: false,
+  editFormDialogVisibility: false,
+  onView: {},
+  onEdit: {},
   one: {
     url: 'gurbannazar-ezizow',
     name: 'Gurbannazar Ezizow',
@@ -33,6 +38,21 @@ export const getters = {
   },
   one: (state) => {
     return state.one
+  },
+  addFormDialogVisibility: (state) => {
+    return state.addFormDialogVisibility
+  },
+  viewFormDialogVisibility: (state) => {
+    return state.viewFormDialogVisibility
+  },
+  editFormDialogVisibility: (state) => {
+    return state.editFormDialogVisibility
+  },
+  onView: (state) => {
+    return state.onView
+  },
+  onEdit: (state) => {
+    return state.onEdit
   }
 }
 
@@ -42,9 +62,46 @@ export const mutations = {
   },
   one: (state, data) => {
     state.one = data
+  },
+  addFormDialogVisibility: (state, data) => {
+    state.addFormDialogVisibility = data
+  },
+  viewFormDialogVisibility: (state, data) => {
+    state.viewFormDialogVisibility = data
+  },
+  editFormDialogVisibility: (state, data) => {
+    state.editFormDialogVisibility = data
+  },
+  onView: (state, data) => {
+    state.onView = data
+  },
+  onEdit: (state, data) => {
+    state.onEdit = data
   }
 }
 
 export const actions = {
-  
+  add({ commit }, data) {
+    console.log(data)
+    return true
+  },
+  delete({ commit }, data) {
+    console.log(data)
+    return true
+  },
+  addFormDialogVisibility({ commit }, data) {
+    commit('addFormDialogVisibility', data)
+  },
+  viewFormDialogVisibility({ commit }, data) {
+    commit('viewFormDialogVisibility', data)
+  },
+  editFormDialogVisibility({ commit }, data) {
+    commit('editFormDialogVisibility', data)
+  },
+  onView({ commit }, data) {
+    commit('onView', data)
+  },
+  onEdit({ commit }, data) {
+    commit('onEdit', data)
+  }
 }
