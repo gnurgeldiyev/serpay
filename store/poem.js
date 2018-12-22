@@ -118,14 +118,6 @@ export const actions = {
   add({ commit }, data) {
     console.log(data)
     return true
-    // return this.$axios.$post('/api/admin/stories/', { story })
-    //   .then((response) => {
-    //     commit('addNew', response.story);
-    //     return true;
-    //   })
-    //   .catch(() => {
-    //     return false;
-    //   });
   },
   approve({ commit }, data) {
     console.log(data)
