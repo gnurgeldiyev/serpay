@@ -1,8 +1,8 @@
 const pkg = require('./package')
+const webpack = require('webpack')
 
 module.exports = {
   mode: 'universal',
-
   /*
   ** Headers of the page
   */
@@ -27,14 +27,16 @@ module.exports = {
   ** Global CSS
   */
   css: [
-    'element-ui/lib/theme-chalk/index.css'
+    'element-ui/lib/theme-chalk/index.css',
+    'quill/dist/quill.snow.css'
   ],
 
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/element-ui'
+    { src: '@/plugins/element-ui', ssr: true },
+    { src: '@/plugins/quill-editor', ssr: false }
   ],
 
   /*
@@ -55,6 +57,35 @@ module.exports = {
   ** Build configuration
   */
   build: {
+    /** 
+     * html.minify configs
+    */
+    collapseBooleanAttributes: true,
+    collapseWhitespace: false,
+    decodeEntities: true,
+    minifyCSS: true,
+    minifyJS: true,
+    processConditionalComments: true,
+    removeAttributeQuotes: false,
+    removeComments: false,
+    removeEmptyAttributes: true,
+    removeOptionalTags: false,
+    removeRedundantAttributes: true,
+    removeScriptTypeAttributes: false,
+    removeStyleLinkTypeAttributes: false,
+    removeTagWhitespace: false,
+    sortClassName: false,
+    trimCustomFragments: true,
+    useShortDoctype: true,
+    /*
+    ** You can extend webpack config here
+    */
+    minimize: true,
+    plugins: [
+      new webpack.ProvidePlugin({
+        'window.Quill': 'quill'
+      })
+    ],
     /*
     ** You can extend webpack config here
     */
