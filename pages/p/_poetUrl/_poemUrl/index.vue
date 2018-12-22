@@ -13,7 +13,7 @@ import PoemView from '@/components/PoemView'
     },
     computed: {
       poem() {
-        return this.$store.getters['poem/getOne']
+        return this.$store.getters['poem/one']
       }
     }
   }

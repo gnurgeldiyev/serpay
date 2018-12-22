@@ -19,10 +19,10 @@ import PoemList from '@/components/PoemList'
     },
     computed: {
       poet() {
-        return this.$store.getters['poet/getOne']
+        return this.$store.getters['poet/one']
       },
       poems() {
-        return this.$store.getters['poem/getAll']
+        return this.$store.getters['poem/all']
       }
     },
     beforeCreate() {
