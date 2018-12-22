@@ -4,7 +4,7 @@
     <div 
       v-if="poets && poets.length > 0"
       class="poets">
-      <profile-card 
+      <profile-card
         v-for="(poet, i) in poets"
         :key="i"
         :data="poet"
