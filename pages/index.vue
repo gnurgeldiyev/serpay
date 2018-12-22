@@ -22,7 +22,7 @@ export default {
   },
   computed: {
     poets() {
-      return this.$store.getters['poet/getAll']
+      return this.$store.getters['poet/all']
     }
   }
 }
