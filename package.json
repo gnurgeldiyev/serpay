@@ -4,6 +4,9 @@
   "description": "turkmen poems",
   "author": "Guvanch Nurgeldiyev",
   "private": true,
+  "engines": {
+    "node": ">=10.13.0"
+  },
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
     "build": "nuxt build",
@@ -16,6 +19,7 @@
     "@nuxtjs/axios": "^5.0.0",
     "body-parser": "^1.18.3",
     "cross-env": "^5.2.0",
+    "dotenv": "^6.2.0",
     "element-ui": "^2.4.6",
     "express": "^4.16.3",
     "mongoose": "^5.4.1",
