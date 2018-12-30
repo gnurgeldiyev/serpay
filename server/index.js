@@ -8,6 +8,10 @@ const { node_env, host, port, mongodb_uri } = require('../config')
 
 app.set('port', port)
 
+// Import and Set Nuxt.js options
+let config = require('../nuxt.config.js')
+config.dev = !(node_env === 'production')
+
 // Setup MongoDB with mongoose
 mongoose.Promise = global.Promise
 mongoose.connect(mongodb_uri, { useNewUrlParser: true, autoIndex: false })
@@ -19,9 +23,8 @@ mongoose.connection.on('error', (err) => {
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
-// Import and Set Nuxt.js options
-let config = require('../nuxt.config.js')
-config.dev = !(node_env === 'production')
+// import all routes
+require('./routes')(app)
 
 async function start() {
   // Init Nuxt.js
