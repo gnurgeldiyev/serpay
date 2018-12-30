@@ -1,5 +1,6 @@
 const pkg = require('./package')
 const webpack = require('webpack')
+const { base_url } = require('./config')
 
 module.exports = {
   mode: 'universal',
@@ -50,9 +51,14 @@ module.exports = {
   ** Axios module configuration
   */
   axios: {
-    // See https://github.com/nuxt-community/axios-module#options
+    baseURL: base_url,
+    credentials: true,
+    debug: true,
+    retry: {
+      retries: 3
+    },
+    proxy: true
   },
-
   /*
   ** Build configuration
   */
