@@ -16,6 +16,7 @@ router.post('/', editorController.add)
 */
 router.put('/:id', editorController.update)
 router.put('/:id/deactivate', editorController.deactivate)
+router.put('/:id/reset', editorController.resetPassword)
 
 /**
  * DELETE requests

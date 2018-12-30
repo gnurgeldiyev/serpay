@@ -45,7 +45,7 @@ exports.getAll = (req, res) => {
 
 
 /** 
- * POST | Add new user
+ * POST | Add new editor
 */
 exports.add = async (req, res) => {
   let result
@@ -95,7 +95,7 @@ exports.add = async (req, res) => {
 }
 
 /** 
- * PUT | update user by id
+ * PUT | update editor by id
 */
 exports.update = async (req, res) => {
   const id = req.params.id
@@ -119,7 +119,7 @@ exports.update = async (req, res) => {
       meta: { code: 400, error: result.error } 
     })
   }
-  Editor.findByIdAndUpdate(id, {
+  Editor.findOneAndUpdate({ _id: id, is_active: true }, {
     $set: {
       firstname: d.firstname,
       lastname: d.lastname,
@@ -154,7 +154,7 @@ exports.update = async (req, res) => {
 }
 
 /** 
- * PUT | deactivate user by id
+ * PUT | deactivate editor by id
 */
 exports.deactivate = (req, res) => {
   const id = req.params.id
@@ -197,4 +197,71 @@ exports.deactivate = (req, res) => {
         }
       })
     })
+}
+
+/** 
+ * PUT | reset editor password by id
+*/
+exports.resetPassword = (req, res) => {
+  const id = req.params.id
+  const d = req.body
+  // password validation
+  if (!d.password || d.password.length < 8) {
+    return res.status(400).json({
+      data: {},
+      meta: {
+        code: 400,
+        error: { code: 'BAD_REQUEST', message: 'Data validation error' }
+      }
+    })
+  }
+  // ObjectID validation
+  if (!isMongoId(id)) {
+    return res.status(400).json({
+      data: {},
+      meta: {
+        code: 400,
+        error: { code: 'BAD_REQUEST', message: 'ID validation error' }
+      }
+    })
+  }
+  // hash user password
+  result = hashPassword(d.password)
+  if (!result.status) {
+    return res.status(400).json({ 
+      data: {}, 
+      meta: { code: 400, error: result.error } 
+    })
+  }
+  // set returned hash password
+  const hashedPassword = result.data
+  Editor.findOneAndUpdate({ _id: id, is_active: true }, {
+    $set: {
+      password: hashedPassword
+    }
+  }, { new: true })
+  .then((editor) => {
+    if (!editor) {
+      return res.status(404).json({ 
+        data: {}, 
+        meta: { 
+          code: 404, 
+          error: { code: 'NOT_FOUND', message: 'Editor not found' }
+        } 
+      })
+    }
+    return res.status(200).json({
+      data: editor.toPublic(),
+      meta: { code: 200, error: {} }
+    })
+  })
+  .catch((err) => {
+    return res.status(400).json({ 
+      data: {}, 
+      meta: { 
+        code: 400, 
+        error: { code: err.code, message: err.message }
+      }
+    })
+  })
 }
