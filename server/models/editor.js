@@ -45,6 +45,7 @@ editorSchema.methods.toPublic = function () {
     id: this._id,
     firstname: this.firstname,
     lastname: this.lastname,
+    email: this.email,
     role: this.role,
     created_at: this.created_at
   }
