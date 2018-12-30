@@ -9,6 +9,42 @@ const {
  * GET | get all active editors
 */
 exports.getAll = (req, res) => {
+  const q = req.query.d
+  // returns deactive users, is_active = false
+  if (q && q === 'true') {
+    Editor.find({ is_active: false }).sort({ role: 1, created_at: 1 })
+      .then((editors) => {
+        if (!editors.length) {
+          return res.status(404).json({
+            data: {},
+            meta: { 
+              code: 404, 
+              error: { code: 'NOT_FOUND', message: 'There is no any editor' }
+            } 
+          })
+        }
+        let e = []
+        editors.map((editor) => {
+          e.push(editor.toPublic())
+        })
+        res.status(200).json({
+          data: e,
+          meta: {
+            code: 200,
+            error: {}
+          }
+        })
+      })
+      .catch((err) => {
+        return res.status(500).json({ 
+          data: {}, 
+          meta: { 
+            code: 500, 
+            error: { code: err.code, message: err.message }
+          } 
+        })
+      })
+  }
   Editor.find({ is_active: true }).sort({ role: 1, created_at: 1 })
     .then((editors) => {
       if (!editors.length) {
