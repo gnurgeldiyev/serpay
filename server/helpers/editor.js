@@ -8,26 +8,26 @@ const { password_salt } = require('../../config')
  * d: request body data
 */
 exports.validateData = async (t, d) => {
-  if (t === 'add') {
-    if (
-      isEmpty(d.firstname) // false
-      || isEmpty(d.lastname) // false
-      || isEmpty(d.email) // false
-      || !isEmail(d.email) // !true => false
-      || isEmpty(d.password) // false
-      || !isLength(d.password, { min: 8 }) // !true => false
-      || isEmpty(d.role) // false
-      || !((d.role === 'editor') || (d.role === 'admin')) // !true => false
-    ) { 
-      return {
-        status: false,
-        error: {
-          code: 'BAD_REQUEST',
-          message: 'Data validation error'
+  try {
+    if (t === 'add') {
+      if (
+        (!d.firstname || isEmpty(d.firstname))
+        || (!d.lastname || isEmpty(d.lastname))
+        || (!d.email || isEmpty(d.email)) 
+        || !isEmail(d.email)
+        || (!d.password || isEmpty(d.password))
+        || !isLength(d.password, { min: 8 })
+        || (!d.role || isEmpty(d.role))
+        || !((d.role === 'editor') || (d.role === 'admin'))
+      ) { 
+        return {
+          status: false,
+          error: {
+            code: 'BAD_REQUEST',
+            message: 'Data validation error'
+          }
         }
       }
-    }
-    try {
       // email check, email field must be unique
       let editor = await Editor.findOne({ email: d.email })
       if (!editor) {
@@ -43,33 +43,23 @@ exports.validateData = async (t, d) => {
           message: 'Email exists'
         }
       }
-    } catch (err) {
-      return {
-        status: false,
-        error: {
-          code: err.code,
-          message: err.message
+    } else if (t === 'update') {
+      if (
+        (!d.firstname || isEmpty(d.firstname))
+        || (!d.lastname || isEmpty(d.lastname))
+        || (!d.email || isEmpty(d.email)) 
+        || !isEmail(d.email)
+        || (!d.role || isEmpty(d.role))
+        || !((d.role === 'editor') || (d.role === 'admin'))
+      ) { 
+        return {
+          status: false,
+          error: {
+            code: 'BAD_REQUEST',
+            message: 'Data validation error'
+          }
         }
       }
-    }
-  } else if (t === 'update') {
-    if (
-      isEmpty(d.firstname) // false
-      || isEmpty(d.lastname) // false
-      || isEmpty(d.email) // false
-      || !isEmail(d.email) // !true => false
-      || isEmpty(d.role) // false
-      || !((d.role === 'editor') || (d.role === 'admin')) // !true => false
-    ) { 
-      return {
-        status: false,
-        error: {
-          code: 'BAD_REQUEST',
-          message: 'Data validation error'
-        }
-      }
-    }
-    try {
       // email check, email field must be unique
       let editor = await Editor.findById(d.id)
       if (editor && editor.email === d.email) {
@@ -92,21 +82,21 @@ exports.validateData = async (t, d) => {
           message: 'Email exists'
         }
       }
-    } catch (err) {
+    } else {
       return {
         status: false,
         error: {
-          code: err.code,
-          message: err.message
+          code: 'TYPE_MISSING',
+          message: 'Validation type missing'
         }
       }
     }
-  } else {
+  } catch (err) {
     return {
       status: false,
       error: {
-        code: 'TYPE_MISSING',
-        message: 'Validation type missing'
+        code: err.code,
+        message: err.message
       }
     }
   }
