@@ -27,7 +27,7 @@ exports.getAll = (req, res) => {
         editors.map((editor) => {
           e.push(editor.toPublic())
         })
-        res.status(200).json({
+        return res.status(200).json({
           data: e,
           meta: {
             code: 200,
@@ -60,7 +60,7 @@ exports.getAll = (req, res) => {
       editors.map((editor) => {
         e.push(editor.toPublic())
       })
-      res.status(200).json({
+      return res.status(200).json({
         data: e,
         meta: {
           code: 200,
