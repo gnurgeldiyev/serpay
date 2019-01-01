@@ -26,7 +26,7 @@ exports.getAll = (req, res) => {
         poets.map((poet) => {
           p.push(poet.toPublic())
         })
-        res.status(200).json({
+        return res.status(200).json({
           data: p,
           meta: {
             code: 200,
@@ -59,7 +59,7 @@ exports.getAll = (req, res) => {
       poets.map((poet) => {
         p.push(poet.toPublic())
       })
-      res.status(200).json({
+      return res.status(200).json({
         data: p,
         meta: {
           code: 200,
