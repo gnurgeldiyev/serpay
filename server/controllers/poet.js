@@ -134,7 +134,7 @@ exports.add = async (req, res) => {
       meta: { code: 400, error: result.error } 
     })
   }
-  // add new editor
+  // add new poet
   let poet = new Poet({
     fullname: d.fullname,
     birth_date: d.birth_date,
