@@ -1,5 +1,5 @@
 const Poet = require('../models/poet')
-const { isLength, isEmpty, matches } = require('validator')
+const { isLength, isEmpty, matches, isURL } = require('validator')
 
 /**
  * d: request body data
@@ -11,7 +11,7 @@ exports.validateData = async (d) => {
       || (d.birth_date && !matches(d.birth_date, /([0-9]|\.)/g))
       || (d.death_date && !matches(d.birth_date, /([0-9]|\.)/g))
       || (d.bio && !isLength(d.bio, { max: 300 }))
-      || (d.wiki_link && !isLength(d.wiki_link, { max: 100 }))
+      || (d.wiki_link && !isURL(d.wiki_link))
       || (d.avatar && !isLength(d.avatar, { max: 100 }))
     ) { 
       return {
