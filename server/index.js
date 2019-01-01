@@ -15,6 +15,7 @@ config.dev = !(node_env === 'production')
 // Setup MongoDB with mongoose
 mongoose.Promise = global.Promise
 mongoose.connect(mongodb_uri, { useNewUrlParser: true, autoIndex: false })
+mongoose.set('useFindAndModify', false)
 mongoose.connection.on('error', (err) => {
   console.log(`MongoDB connection is failed → ${err.message}`)
 })
