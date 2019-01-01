@@ -7,19 +7,24 @@ const poetSchema = mongoose.Schema({
     unique: true
   },
   birth_date: {
-    type: String
+    type: String,
+    default: null
   },
   death_date: {
     type: String,
+    default: null
   },
   bio: {
-    type: String
+    type: String,
+    default: null
   },
   wiki_link: {
-    type: String
+    type: String,
+    default: null
   },
   avatar: {
-    type: String
+    type: String,
+    default: null
   },
   is_deleted: {
     type: Boolean,
