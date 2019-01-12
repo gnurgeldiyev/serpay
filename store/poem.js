@@ -2,72 +2,27 @@ export const state = () => ({
   addFormDialogVisibility: false,
   viewFormDialogVisibility: false,
   editFormDialogVisibility: false,
-  onView: {},
-  onEdit: {},
+  inView: {},
+  inEdit: {},
   categories: [
     'Söýgi',
     'Durmuş',
     'Watan',
     'Çaga'
   ],
-  one: {
-    title: 'Serpaý',
-    author: 'Gurbannazar Ezizow',
-    year: 1977,
-    notes: 'Şahyryň iň soňky ýazan goşgusy.',
-    category: ['Söýgi', 'Durmuş'],
-    video: 'https://www.youtube.com/embed/i4RPbS1ddbI',
-    poem: '<p>Söýüň meni &mdash; ýürek söýgi küýseýär,</p><p>Şeýle bir küýseýär &mdash; ýok çaky-çeni.&nbsp;</p><p>Ýekeje adama ýeterlik söýgi</p><p>Bilen&nbsp;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; bir pursatlyk söýüň siz meni.&nbsp;</p><p><br></p><p>Maňa k&auml;n zat,</p><p>Uly bir zat gerek d&auml;l,</p><p>Eliňizi &yacute;&uuml;regňize go&yacute;uň siz:</p><p>Size s&ouml;&yacute;gi bilen &yacute;&uuml;zlen&yacute;&auml;n g&uuml;nlem&nbsp;</p><p>S&ouml;zlerimi kes&auml; &ccedil;ekm&auml;n s&ouml;&yacute;&uuml;ň siz.&nbsp;</p><p><br></p><p>Söýüň meni &mdash; ähli erki hem durky&nbsp;</p><p>Bilen size tarap ýollar çekeni.</p><p>&Yacute;eke &ouml;z&uuml;ň s&ouml;&yacute;&uuml;p &yacute;&ouml;rseň elmydam&nbsp;</p><p>Birazajyk agyr düşjek ekeni.&nbsp;</p><p><br></p><p>Söýüň meni siziň sadyk guluňyz,&nbsp;</p><p>Soňra menden size galar şeýle paý,&nbsp;</p><p>Men size bahasyz serpaý ederin &mdash;&nbsp;</p>Şalaryň elinden gelmejek serpaý.'
-  },
-  all: [
-    {
-      title: 'Serpaý',
-      url: 'serpay',
-      author: 'Gurbannazar Ezizow',
-      year: '1977',
-      notes: 'Şahyryň iň soňky ýazan goşgusy.',
-      category: ['Söýgi', 'Durmuş'],
-      video: 'https://www.youtube.com/embed/i4RPbS1ddbI',
-      poem: '<p>Söýüň meni &mdash; ýürek söýgi küýseýär,</p><p>Şeýle bir küýseýär &mdash; ýok çaky-çeni.&nbsp;</p><p>Ýekeje adama ýeterlik söýgi</p><p>Bilen&nbsp;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; bir pursatlyk söýüň siz meni.&nbsp;</p><p><br></p><p>Maňa k&auml;n zat,</p><p>Uly bir zat gerek d&auml;l,</p><p>Eliňizi &yacute;&uuml;regňize go&yacute;uň siz:</p><p>Size s&ouml;&yacute;gi bilen &yacute;&uuml;zlen&yacute;&auml;n g&uuml;nlem&nbsp;</p><p>S&ouml;zlerimi kes&auml; &ccedil;ekm&auml;n s&ouml;&yacute;&uuml;ň siz.&nbsp;</p><p><br></p><p>Söýüň meni &mdash; ähli erki hem durky&nbsp;</p><p>Bilen size tarap ýollar çekeni.</p><p>&Yacute;eke &ouml;z&uuml;ň s&ouml;&yacute;&uuml;p &yacute;&ouml;rseň elmydam&nbsp;</p><p>Birazajyk agyr düşjek ekeni.&nbsp;</p><p><br></p><p>Söýüň meni siziň sadyk guluňyz,&nbsp;</p><p>Soňra menden size galar şeýle paý,&nbsp;</p><p>Men size bahasyz serpaý ederin &mdash;&nbsp;</p>Şalaryň elinden gelmejek serpaý.'
-    },
-    {
-      title: 'Gözledim Seni',
-      url: 'gozledim-seni',
-      author: 'Gurbannazar Ezizow',
-      year: '',
-      notes: 'Şahyryň iň soňky ýazan goşgusy.',
-      category: ['Söýgi', 'Durmuş'],
-      video: 'https://www.youtube.com/embed/i4RPbS1ddbI',
-      poem: '<p>Bahar güller açanda,&nbsp;&nbsp;</p><p>Saýrap, guşlar uçanda,&nbsp;&nbsp;</p><p>Güneş nurun saçanda,&nbsp;&nbsp;</p><p>Janym, gözledim seni.</p><p><br></p><p>Ýodalardan, ýollardan,&nbsp;&nbsp;</p><p>Uzak-uzak illerden,&nbsp;&nbsp;</p><p>Gülälekli gollardan,&nbsp;&nbsp;</p><p>Gülüm, gözledim seni.</p><p><br></p><p>Bakdym belent daglara,&nbsp;&nbsp;</p><p>Serçemenli baglara,&nbsp;&nbsp;</p><p>- Gel, läläm, gara maña! –&nbsp;&nbsp;</p><p>Diýip, yzladym seni.</p><p><br></p><p>Ýürek aglar gün-günden,&nbsp;&nbsp;</p><p>Aý gyz, gizlenme menden.&nbsp;&nbsp;</p><p>Gara gözleñ içinden&nbsp;&nbsp;</p><p>Saýlap gözledim seni.</p>'
-    },
-    {
-      title: 'Serpaý',
-      url: 'serpay',
-      author: 'Gurbannazar Ezizow',
-      year: '1977',
-      notes: 'Şahyryň iň soňky ýazan goşgusy.',
-      category: ['Söýgi', 'Durmuş'],
-      video: 'https://www.youtube.com/embed/i4RPbS1ddbI',
-      poem: '<p>Söýüň meni &mdash; ýürek söýgi küýseýär,</p><p>Şeýle bir küýseýär &mdash; ýok çaky-çeni.&nbsp;</p><p>Ýekeje adama ýeterlik söýgi</p><p>Bilen&nbsp;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; bir pursatlyk söýüň siz meni.&nbsp;</p><p><br></p><p>Maňa k&auml;n zat,</p><p>Uly bir zat gerek d&auml;l,</p><p>Eliňizi &yacute;&uuml;regňize go&yacute;uň siz:</p><p>Size s&ouml;&yacute;gi bilen &yacute;&uuml;zlen&yacute;&auml;n g&uuml;nlem&nbsp;</p><p>S&ouml;zlerimi kes&auml; &ccedil;ekm&auml;n s&ouml;&yacute;&uuml;ň siz.&nbsp;</p><p><br></p><p>Söýüň meni &mdash; ähli erki hem durky&nbsp;</p><p>Bilen size tarap ýollar çekeni.</p><p>&Yacute;eke &ouml;z&uuml;ň s&ouml;&yacute;&uuml;p &yacute;&ouml;rseň elmydam&nbsp;</p><p>Birazajyk agyr düşjek ekeni.&nbsp;</p><p><br></p><p>Söýüň meni siziň sadyk guluňyz,&nbsp;</p><p>Soňra menden size galar şeýle paý,&nbsp;</p><p>Men size bahasyz serpaý ederin &mdash;&nbsp;</p>Şalaryň elinden gelmejek serpaý.'
-    },
-    {
-      title: 'Gözledim Seni',
-      url: 'gozledim-seni',
-      author: 'Gurbannazar Ezizow',
-      year: '',
-      notes: '',
-      category: ['Söýgi', 'Durmuş'],
-      video: 'https://www.youtube.com/embed/i4RPbS1ddbI',
-      poem: '<p>Bahar güller açanda,&nbsp;&nbsp;</p><p>Saýrap, guşlar uçanda,&nbsp;&nbsp;</p><p>Güneş nurun saçanda,&nbsp;&nbsp;</p><p>Janym, gözledim seni.</p><p><br></p><p>Ýodalardan, ýollardan,&nbsp;&nbsp;</p><p>Uzak-uzak illerden,&nbsp;&nbsp;</p><p>Gülälekli gollardan,&nbsp;&nbsp;</p><p>Gülüm, gözledim seni.</p><p><br></p><p>Bakdym belent daglara,&nbsp;&nbsp;</p><p>Serçemenli baglara,&nbsp;&nbsp;</p><p>- Gel, läläm, gara maña! –&nbsp;&nbsp;</p><p>Diýip, yzladym seni.</p><p><br></p><p>Ýürek aglar gün-günden,&nbsp;&nbsp;</p><p>Aý gyz, gizlenme menden.&nbsp;&nbsp;</p><p>Gara gözleñ içinden&nbsp;&nbsp;</p><p>Saýlap gözledim seni.</p>'
-    }
-  ]
+  one: {},
+  all: [],
+  allUnapproved: []
 })
 
 export const getters = {
-  all: (state) => {
+  getAll: (state) => {
     return state.all
   },
-  one: (state) => {
+  getAllUnapproved: (state) => {
+    return state.allUnapproved
+  },
+  getOne: (state) => {
     return state.one
   },
   categories: (state) => {
@@ -82,20 +37,65 @@ export const getters = {
   editFormDialogVisibility: (state) => {
     return state.editFormDialogVisibility
   },
-  onView: (state) => {
-    return state.onView
+  inView: (state) => {
+    return state.inView
   },
-  onEdit: (state) => {
-    return state.onEdit
+  inEdit: (state) => {
+    return state.inEdit
   }
 }
 
 export const mutations = {
-  all: (state, data) => {
+  setAll: (state, data) => {
     state.all = data
   },
-  one: (state, data) => {
+  setAllUnapproved: (state, data) => {
+    state.allUnapproved = data
+  },
+  setOne: (state, data) => {
     state.one = data
+  },
+  add: (state, data) => {
+    state.all.push(data)
+  },
+  addUnapproved: (state, data) => {
+    state.allUnapproved.push(data)
+  },
+  update: (state, data) => {
+    let index
+    state.all.map((item, i) => {
+      if (item.id === data.id) {
+        index = i
+      }
+      return
+    })
+    if (index > -1) {
+      state.all.splice(index, 1, data)
+    }
+  },
+  remove: (state, data) => {
+    let index
+    state.all.map((item, i) => {
+      if (item.id === data.id) {
+        index = i
+      }
+      return
+    })
+    if (index > -1) {
+      state.all.splice(index, 1)
+    }
+  },
+  removeUnapproved: (state, data) => {
+    let index
+    state.allUnapproved.map((item, i) => {
+      if (item.id === data.id) {
+        index = i
+      }
+      return
+    })
+    if (index > -1) {
+      state.allUnapproved.splice(index, 1)
+    }
   },
   addFormDialogVisibility: (state, data) => {
     state.addFormDialogVisibility = data
@@ -106,26 +106,164 @@ export const mutations = {
   editFormDialogVisibility: (state, data) => {
     state.editFormDialogVisibility = data
   },
-  onView: (state, data) => {
-    state.onView = data
+  inView: (state, data) => {
+    state.inView = data
   },
-  onEdit: (state, data) => {
-    state.onEdit = data
+  inEdit: (state, data) => {
+    state.inEdit = data
   }
 }
 
 export const actions = {  
+  fetchAll({ commit }, data) {
+    return this.$axios.$get(`/api/poems?poet=${data}`)
+      .then((res) => {
+        commit('setAll', res.data)
+        return {
+          status: true,
+          error: {}
+        }
+      })
+      .catch((err) => {
+        const { error, code } = err.response.data.meta
+        if (code === 404) {
+          commit('setAll', [])
+        }
+        return {
+          status: false,
+          error: {
+            code: error.code,
+            message: error.message
+          }
+        }
+      })
+  },
+  fetchAllUnapproved({ commit }, data) {
+    return this.$axios.$get(`/api/poems?approved=false&poet=${data}`)
+      .then((res) => {
+        commit('setAllUnapproved', res.data)
+        return {
+          status: true,
+          error: {}
+        }
+      })
+      .catch((err) => {
+        const { error, code } = err.response.data.meta
+        if (code === 404) {
+          commit('setAll', [])
+        }
+        return {
+          status: false,
+          error: {
+            code: error.code,
+            message: error.message
+          }
+        }
+      })
+  },
   add({ commit }, data) {
-    console.log(data)
-    return true
+    return this.$axios.$post('/api/poems', data)
+      .then((res) => {
+        commit('add', res.data)
+        return {
+          status: true,
+          error: {}
+        }
+      })
+      .catch((err) => {
+        const { error } = err.response.data.meta
+        console.log(error)
+        return {
+          status: false,
+          error: {
+            code: error.code,
+            message: error.message
+          }
+        }
+      })
+  },
+  update({ commit }, data) {
+    return this.$axios.$put(`/api/poems/${data.id}`, data)
+      .then((res) => {
+        commit('update', res.data)
+        return true
+      })
+      .catch((err) => {
+        const { error } = err.response.data.meta
+        console.log(err.response.data)
+        return {
+          status: false,
+          error: {
+            code: error.code,
+            message: error.message
+          }
+        }
+      })
   },
   approve({ commit }, data) {
-    console.log(data)
-    return true
+    return this.$axios.$put(`/api/poems/${data}/approve?approved=true`)
+      .then((res) => {
+        commit('add', res.data)
+        commit('removeUnapproved', res.data)
+        return {
+          status: true,
+          error: {}
+        }
+      })
+      .catch((err) => {
+        const { error } = err.response.data.meta
+        console.log(error)
+        return {
+          status: false,
+          error: {
+            code: error.code,
+            message: error.message
+          }
+        }
+      })
+  },
+  unapprove({ commit }, data) {
+    return this.$axios.$put(`/api/poems/${data}/approve?approved=false`)
+      .then((res) => {
+        commit('addUnapproved', res.data)
+        commit('remove', res.data)
+        return {
+          status: true,
+          error: {}
+        }
+      })
+      .catch((err) => {
+        const { error } = err.response.data.meta
+        console.log(error)
+        return {
+          status: false,
+          error: {
+            code: error.code,
+            message: error.message
+          }
+        }
+      })
   },
   delete({ commit }, data) {
-    console.log(data)
-    return true
+    return this.$axios.$delete(`/api/poems/${data}`)
+      .then(() => {
+        commit('removeUnapproved', { id: data })
+        return {
+          status: true,
+          error: {}
+        }
+      })
+      .catch((err) => {
+        const { error } = err.response.data.meta
+        console.log(error)
+        return {
+          status: false,
+          error: {
+            code: error.code,
+            message: error.message
+          }
+        }
+      })
   },
   addFormDialogVisibility({ commit }, data) {
     commit('addFormDialogVisibility', data)
@@ -136,10 +274,10 @@ export const actions = {
   editFormDialogVisibility({ commit }, data) {
     commit('editFormDialogVisibility', data)
   },
-  onView({ commit }, data) {
-    commit('onView', data)
+  inView({ commit }, data) {
+    commit('inView', data)
   },
-  onEdit({ commit }, data) {
-    commit('onEdit', data)
+  inEdit({ commit }, data) {
+    commit('inEdit', data)
   }
 }
