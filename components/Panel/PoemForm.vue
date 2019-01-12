@@ -3,70 +3,69 @@
     <el-dialog 
       :lock-scroll="true"
       :top="'2vh'"
-      :visible="visibility"
+      :visible="dialogVisibility"
       :close-on-click-modal="false"
       custom-class="form_dialog"
       @open="open"
       @close="close">
       <el-form 
-        ref="poem" 
-        :model="poem"
+        ref="form" 
+        :model="form"
         :rules="rules"
         class="form">
-        <h2 class="form_title">{{ title }}</h2>
+        <h2 class="form_title">{{ getFormTitle }}</h2>
         <el-form-item 
           prop="title"
           label="Title">
           <el-input 
-            v-model="poem.title"
+            v-model="form.title"
             :disabled="type === 'view'"
-            placeholder="Title of the poem" />
+            :placeholder="type === 'view' ? '' : 'Title of the poem'" />
         </el-form-item>
         <el-form-item 
           prop="author"
           label="Author">
           <el-select 
-            v-model="poem.author"
+            v-model="form.author"
             :disabled="type === 'view'" 
-            style="width: 100%;"
-            placeholder="Author of the poem">
+            :placeholder="type === 'view' ? '' : 'Author of the poem'"
+            style="width: 100%;">
             <el-option 
               v-for="poet in poets"
-              v-if="poet"
-              :key="poet.name"
-              :label="poet.name" 
-              :value="poet.url" />
+              :key="poet.id"
+              :label="poet.fullname" 
+              :value="poet.id" />
           </el-select>
         </el-form-item>
         <el-form-item 
           prop="year"
           label="Year">
           <el-input 
-            v-model.number="poem.year"
+            v-model="form.year"
             :disabled="type === 'view'"
-            placeholder="Written year of the poem"
+            :placeholder="type === 'view' ? '' : 'Written year of the poem'"
             @keypress.native="onlyNumbers"/>
         </el-form-item>
         <el-form-item 
-          prop="video"
+          prop="youtube_link"
           label="YouTube Video Link">
           <el-input 
-            v-model="poem.video"
+            v-model="form.youtube_link"
             :disabled="type === 'view'"
-            placeholder="YouTube video link of the poem"/>
+            :placeholder="type === 'view' ? '' : 'YouTube video link of the poem'"/>
         </el-form-item>
         <el-form-item 
           prop="category"
           label="Category">
           <el-select
-            v-model="poem.category"
+            v-model="form.category"
             :disabled="type === 'view'"
             :multiple-limit="3"
+            :placeholder="type === 'view' ? '' : 'Categories of the poem'"
             style="width: 100%;"
             multiple
             filterable
-            default-first-option
-            placeholder="Categories of the poem">
+            default-first-option>
             <el-option
               v-for="item in categories"
               :key="item"
@@ -78,28 +77,34 @@
           prop="notes"
           label="Notes">
           <el-input
-            v-model="poem.notes"
+            v-model="form.notes"
             :rows="4"
             :disabled="type === 'view'"
-            type="textarea"
-            placeholder="Notes of the poem"/>
+            :placeholder="type === 'view' ? '' : 'Notes of the poem'"
+            type="textarea" />
         </el-form-item>
         <el-form-item 
-          prop="poem"
+          prop="content"
           label="Poem">
           <section class="container">
             <div 
               v-quill:myQuillEditor="editorOption"
-              :content="poem.poem"
+              :content="form.content"
               :disabled="type === 'view'"
               @change="onEditorChange($event)" />
           </section>
         </el-form-item>
-        <el-form-item>
+        <el-form-item style="float:right;">
           <el-button 
-            style="float:right;"
+            @click="close">
+            {{ getCloseButtonText }}
+          </el-button>
+          <el-button 
+            v-if="type !== 'view'"
             type="primary" 
-            @click="submitForm">Submit for approval</el-button>
+            @click="submitForm">
+            {{ getSubmitButtonText }}
+          </el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -114,26 +119,14 @@ import { unlinkObj } from '@/assets/helper'
       type: {
         type: String,
         default: 'add'
-      },
-      visibility: {
-        type: Boolean,
-        default: false
-      },
-      title: {
-        type: String,
-        default: 'Add a New Poem'
       }
     },
     data() {
       const validateVideoLink = (rule, value, callback) => {
+        const ytRgx = /^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+/gm
         if (value !== '') {
-          if (this.poem.video !== '' 
-            && (this.poem.video.match('https://www.youtube.com/')
-            || this.poem.video.match('https://youtube.com/')
-            || this.poem.video.match('http://www.youtube.com/')
-            || this.poem.video.match('http://youtube.com/')
-            || this.poem.video.match('https://youtu.be/')
-            || this.poem.video.match('http://youtu.be/'))) {
+          if (this.form.youtube_link !== '' 
+            && (this.form.youtube_link.match(ytRgx))) {
             callback()
           }
           callback(new Error('Please enter a valid YouTube video URL'))
@@ -160,16 +153,16 @@ import { unlinkObj } from '@/assets/helper'
               ['clean']
             ]
           },
-          placeholder: 'Poem content...',
+          placeholder: this.type === 'view' ? '' : 'Poem content...',
           theme: 'snow'
         },
-        poem: {
+        form: {
           title: '',
           author: '',
           year: '',
-          poem: null,
+          content: null,
           notes: '',
-          video: '',
+          youtube_link: '',
           category: []
         },
         rules: {
@@ -183,7 +176,7 @@ import { unlinkObj } from '@/assets/helper'
           category: [
             { type: 'array', required: true, message: 'Please select at least one category', trigger: 'change' }
           ],
-          video: [
+          youtube_link: [
             { validator: validateVideoLink, trigger: 'blur' }
           ],
           author: [
@@ -192,7 +185,7 @@ import { unlinkObj } from '@/assets/helper'
           year: [
             { validator: checkYear, trigger: 'blur' }
           ],
-          poem: [
+          content: [
             { required: true, message: 'Poem content cannot be blank', trigger: 'blur' }
           ],
         }
@@ -200,67 +193,133 @@ import { unlinkObj } from '@/assets/helper'
     },
     computed: {
       poets() {
-        return this.$store.getters['poet/all']
+        return this.$store.getters['poet/getAll']
       },
       categories() {
         return this.$store.getters['poem/categories']
+      },
+      dialogVisibility() {
+        if (this.type === 'edit') {
+          return this.$store.getters['poem/editFormDialogVisibility']
+        } else if (this.type === 'view'){
+          return this.$store.getters['poem/viewFormDialogVisibility']
+        } else {
+          return this.$store.getters['poem/addFormDialogVisibility']
+        }
+      },
+      inEdit() {
+        return this.$store.getters['poem/inEdit']
+      },
+      inView() {
+        return this.$store.getters['poem/inView']
+      },
+      getFormTitle() {
+        if (this.type === 'edit') {
+          return 'Edit Poem'
+        } else if (this.type === 'view'){
+          return 'View Poem'
+        } else {
+          return 'Add a New Poem'
+        }
+      },
+      getSubmitButtonText() {
+        if (this.type === 'edit') {
+          return 'Update Poem'
+        } else {
+          return 'Add Poem'
+        }
+      },
+      getCloseButtonText() {
+        if (this.type === 'view') {
+          return 'Close'
+        } else {
+          return 'Cancel'
+        }
       }
     },
     methods: {
       onEditorChange({ quill, html }) {
-        this.poem.poem = html;
+        this.form.content = html;
       },
       getEmbedLink(url) {        
         const videoId = /^https?:\/\/(www\.)?youtu\.be/.test(url) ? url.replace(/^https?:\/\/(www\.)?youtu\.be\/([\w-]{11}).*/,"$2") : url.replace(/.*\?v=([\w-]{11}).*/,"$1");
         return 'https://www.youtube.com/embed/' + videoId;
       },
       submitForm() {
-        this.$refs.poem.validate(async (valid) => {
+        this.$refs.form.validate(async (valid) => {
           if (valid) {
-            let result
-            let poem = {
-              title: this.poem.title,
-              author: this.poem.author,
-              year: this.poem.year,
-              poem: this.poem.poem,
-              notes: this.poem.notes,
-              video: this.getEmbedLink(this.poem.video),
-              category: this.poem.category
-            }
-            result = await this.$store.dispatch('poem/add', poem)
-            if (!result) {
-              this.$message({
-                message: 'An error occurred.',
-                type: 'error'
-              })
-              return false
-            }
-            if (this.type === 'view') {
-              this.$store.dispatch('poem/viewFormDialogVisibility', false)
-            } else if (this.type === 'edit') {
+            if (this.type === 'edit') {
+              let result
+              let data = {
+                id: this.form.id,
+                title: this.form.title,
+                author: this.form.author.id ? this.form.author.id : this.form.author,
+                year: this.form.year.toString(),
+                content: this.form.content,
+                notes: this.form.notes,
+                youtube_link: this.getEmbedLink(this.form.youtube_link),
+                category: this.form.category,
+                added_by: '5c280d96f7b2760d6cd9ded7' // test only
+              }
+              result = await this.$store.dispatch('poem/update', data)
+              if (result.status === false) {
+                this.$notify({
+                  title: result.error.code,
+                  message: result.error.message,
+                  type: 'error'
+                })
+                return false
+              }
               this.$store.dispatch('poem/editFormDialogVisibility', false)
+              this.$refs.form.resetFields()
+              this.$notify({
+                title: 'Success',
+                message: 'Successfully updated.',
+                type: 'success'
+              })
             } else {
+              let result
+              let data = {
+                title: this.form.title,
+                author: this.form.author,
+                year: this.form.year.toString(),
+                content: this.form.content,
+                notes: this.form.notes,
+                youtube_link: this.getEmbedLink(this.form.youtube_link),
+                category: this.form.category,
+                added_by: '5c280d96f7b2760d6cd9ded7' // test only
+              }
+              result = await this.$store.dispatch('poem/add', data)
+              if (result.status === false) {
+                this.$notify({
+                  title: result.error.code,
+                  message: result.error.message,
+                  type: 'error'
+                })
+                return false
+              }
               this.$store.dispatch('poem/addFormDialogVisibility', false)
+              this.$refs.form.resetFields()
+              this.$notify({
+                title: 'Success',
+                message: 'Successfully added.',
+                type: 'success'
+              })
             }
-            this.$refs.poem.resetFields()
-            this.$message({
-              message: 'A new poem submitted for approval.',
-              type: 'success'
-            })
           } else {
             return false
           }
-        });
+        })
       },
       open() {
         if (this.type === 'view') {
-          let p = this.$store.getters['poem/onView']
+          let p = this.inView
           console.log(p)
-          this.poem = unlinkObj(p)
+          this.form = unlinkObj(p)
         } else if (this.type === 'edit') {
-          let p = this.$store.getters['poem/onEdit']
+          let p = this.inEdit
           console.log(p)
-          this.poem = unlinkObj(p)
+          this.form = unlinkObj(p)
         }
       },
       close() {
@@ -271,7 +330,7 @@ import { unlinkObj } from '@/assets/helper'
         } else {
           this.$store.dispatch('poem/addFormDialogVisibility', false)
         }
-        this.$refs.poem.resetFields()
+        this.$refs.form.resetFields()
       },
       onlyNumbers(e){
         const numbers = /^[0-9]*$/
@@ -289,7 +348,9 @@ import { unlinkObj } from '@/assets/helper'
   margin: 0 !important;
   width: 100%;
   min-height: 100vh;
+  height: auto;
   border-radius: 0;
+  padding-bottom: 48px;
 }
 .form_dialog .el-icon {
   font-size: 2em;

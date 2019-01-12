@@ -9,25 +9,38 @@
       {{ i+1 }}. {{ poem.title }}
       <span class="list_item_action">
         <el-button 
+          v-if="poem.is_approved === false"
           class="list_item_action_item approve"
           icon="el-icon-circle-check-outline"
           type="text"
-          @click="approvePoem(poem.url)" />
+          title="Approve"
+          @click="approvePoem(poem.id)" />
+        <el-button 
+          v-if="poem.is_approved === true"
+          class="list_item_action_item unapprove"
+          icon="el-icon-circle-close-outline"
+          type="text"
+          title="Unapprove"
+          @click="unapprovePoem(poem.id)" />
         <el-button 
           class="list_item_action_item view"
           icon="el-icon-view"
           type="text"
           @click="viewPoem(poem)" />
         <el-button 
+          v-if="poem.is_approved === false"
           class="list_item_action_item edit"
           icon="el-icon-edit"
           type="text"
+          title="Edit"
           @click="editPoem(poem)" />
         <el-button 
+          v-if="poem.is_approved === false"
           class="list_item_action_item delete"
           icon="el-icon-delete"
           type="text"
-          @click="deletePoem(poem.url)" />
+          title="Delete"
+          @click="deletePoem(poem.id)" />
       </span>
     </li>
   </ul>
@@ -67,12 +80,37 @@
           });          
         });
       },
+      unapprovePoem(id) {
+        this.$confirm('This will unapprove and removes from public the poem. Continue?', 'Info', {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'info',
+        }).then(async () => {
+          const result = await this.$store.dispatch('poem/unapprove', id);
+          if (!result) {
+            this.$message({
+              message: 'An error occurred.',
+              type: 'error'
+            });
+          } else {
+            this.$message({
+              type: 'success',
+              message: 'Unapproved successfully.'
+            });
+          }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: 'Approvement canceled.'
+          });          
+        });
+      },
       viewPoem(poem) {
-        this.$store.dispatch('poem/onView', poem)
+        this.$store.dispatch('poem/inView', poem)
         this.$store.dispatch('poem/viewFormDialogVisibility', true)
       },
       editPoem(poem) {
-        this.$store.dispatch('poem/onEdit', poem)
+        this.$store.dispatch('poem/inEdit', poem)
         this.$store.dispatch('poem/editFormDialogVisibility', true)
       },
       deletePoem(id) {
@@ -120,7 +158,7 @@
   border: 1px solid rgba(0,0,0,.09);
   border-radius: 4px;
   box-shadow: 0 1px 4px rgba(0,0,0,.04);
-  margin: 32px 0;
+  margin: 16px 0;
 }
 .list_item { 
   padding: 16px;
@@ -161,7 +199,8 @@
 .list_item_action_item.edit:hover {
   color: orange;
 }
-.list_item_action_item.delete:hover {
+.list_item_action_item.delete:hover,
+.list_item_action_item.unapprove:hover {
   color: red;
 }
 </style>
