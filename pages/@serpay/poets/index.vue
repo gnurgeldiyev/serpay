@@ -6,19 +6,13 @@
           icon="el-icon-circle-plus-outline" 
           plain
           @click="openAddFormDialog">Add New</el-button>
-        <poet-form :visibility="addFormDialogVisibility" />
+        <poet-form />
       </div>
     </div>
     <div class="page_body">
       <poet-list :data="poets" />
-      <poet-form
-        :type="'view'"
-        :visibility="viewFormDialogVisibility"
-        :title="'View Poet'" />
-      <poet-form
-        :type="'edit'"
-        :visibility="editFormDialogVisibility"
-        :title="'Edit Poet'" />
+      <poet-form :type="'view'" />
+      <poet-form :type="'edit'" />
     </div>
   </div>
 </template>
@@ -35,7 +29,7 @@ import PoetForm from '@/components/Panel/PoetForm'
     },
     computed: {
       poets() {
-        return this.$store.getters['poet/all']
+        return this.$store.getters['poet/getAll']
       },
       addFormDialogVisibility() {
         return this.$store.getters['poet/addFormDialogVisibility']
@@ -46,6 +40,9 @@ import PoetForm from '@/components/Panel/PoetForm'
       editFormDialogVisibility() {
         return this.$store.getters['poet/editFormDialogVisibility']
       }
+    },
+    beforeCreate() {
+      this.$store.dispatch('poet/fetchAll')
     },
     methods: {
       openAddFormDialog() {
