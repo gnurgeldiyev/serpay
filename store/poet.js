@@ -2,41 +2,17 @@ export const state = () => ({
   addFormDialogVisibility: false,
   viewFormDialogVisibility: false,
   editFormDialogVisibility: false,
-  onView: {},
-  onEdit: {},
-  one: {
-    url: 'gurbannazar-ezizow',
-    name: 'Gurbannazar Ezizow',
-    avatar: 'https://pbs.twimg.com/profile_images/425363604968591361/7tTT1z33_400x400.jpeg',
-    bio: 'Gurbannazar Ezizow - talantly türkmen şahyry, Türkmenistanyň Magtymguly adyndaky Döwlet baýragynyň eýesi.'
-  },
-  all: [
-    {
-      name: 'Gurbannazar Ezizow',
-      avatar: 'https://pbs.twimg.com/profile_images/425363604968591361/7tTT1z33_400x400.jpeg',
-      total: 139,
-      url: 'gurbannazar-ezizow'
-    },
-    {
-      name: 'Magtymguly Pyragy',
-      avatar: 'https://pbs.twimg.com/profile_images/1079796065/magtymguly2_400x400.jpg',
-      total: 234,
-      url: 'magtymguly'
-    },
-    {
-      name: 'Berdinazar Hudaýnazarow',
-      avatar: 'http://gollanma.com/wp-content/uploads/2012/02/Berdinazar-Hudaynazarow-new.jpg',
-      total: 127,
-      url: 'berdinazar-hudaynazarow'
-    }
-  ]
+  inView: {},
+  inEdit: {},
+  one: {},
+  all: []
 })
 
 export const getters = {
-  all: (state) => {
+  getAll: (state) => {
     return state.all
   },
-  one: (state) => {
+  getOne: (state) => {
     return state.one
   },
   addFormDialogVisibility: (state) => {
@@ -48,20 +24,47 @@ export const getters = {
   editFormDialogVisibility: (state) => {
     return state.editFormDialogVisibility
   },
-  onView: (state) => {
-    return state.onView
+  inView: (state) => {
+    return state.inView
   },
-  onEdit: (state) => {
-    return state.onEdit
+  inEdit: (state) => {
+    return state.inEdit
   }
 }
 
 export const mutations = {
-  all: (state, data) => {
+  setAll: (state, data) => {
     state.all = data
   },
-  one: (state, data) => {
+  setOne: (state, data) => {
     state.one = data
+  },
+  add: (state, data) => {
+    state.all.push(data)
+  },
+  update: (state, data) => {
+    let index;
+    state.all.map((item, i) => {
+      if (item.id === data.id) {
+        index = i
+      }
+      return
+    })
+    if (index > -1) {
+      state.all.splice(index, 1, data)
+    }
+  },
+  delete: (state, data) => {
+    let index;
+    state.all.map((item, i) => {
+      if (item.id === data) {
+        index = i
+      }
+      return
+    })
+    if (index > -1) {
+      state.all.splice(index, 1)
+    }
   },
   addFormDialogVisibility: (state, data) => {
     state.addFormDialogVisibility = data
@@ -72,22 +75,92 @@ export const mutations = {
   editFormDialogVisibility: (state, data) => {
     state.editFormDialogVisibility = data
   },
-  onView: (state, data) => {
-    state.onView = data
+  inView: (state, data) => {
+    state.inView = data
   },
-  onEdit: (state, data) => {
-    state.onEdit = data
+  inEdit: (state, data) => {
+    state.inEdit = data
   }
 }
 
 export const actions = {
+  fetchAll({ commit }) {
+    return this.$axios.$get('/api/poets/')
+      .then((res) => {
+        commit('setAll', res.data)
+        return {
+          status: true,
+          error: {}
+        }
+      })
+      .catch((err) => {
+        const { error } = err.response.data.meta
+        console.log(error)
+        return {
+          status: false,
+          error: {
+            code: error.code,
+            message: error.message
+          }
+        }
+      })
+  },
   add({ commit }, data) {
-    console.log(data)
-    return true
+    return this.$axios.$post('/api/poets', data)
+      .then((res) => {
+        commit('add', res.data)
+        return {
+          status: true,
+          error: {}
+        }
+      })
+      .catch((err) => {
+        const { error } = err.response.data.meta
+        console.log(error)
+        return {
+          status: false,
+          error: {
+            code: error.code,
+            message: error.message
+          }
+        }
+      })
+  },
+  update({ commit }, data) {
+    return this.$axios.$put(`/api/poets/${data.id}`, data)
+      .then((res) => {
+        commit('update', res.data)
+        return true
+      })
+      .catch((err) => {
+        const { error } = err.response.data.meta
+        console.log(error)
+        return {
+          status: false,
+          error: {
+            code: error.code,
+            message: error.message
+          }
+        }
+      })
   },
   delete({ commit }, data) {
-    console.log(data)
-    return true
+    return this.$axios.$put(`/api/poets/${data}/delete`)
+      .then(() => {
+        commit('delete', data)
+        return true
+      })
+      .catch((err) => {
+        const { error } = err.response.data.meta
+        console.log(error)
+        return {
+          status: false,
+          error: {
+            code: error.code,
+            message: error.message
+          }
+        }
+      })
   },
   addFormDialogVisibility({ commit }, data) {
     commit('addFormDialogVisibility', data)
@@ -98,10 +171,10 @@ export const actions = {
   editFormDialogVisibility({ commit }, data) {
     commit('editFormDialogVisibility', data)
   },
-  onView({ commit }, data) {
-    commit('onView', data)
+  inView({ commit }, data) {
+    commit('inView', data)
   },
-  onEdit({ commit }, data) {
-    commit('onEdit', data)
+  inEdit({ commit }, data) {
+    commit('inEdit', data)
   }
 }
