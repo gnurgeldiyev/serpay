@@ -3,57 +3,72 @@
     <el-dialog 
       :lock-scroll="true"
       :top="'2vh'"
-      :visible="visibility"
+      :visible="dialogVisibility"
       :close-on-click-modal="false"
       custom-class="form_dialog"
       @open="open"
       @close="close">
       <el-form 
-        ref="poet" 
-        :model="poet"
+        ref="form" 
+        :model="form"
         :rules="rules"
         class="form">
-        <h2 class="form_title">{{ title }}</h2>
+        <h2 class="form_title">{{ getFormTitle }}</h2>
         <el-form-item 
-          prop="name"
+          prop="fullname"
           label="Full Name">
           <el-input 
-            v-model="poet.name"
+            v-model="form.fullname"
             :disabled="type === 'view'"
-            placeholder="Full name of the poet" />
+            :placeholder="type === 'view' ? '' : 'Full name of the poet'" />
         </el-form-item>
         <el-form-item 
           prop="bio"
           label="Short Bio">
           <el-input
-            v-model="poet.bio"
+            v-model="form.bio"
             :rows="4"
             :disabled="type === 'view'"
-            type="textarea"
-            placeholder="Short bio of the poet"/>
+            :placeholder="type === 'view' ? '' : 'Short bio of the poet'"
+            type="textarea" />
         </el-form-item>
         <el-form-item 
-          prop="birth_data"
+          prop="birth_date"
           label="Birth Date">
           <el-input 
-            v-model.number="poet.birth_data"
+            v-model="form.birth_date"
             :disabled="type === 'view'"
-            placeholder="Written year of the poem"
+            :placeholder="type === 'view' ? '' : 'Birth date of poet'"
+            @keypress.native="onlyNumbers"/>
+        </el-form-item>
+        <el-form-item 
+          prop="death_date"
+          label="Death Date">
+          <el-input 
+            v-model="form.death_date"
+            :disabled="type === 'view'"
+            :placeholder="type === 'view' ? '' : 'Death date of poet'"
             @keypress.native="onlyNumbers"/>
         </el-form-item>
         <el-form-item 
           prop="wiki_link"
           label="Wikipedia Link">
           <el-input 
-            v-model="poet.wiki_link"
+            v-model="form.wiki_link"
             :disabled="type === 'view'"
-            placeholder="Wikipedia page link of the poet"/>
+            :placeholder="type === 'view' ? '' : 'Wikipedia page link of the poet'"/>
         </el-form-item>
-        <el-form-item>
+        <el-form-item style="float:right;">
           <el-button 
-            style="float:right;"
+            @click="close">
+            {{ getCloseButtonText }}
+          </el-button>
+          <el-button 
+            v-if="type !== 'view'"
             type="primary" 
-            @click="submitForm">Add Poet</el-button>
+            @click="submitForm">
+            {{ getSubmitButtonText }}
+          </el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -68,14 +83,6 @@ import { unlinkObj } from '@/assets/helper'
       type: {
         type: String,
         default: 'add'
-      },
-      visibility: {
-        type: Boolean,
-        default: false
-      },
-      title: {
-        type: String,
-        default: 'Add a New Poet'
       }
     },
     data() {
@@ -91,8 +98,8 @@ import { unlinkObj } from '@/assets/helper'
         }
       }
       return {
-        poet: {
-          name: '',
+        form: {
+          fullname: '',
           birth_date: '',
           death_date: '',
           bio: '',
@@ -100,66 +107,126 @@ import { unlinkObj } from '@/assets/helper'
           avatar: ''
         },
         rules: {
-          name: [
+          fullname: [
             { required: true, message: 'Please enter a full name', trigger: 'blur' },
             { min: 1, max: 100, message: 'Length should be max 100 characters', trigger: 'blur' }
           ],
           birth_date: [],
-          death_data: [],
+          death_date: [],
           bio: [],
           wiki_link: [],
           avatar: []
         }
       }
     },
+    computed: {
+      dialogVisibility() {
+        if (this.type === 'edit') {
+          return this.$store.getters['poet/editFormDialogVisibility']
+        } else if (this.type === 'view'){
+          return this.$store.getters['poet/viewFormDialogVisibility']
+        } else {
+          return this.$store.getters['poet/addFormDialogVisibility']
+        }
+      },
+      inEdit() {
+        return this.$store.getters['poet/inEdit']
+      },
+      inView() {
+        return this.$store.getters['poet/inView']
+      },
+      getFormTitle() {
+        if (this.type === 'edit') {
+          return 'Edit Poet'
+        } else if (this.type === 'view'){
+          return 'View Poet'
+        } else {
+          return 'Add a New Poet'
+        }
+      },
+      getSubmitButtonText() {
+        if (this.type === 'edit') {
+          return 'Update Poet'
+        } else {
+          return 'Add Poet'
+        }
+      },
+      getCloseButtonText() {
+        if (this.type === 'view') {
+          return 'Close'
+        } else {
+          return 'Cancel'
+        }
+      }
+    },
     methods: {
       submitForm() {
-        this.$refs.poem.validate(async (valid) => {
+        this.$refs.form.validate(async (valid) => {
           if (valid) {
-            let result
-            let poem = {
-              title: this.poem.title,
-              author: this.poem.author,
-              year: this.poem.year,
-              poem: this.poem.poem,
-              notes: this.poem.notes,
-              video: this.getEmbedLink(this.poem.video),
-              category: this.poem.category
-            }
-            result = await this.$store.dispatch('poem/add', poem)
-            if (!result) {
-              this.$message({
-                message: 'An error occurred.',
-                type: 'error'
-              })
-              return false
-            }
-            if (this.type === 'view') {
-              this.$store.dispatch('poet/viewFormDialogVisibility', false)
-            } else if (this.type === 'edit') {
+             if (this.type === 'edit') {
+              let result
+              let data = {
+                id: this.form.id,
+                fullname: this.form.fullname,
+                birth_date: this.form.birth_date.toString(),
+                death_date: this.form.death_date.toString(),
+                bio: this.form.bio,
+                wiki_link: this.form.wiki_link,
+              }
+              result = await this.$store.dispatch('poet/update', data)
+              if (result.status === false) {
+                this.$notify({
+                  title: result.error.code,
+                  message: result.error.message,
+                  type: 'error'
+                })
+                return false
+              }
               this.$store.dispatch('poet/editFormDialogVisibility', false)
+              this.$refs.form.resetFields()
+              this.$notify({
+                title: 'Success',
+                message: 'Successfully updated.',
+                type: 'success'
+              })
             } else {
+              let result
+              let data = {
+                fullname: this.form.fullname,
+                birth_date: this.form.birth_date,
+                death_date: this.form.death_date,
+                bio: this.form.bio,
+                wiki_link: this.form.wiki_link,
+              }
+              result = await this.$store.dispatch('poet/add', data)
+              if (result.status === false) {
+                this.$notify({
+                  title: result.error.code,
+                  message: result.error.message,
+                  type: 'error'
+                })
+                return false
+              }
               this.$store.dispatch('poet/addFormDialogVisibility', false)
+              this.$refs.form.resetFields()
+              this.$notify({
+                title: 'Success',
+                message: 'Successfully added.',
+                type: 'success'
+              })
             }
-            this.$refs.poet.resetFields()
-            this.$message({
-              message: 'A new poem submitted for approval.',
-              type: 'success'
-            })
           } else {
             return false
           }
-        });
+        })
       },
       open() {
         if (this.type === 'view') {
-          let p = this.$store.getters['poem/onView']
-          console.log(p)
-          this.poem = unlinkObj(p)
+          let p = this.inView
+          this.form = unlinkObj(p)
         } else if (this.type === 'edit') {
-          let p = this.$store.getters['poem/onEdit']
-          console.log(p)
-          this.poem = unlinkObj(p)
+          let p = this.inEdit
+          this.form = unlinkObj(p)
         }
       },
       close() {
@@ -170,7 +237,7 @@ import { unlinkObj } from '@/assets/helper'
         } else {
           this.$store.dispatch('poet/addFormDialogVisibility', false)
         }
-        this.$refs.poet.resetFields()
+        this.$refs.form.resetFields()
       },
       onlyNumbers(e){
         const numbers = /^[0-9]*$/

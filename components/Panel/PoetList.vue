@@ -1,12 +1,12 @@
 <template>
   <ul 
-    v-if="data.length > 0"
+    v-if="data && data.length > 0"
     class="list">
     <li 
       v-for="(poet, i) in data"
       :key="i"
       class="list_item">
-      {{ i+1 }}. {{ poet.name }}
+      {{ i+1 }}. {{ poet.fullname }}
       <span class="list_item_action">
         <el-button 
           class="list_item_action_item view"
@@ -22,7 +22,7 @@
           class="list_item_action_item delete"
           icon="el-icon-delete"
           type="text"
-          @click="deletePoet(poet.url)" />
+          @click="deletePoet(poet.id)" />
       </span>
     </li>
   </ul>
@@ -37,38 +37,38 @@
       }
     },
     methods: {
-      viewPoet(poet) {
-        this.$store.dispatch('poet/onView', poet)
+      viewPoet(item) {
+        this.$store.dispatch('poet/inView', item)
         this.$store.dispatch('poet/viewFormDialogVisibility', true)
       },
-      editPoet(poet) {
-        this.$store.dispatch('poet/onEdit', poet)
+      editPoet(item) {
+        this.$store.dispatch('poet/inEdit', item)
         this.$store.dispatch('poet/editFormDialogVisibility', true)
       },
       deletePoet(id) {
-        this.$confirm('This will permanently delete the poem. Continue?', 'Warning', {
+        this.$confirm('This will permanently delete the poet. Continue?', 'Warning', {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
           type: 'warning',
         }).then(async () => {
-          const result = await this.$store.dispatch('poet/delete', id);
+          const result = await this.$store.dispatch('poet/delete', id)
           if (!result) {
             this.$message({
               message: 'An error occurred.',
               type: 'error'
-            });
+            })
           } else {
             this.$message({
               type: 'success',
               message: 'Delete completed.'
-            });
+            })
           }
         }).catch(() => {
           this.$message({
             type: 'info',
             message: 'Delete canceled.'
-          });          
-        });
+          })          
+        })
       }
     }
   }
