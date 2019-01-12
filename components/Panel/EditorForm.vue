@@ -13,7 +13,7 @@
         :model="form"
         :rules="rules"
         class="form">
-        <h2 class="form_title">Add a New User</h2>
+        <h2 class="form_title">{{ getFormTitle }}</h2>
         <el-form-item 
           prop="firstname"
           label="First Name">
@@ -132,6 +132,13 @@ import { unlinkObj } from '@/assets/helper'
       inEdit() {
         return this.$store.getters['editor/inEdit']
       },
+      getFormTitle() {
+        if (this.type === 'edit') {
+          return 'Edit Editor'
+        } else {
+          return 'Add a New Editor'
+        }
+      },
       getSubmitButtonText() {
         if (this.type === 'edit') {
           return 'Update Editor'
@@ -178,7 +185,7 @@ import { unlinkObj } from '@/assets/helper'
                 password: this.form.password,
                 role: this.form.role
               }
-              result = await this.$store.dispatch('editor/update', data)
+              result = await this.$store.dispatch('editor/add', data)
               if (result.status === false) {
                 this.$notify({
                   title: result.error.code,
