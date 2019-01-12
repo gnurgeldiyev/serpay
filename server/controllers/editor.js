@@ -44,8 +44,8 @@ exports.getAll = (req, res) => {
           } 
         })
       })
-  }
-  Editor.find({ is_active: true }).sort({ role: 1, created_at: 1 })
+  } else {
+    Editor.find({ is_active: true }).sort({ role: 1, created_at: 1 })
     .then((editors) => {
       if (!editors.length) {
         return res.status(404).json({
@@ -77,6 +77,7 @@ exports.getAll = (req, res) => {
         } 
       })
     })
+  }
 }
 
 
