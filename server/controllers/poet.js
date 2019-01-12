@@ -127,7 +127,7 @@ exports.add = async (req, res) => {
   let result
   const d = req.body
   // request body data validation
-  result = await validateData(d)
+  result = await validateData('add', d)
   if (!result.status) {
     return res.status(400).json({ 
       data: {}, 
@@ -179,7 +179,7 @@ exports.update = async (req, res) => {
     })
   }
   // request body data validation
-  let result = await validateData(d)
+  let result = await validateData('update', d)
   if (!result.status) {
     return res.status(400).json({ 
       data: {}, 

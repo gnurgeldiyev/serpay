@@ -2,9 +2,10 @@ const Poet = require('../models/poet')
 const { isLength, isEmpty, matches, isURL } = require('validator')
 
 /**
+ * t: type of validation | add, update
  * d: request body data
 */
-exports.validateData = async (d) => {
+exports.validateData = async (t, d) => {
   try {
     if (
       (!d.fullname || isEmpty(d.fullname))
@@ -24,6 +25,14 @@ exports.validateData = async (d) => {
     }
     // fullname check, fullname field must be unique
     let poet = await Poet.findOne({ fullname: d.fullname })
+    if (t === 'update') {
+      if (poet && poet.fullname === d.fullname) {
+        return {
+          status: true,
+          data: {}
+        }
+      }
+    }
     if (!poet) {
       return {
         status: true,
