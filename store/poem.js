@@ -1,15 +1,11 @@
+import { categories } from '@/assets/data/poem'
+
 export const state = () => ({
   addFormDialogVisibility: false,
   viewFormDialogVisibility: false,
   editFormDialogVisibility: false,
   inView: {},
   inEdit: {},
-  categories: [
-    'Söýgi',
-    'Durmuş',
-    'Watan',
-    'Çaga'
-  ],
   one: {},
   all: [],
   allUnapproved: []
@@ -25,8 +21,8 @@ export const getters = {
   getOne: (state) => {
     return state.one
   },
-  categories: (state) => {
-    return state.categories
+  categories: () => {
+    return categories
   },
   addFormDialogVisibility: (state) => {
     return state.addFormDialogVisibility
