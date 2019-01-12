@@ -6,6 +6,10 @@ const poetSchema = mongoose.Schema({
     required: [true, 'can\'t be blank'],
     unique: true
   },
+  url: {
+    type: String,
+    required: true
+  },
   birth_date: {
     type: String,
     default: null
@@ -41,6 +45,7 @@ poetSchema.methods.toPublic = function () {
   return {
     id: this._id,
     fullname: this.fullname,
+    url: this.url,
     birth_date: this.birth_date,
     death_date: this.death_date,
     bio: this.bio,

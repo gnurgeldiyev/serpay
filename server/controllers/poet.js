@@ -137,6 +137,7 @@ exports.add = async (req, res) => {
   // add new poet
   let poet = new Poet({
     fullname: d.fullname,
+    url: d.fullname.toLowerCase().replace(' ', '-'),
     birth_date: d.birth_date,
     death_date: d.death_date,
     bio: d.bio,
@@ -188,6 +189,7 @@ exports.update = async (req, res) => {
   Poet.findOneAndUpdate({ _id: id, is_deleted: false }, {
     $set: {
       fullname: d.fullname,
+      url: d.fullname.toLowerCase().replace(' ', '-'),
       birth_date: d.birth_date,
       death_date: d.death_date,
       bio: d.bio,
