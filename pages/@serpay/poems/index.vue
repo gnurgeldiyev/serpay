@@ -82,8 +82,13 @@ import PoemList from '@/components/Panel/PoemList'
     },
     methods: {
       async getPoemsOfPoet(poetId) {
-        await this.$store.dispatch('poem/fetchAll', poetId)
+        let promises = [
+          this.$store.dispatch('poem/fetchAll', poetId),
+          this.$store.dispatch('poem/fetchAllUnapproved', this.poetId)
+        ]
+        await Promise.all(promises)
         this.poems = this.$store.getters['poem/getAll']
+        this.unapprovedPoems = this.$store.getters['poem/getAllUnapproved']
       },
       async handleTabClick(tab) {
         if (tab.name === 'unapproved' && this.poetId !== '') {
