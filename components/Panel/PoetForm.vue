@@ -51,6 +51,14 @@
             @keypress.native="onlyNumbers"/>
         </el-form-item>
         <el-form-item 
+          prop="avatar"
+          label="Avatar Link">
+          <el-input 
+            v-model="form.avatar"
+            :disabled="type === 'view'"
+            :placeholder="type === 'view' ? '' : 'Avatar image link of the poet'"/>
+        </el-form-item>
+        <el-form-item 
           prop="wiki_link"
           label="Wikipedia Link">
           <el-input 
@@ -115,7 +123,10 @@ import { unlinkObj } from '@/assets/helper'
           death_date: [],
           bio: [],
           wiki_link: [],
-          avatar: []
+          avatar: [
+            { required: true, message: 'Please enter a avatar link', trigger: 'blur' },
+            { type: 'url', message: 'Please input correct link', trigger: ['blur', 'change'] }
+          ]
         }
       }
     },
@@ -171,6 +182,7 @@ import { unlinkObj } from '@/assets/helper'
                 birth_date: this.form.birth_date.toString(),
                 death_date: this.form.death_date.toString(),
                 bio: this.form.bio,
+                avatar: this.form.avatar,
                 wiki_link: this.form.wiki_link,
               }
               result = await this.$store.dispatch('poet/update', data)
@@ -196,6 +208,7 @@ import { unlinkObj } from '@/assets/helper'
                 birth_date: this.form.birth_date,
                 death_date: this.form.death_date,
                 bio: this.form.bio,
+                avatar: this.form.avatar,
                 wiki_link: this.form.wiki_link,
               }
               result = await this.$store.dispatch('poet/add', data)
