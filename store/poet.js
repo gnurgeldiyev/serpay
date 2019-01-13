@@ -54,6 +54,9 @@ export const mutations = {
       state.all.splice(index, 1, data)
     }
   },
+  clear: (state) => {
+    state.one = {}
+  },
   delete: (state, data) => {
     let index;
     state.all.map((item, i) => {
@@ -105,6 +108,27 @@ export const actions = {
         }
       })
   },
+  fetchOne({ commit }, data) {
+    return this.$axios.$get(`/api/poets/${data}`)
+      .then((res) => {
+        commit('setOne', res.data)
+        return {
+          status: true,
+          error: {}
+        }
+      })
+      .catch((err) => {
+        const { error } = err.response.data.meta
+        console.log(error)
+        return {
+          status: false,
+          error: {
+            code: error.code,
+            message: error.message
+          }
+        }
+      })
+  },
   add({ commit }, data) {
     return this.$axios.$post('/api/poets', data)
       .then((res) => {
@@ -130,7 +154,10 @@ export const actions = {
     return this.$axios.$put(`/api/poets/${data.id}`, data)
       .then((res) => {
         commit('update', res.data)
-        return true
+        return {
+          status: true,
+          error: {}
+        }
       })
       .catch((err) => {
         const { error } = err.response.data.meta
@@ -144,11 +171,21 @@ export const actions = {
         }
       })
   },
+  clear({ commit }) {
+    commit('clear')
+    return {
+      status: true,
+      error: {}
+    }
+  },
   delete({ commit }, data) {
     return this.$axios.$put(`/api/poets/${data}/delete`)
       .then(() => {
         commit('delete', data)
-        return true
+        return {
+          status: true,
+          error: {}
+        }
       })
       .catch((err) => {
         const { error } = err.response.data.meta
