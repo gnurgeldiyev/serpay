@@ -5,7 +5,7 @@ const poetController = require('../controllers/poet')
  * GET requests
 */
 router.get('/', poetController.getAll)
-router.get('/:id', poetController.getOne)
+router.get('/:url', poetController.getOne)
 
 /**
  * POST requests
