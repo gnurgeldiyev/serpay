@@ -1,13 +1,25 @@
 <template>
   <div class="pv">
     <div class="pv_info">
-      <h1 class="pv_info_title">{{ data.name }}</h1>
-      <p class="pv_info_description">{{ data.bio }}</p>
+      <h1 class="pv_info_title">{{ data.fullname }}</h1>
+      <p class="pv_info_description">
+        {{ data.bio }} 
+        <a
+          v-if="data.wiki_link"
+          :href="`${data.wiki_link}`"
+          target="_self"
+          title="Wikipedia Sahypasy">
+          Wikipedia
+        </a>
+      </p>
+      <p class="pv_info_description">
+        {{ livedYears }}
+      </p>
     </div>
     <div class="pv_media">
       <img 
         :src="data.avatar" 
-        :alt="data.name"
+        :alt="data.fullname"
         class="pv_media_avatar">
     </div>
   </div>
@@ -19,6 +31,19 @@
       data: {
         type: Object,
         required: true
+      }
+    },
+    computed: {
+      livedYears() {
+        const d = this.data
+        let i = ''
+        if (d.birth_date) {
+          i += d.birth_date
+        }
+        if (d.death_date) {
+          i += ' - ' + d.death_date
+        }
+        return i
       }
     }
   }
@@ -54,6 +79,11 @@
     font-family: inherit;
     margin-top: 8px;
   }
+  .pv_info_description a {
+    color: inherit;
+    border-bottom: 1px solid #656565;
+    text-decoration: none;
+  }
   .pv_media_avatar {
     width: 100px;
     height: 100px;
@@ -83,6 +113,11 @@
     font-weight: 400;
     font-family: inherit;
     margin-top: 16px;
+  }
+  .pv_info_description a {
+    color: inherit;
+    border-bottom: 1px solid #656565;
+    text-decoration: none;
   }
   .pv_media_avatar {
     width: 140px;
@@ -115,6 +150,17 @@
     font-family: inherit;
     margin-top: 24px;
   }
+  .pv_info_description a {
+    color: inherit;
+    border-bottom: 1px solid #656565;
+    text-decoration: none;
+  }
+  .pv_info_description a:hover {
+    color: #080808;
+    border-color: #080808;
+    text-decoration: none;
+    cursor: pointer;
+  }
   .pv_media_avatar {
     width: 160px;
     height: 160px;
@@ -145,6 +191,17 @@
     font-weight: 400;
     font-family: inherit;
     margin-top: 32px;
+  }
+  .pv_info_description a {
+    color: inherit;
+    border-bottom: 1px solid #656565;
+    text-decoration: none;
+  }
+  .pv_info_description a:hover {
+    color: #080808;
+    border-color: #080808;
+    text-decoration: none;
+    cursor: pointer;
   }
   .pv_media_avatar {
     width: 200px;

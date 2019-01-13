@@ -1,20 +1,22 @@
 <template>
   <nuxt-link 
     :to="'/p/' + data.url"
-    :title="'Şahyr ' + data.name"
+    :title="'Şahyr ' + data.fullname"
     class="a">
     <div class="pc">
       <div class="pc_media">
         <img 
           :src="data.avatar" 
-          :alt="data.name"
+          :alt="data.fullname"
           class="pc_media_avatar">
       </div>
       <div class="pc_info">
         <p class="pc_info_title">
-          {{ data.name }}
+          {{ data.fullname }}
         </p>
-        <p class="pc_info_subtitle">
+        <p 
+          v-if="total > 0"
+          class="pc_info_subtitle">
           {{ total }} goşgy
         </p>
       </div>
@@ -31,7 +33,7 @@
       },
       total: {
         type: Number,
-        required: true
+        default: 0
       }
     }
   }

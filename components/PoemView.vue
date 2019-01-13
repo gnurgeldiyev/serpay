@@ -4,9 +4,9 @@
       <h1 class="poem_title">{{ data.title }}</h1>
       <div
         class="poem_body"
-        v-html="data.poem" />
+        v-html="data.content" />
       <div class="poem_info">
-        {{ data.year ? `${data.year}, ` : '' }}{{ data.author }}
+        {{ poemInfo }}
       </div>
       <div 
         v-if="data.category && data.category.length > 0"
@@ -41,6 +41,19 @@
       data: {
         type: Object,
         required: true
+      }
+    },
+    computed: {
+      poemInfo() {
+        const d = this.data
+        let i = ''
+        if (d.year) {
+          i += d.year + ', '
+        } 
+        if (d.author && d.author.fullname) {
+          i += d.author.fullname
+        }
+        return i
       }
     }
   }

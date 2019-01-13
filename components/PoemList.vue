@@ -121,6 +121,7 @@
   .list_item .a,
   .list_item .a *:hover {
     cursor: pointer;
+    border-bottom: 1px solid #080808;
   }
 }
 @media (min-width: 1088px) {
@@ -149,9 +150,9 @@
     font-weight: 400;
     line-height: 1.3;
   }
-  .list_item .a,
-  .list_item .a *:hover {
+  .list_item .a:hover {
     cursor: pointer;
+    border-bottom: 1px solid #080808;
   }
 }
 </style>
