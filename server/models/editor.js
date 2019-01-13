@@ -32,6 +32,10 @@ const editorSchema = mongoose.Schema({
   is_active: {
     type: Boolean,
     default: true
+  },
+  token: {
+    type: String,
+    default: null
   }
 }, {
   timestamps: {
@@ -47,6 +51,8 @@ editorSchema.methods.toPublic = function () {
     lastname: this.lastname,
     email: this.email,
     role: this.role,
+    is_active: this.is_active,
+    token: this.token,
     created_at: this.created_at
   }
 }
