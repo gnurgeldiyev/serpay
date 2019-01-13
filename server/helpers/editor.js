@@ -1,7 +1,7 @@
 const Editor = require('../models/editor')
 const jwt = require('jsonwebtoken')
 const { isEmail, isLength, isEmpty } = require('validator')
-const { password_salt } = require('../../config')
+const { password_salt, token_salt } = require('../../config')
 
 /**
  * t: validation type | add, update
@@ -102,6 +102,51 @@ exports.validateData = async (t, d) => {
   }
 }
 
+/** 
+ * d: request body data
+*/
+exports.validateLoginData = (d) => {
+  if (
+    ((!d.email || isEmpty(d.email)) 
+    || !isEmail(d.email)
+    || (!d.password || isEmpty(d.password))
+    || !isLength(d.password, { min: 8 }))
+  ) { 
+    return {
+      status: false,
+      error: {
+        code: 'BAD_REQUEST',
+        message: 'Data validation error'
+      }
+    }
+  }
+  return Editor.findOne({ email: d.email })
+    .then((editor) => {
+      if (!editor) {
+        return {
+          status: false,
+          error: {
+            code: 'BAD_REQUEST',
+            message: 'Data validation error'
+          }
+        }
+      }
+      return {
+        status: true,
+        data: {}
+      }
+    })
+    .catch((err) => {
+      return {
+        status: false,
+        error: {
+          code: err.code,
+          message: err.message
+        }
+      }
+    })
+}
+
 /**
  * p: raw password string | hashes password (HMAC SHA256)
 */
@@ -111,6 +156,60 @@ exports.hashPassword = (p) => {
     return {
       status: true,
       data: hashed
+    }
+  } catch (err) {
+    return {
+      status: false,
+      error: {
+        code: err.code,
+        message: err.message
+      }
+    }
+  }
+}
+
+/**
+ * e: editor email
+ * p: hashed password | hashes password (HMAC SHA256)
+*/
+exports.decodePassword = async (e, p) => {
+  try {
+    const editor = await Editor.findOne({ email: e })
+    const decoded = jwt.verify(editor.password, password_salt)
+    if (decoded.password === p) {
+      return {
+        status: true,
+        data: {}
+      }
+    }
+    return {
+      status: false,
+      error: {
+        code: 'NOT_AUTHORIZED',
+        message: 'Not authorized'
+      }
+    }
+  } catch (err) {
+    return {
+      status: false,
+      error: {
+        code: err.code,
+        message: err.message
+      }
+    }
+  }
+}
+
+/**
+ * e: editor email for token generate
+ */
+exports.generateToken = (e) => {
+  try {
+    const rawToken = e.split('@')[0] + '•' + e.split('@')[1]
+    const token = jwt.sign({ token: rawToken }, token_salt)
+    return {
+      status: true,
+      data: token
     }
   } catch (err) {
     return {
