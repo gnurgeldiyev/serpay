@@ -6,6 +6,7 @@ const port = process.env.PORT
 const base_url = process.env.BASE_URL
 const mongodb_uri = process.env.MONGODB_URI
 const password_salt = process.env.PASSWORD_SALT
+const token_salt = process.env.TOKEN_SALT
 
 module.exports = { 
   node_env,
@@ -13,5 +14,6 @@ module.exports = {
   port,
   base_url,
   mongodb_uri,
-  password_salt
+  password_salt,
+  token_salt
 }
