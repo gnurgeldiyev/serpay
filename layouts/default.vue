@@ -139,4 +139,10 @@ html {
     display: inline-block;
   }
 }
+.page-enter-active, .page-leave-active {
+  transition: opacity .3s ease;
+}
+.page-enter, .page-leave-active {
+  opacity: 0
+}
 </style>
