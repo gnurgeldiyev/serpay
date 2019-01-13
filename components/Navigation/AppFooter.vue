@@ -10,7 +10,9 @@
       </div>
       <div class="f_item">
         public beta • 
-        <a href="https://penjire.com">
+        <a 
+          href="https://penjire.com"
+          title="Penjire Topary">
           penjire
         </a>
       </div>
@@ -30,7 +32,7 @@
     width: 100%;
     max-width: 1024px;
     text-align: center;
-    margin: 32px auto 16px auto;
+    margin: 32px auto;
   }
   .f-items {
     display: flex;
