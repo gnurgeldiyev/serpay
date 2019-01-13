@@ -7,8 +7,7 @@
       <profile-card
         v-for="(poet, i) in poets"
         :key="i"
-        :data="poet"
-        :total="poet.total" />
+        :data="poet" />
     </div> 
   </div>
 </template>
@@ -22,7 +21,7 @@ export default {
   },
   computed: {
     poets() {
-      return this.$store.getters['poet/all']
+      return this.$store.getters['poet/getAll']
     }
   }
 }

@@ -13,8 +13,15 @@ import PoemView from '@/components/PoemView'
     },
     computed: {
       poem() {
-        return this.$store.getters['poem/one']
+        return this.$store.getters['poem/getOne']
       }
+    },
+    beforeCreate() {
+      const poemUrl = this.$route.params.poemUrl
+      this.$store.dispatch('poem/fetchOne', poemUrl)
+    },
+    destroyed() {
+      this.$store.dispatch('poem/clear')
     }
   }
 </script>

@@ -19,14 +19,20 @@ import PoemList from '@/components/PoemList'
     },
     computed: {
       poet() {
-        return this.$store.getters['poet/one']
+        return this.$store.getters['poet/getOne']
       },
       poems() {
-        return this.$store.getters['poem/all']
+        return this.$store.getters['poem/getAll']
       }
     },
-    beforeCreate() {
+    async beforeCreate() {
       const poetUrl = this.$route.params.poetUrl
+      let result = await this.$store.dispatch('poet/fetchOne', poetUrl)
+      const poet = this.$store.getters['poet/getOne']
+      this.$store.dispatch('poem/fetchAll', poet.id)
+    },
+    destroyed() {
+      this.$store.dispatch('poet/clear')
     }
   }
 </script>
