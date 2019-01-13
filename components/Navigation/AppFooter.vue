@@ -9,8 +9,9 @@
         bilen döredildi  • 
       </div>
       <div class="f_item">
+        public beta • 
         <a href="https://penjire.com">
-          Penjire
+          penjire
         </a>
       </div>
     </div>
