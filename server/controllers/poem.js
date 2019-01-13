@@ -10,7 +10,40 @@ const {
 */
 exports.getAll = (req, res) => {
   const poetId = req.query.poet
+  const title = req.query.title
   const approved = req.query.approved
+  if (title) {
+    const url = encodeURI(title)
+    return Poem.findOne({ url, is_approved: true })
+      .populate('author').populate('added_by')
+      .then((poem) => {
+        if (!poem) {
+          return res.status(404).json({
+            data: {},
+            meta: { 
+              code: 404, 
+              error: { code: 'NOT_FOUND', message: 'There is no any poem' }
+            } 
+          })
+        }
+        return res.status(200).json({
+          data: toPublic(poem),
+          meta: {
+            code: 200,
+            error: {}
+          }
+        })
+      })
+      .catch((err) => {
+        return res.status(500).json({ 
+          data: {}, 
+          meta: { 
+            code: 500, 
+            error: { code: err.code, message: err.message }
+          } 
+        })
+      })
+  }
   // ObjectID validation
   if (poetId && !isMongoId(poetId)) {
     return res.status(400).json({
@@ -173,6 +206,7 @@ exports.add = async (req, res) => {
   // add new poem
   let poem = new Poem({
     title: ltrim(d.title),
+    url: encodeURI(d.title.toLowerCase().replace(' ', '-')),
     author: d.author,
     year: d.year,
     content: escape(d.content),
@@ -240,6 +274,7 @@ exports.update = async (req, res) => {
   Poem.findByIdAndUpdate(id, {
     $set: {
       title: ltrim(d.title),
+      url: encodeURI(d.title.toLowerCase().replace(' ', '-')),
       author: d.author,
       year: d.year,
       content: escape(d.content),
