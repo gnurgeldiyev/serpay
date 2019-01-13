@@ -2,7 +2,10 @@ const Editor = require('../models/editor')
 const { isMongoId } = require('validator')
 const {
   validateData,
-  hashPassword
+  validateLoginData,
+  hashPassword,
+  decodePassword,
+  generateToken
 } = require('../helpers/editor')
 
 /** 
@@ -80,7 +83,6 @@ exports.getAll = (req, res) => {
   }
 }
 
-
 /** 
  * POST | Add new editor
 */
@@ -127,6 +129,63 @@ exports.add = async (req, res) => {
           code: 400, 
           error: { code: err.code, message: err.message }
         } 
+      })
+    })
+}
+
+/** 
+ * POST | login editor
+*/
+exports.login = async (req, res) => {
+  let result
+  const d = req.body
+  // request body data validation
+  result = await validateLoginData(d)
+  if (!result.status) {
+    return res.status(400).json({ 
+      data: {}, 
+      meta: { code: 400, error: result.error } 
+    })
+  }
+  // hash user password
+  result = await decodePassword(d.email, d.password)
+  if (!result.status) {
+    return res.status(400).json({ 
+      data: {}, 
+      meta: { code: 400, error: result.error } 
+    })
+  }
+  // generate token
+  result = generateToken(d.email)
+
+  if (!result.status) {
+    return res.status(400).json({ 
+      data: {}, 
+      meta: { code: 400, error: result.error } 
+    })
+  }
+  // set generated token
+  const token = result.data
+  Editor.findOneAndUpdate({
+    email: d.email
+  }, {
+    $set: {
+      token
+    }
+  }, { new: true })
+    .then((editor) => {
+      if (!editor) {
+        return res.status(400).json({ 
+          data: {}, 
+          meta: { 
+            code: 400, 
+            error: { code: 'NOT_AUTHORIZED', message: 'Not authorized' } 
+          } 
+        })
+      }
+      return res.status(200).json({
+        data: editor.toPublic(),
+        meta: { code: 200, error: {} }
       })
     })
 }

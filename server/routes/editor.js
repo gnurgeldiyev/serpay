@@ -10,6 +10,7 @@ router.get('/', editorController.getAll)
  * POST requests
 */
 router.post('/', editorController.add)
+router.post('/login', editorController.login)
 
 /**
  * PUT requests
