@@ -70,6 +70,7 @@ exports.toPublic = (d) => {
     const publicData = {
       id: d._id,
       title: d.title,
+      url: d.url,
       author,
       year: d.year,
       content: unescape(d.content),

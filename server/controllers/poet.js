@@ -11,7 +11,7 @@ exports.getAll = (req, res) => {
   const q = req.query.d
   // returns deleted poets, is_deleted = true
   if (q && q === 'true') {
-    Poet.find({ is_deleted: true }).sort({ firstname: 1, created_at: 1 })
+    return Poet.find({ is_deleted: true }).sort({ firstname: 1, created_at: 1 })
       .then((poets) => {
         if (!poets.length) {
           return res.status(404).json({
@@ -44,7 +44,7 @@ exports.getAll = (req, res) => {
         })
       })
   }
-  Poet.find({ is_deleted: false }).sort({ firstname: 1, created_at: 1 })
+  return Poet.find({ is_deleted: false }).sort({ firstname: 1, created_at: 1 })
     .then((poets) => {
       if (!poets.length) {
         return res.status(404).json({
@@ -82,18 +82,8 @@ exports.getAll = (req, res) => {
  * GET | get one poet by id
 */
 exports.getOne = (req, res) => {
-  const id = req.params.id
-  // ObjectID validation
-  if (!isMongoId(id)) {
-    return res.status(400).json({
-      data: {},
-      meta: {
-        code: 400,
-        error: { code: 'BAD_REQUEST', message: 'ID validation error' }
-      }
-    })
-  }
-  Poet.findOne({ _id: id, is_deleted: false })
+  const url = req.params.url
+  Poet.findOne({ url, is_deleted: false })
     .then((poet) => {
       if (!poet) {
         return res.status(404).json({ 
@@ -137,7 +127,7 @@ exports.add = async (req, res) => {
   // add new poet
   let poet = new Poet({
     fullname: d.fullname,
-    url: d.fullname.toLowerCase().replace(' ', '-'),
+    url: encodeURI(d.fullname.toLowerCase().replace(' ', '-')),
     birth_date: d.birth_date,
     death_date: d.death_date,
     bio: d.bio,
@@ -189,7 +179,7 @@ exports.update = async (req, res) => {
   Poet.findOneAndUpdate({ _id: id, is_deleted: false }, {
     $set: {
       fullname: d.fullname,
-      url: d.fullname.toLowerCase().replace(' ', '-'),
+      url: encodeURI(d.fullname.toLowerCase().replace(' ', '-')),
       birth_date: d.birth_date,
       death_date: d.death_date,
       bio: d.bio,

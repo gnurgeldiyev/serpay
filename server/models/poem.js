@@ -5,6 +5,10 @@ const poemSchema = mongoose.Schema({
     type: String,
     required: [true, 'can\'t be blank']
   },
+  url: {
+    type: String,
+    required: true
+  },
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Poet',
