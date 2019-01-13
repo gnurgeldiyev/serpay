@@ -124,8 +124,8 @@ import { unlinkObj } from '@/assets/helper'
     data() {
       const validateVideoLink = (rule, value, callback) => {
         const ytRgx = /^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+/gm
-        if (value !== '') {
-          if (this.form.youtube_link !== '' 
+        if (value && value !== '') {
+          if (!this.form.youtube_link
             && (this.form.youtube_link.match(ytRgx))) {
             callback()
           }
@@ -257,9 +257,9 @@ import { unlinkObj } from '@/assets/helper'
                 year: this.form.year.toString(),
                 content: this.form.content,
                 notes: this.form.notes,
-                youtube_link: this.getEmbedLink(this.form.youtube_link),
+                youtube_link: this.form.youtube_link ? this.getEmbedLink(this.form.youtube_link) : null,
                 category: this.form.category,
-                added_by: '5c280d96f7b2760d6cd9ded7' // test only
+                added_by: '5c3a01928006af0d36955de9' // test only
               }
               result = await this.$store.dispatch('poem/update', data)
               if (result.status === false) {
@@ -285,9 +285,9 @@ import { unlinkObj } from '@/assets/helper'
                 year: this.form.year.toString(),
                 content: this.form.content,
                 notes: this.form.notes,
-                youtube_link: this.getEmbedLink(this.form.youtube_link),
+                youtube_link: this.form.youtube_link ? this.getEmbedLink(this.form.youtube_link) : null,
                 category: this.form.category,
-                added_by: '5c280d96f7b2760d6cd9ded7' // test only
+                added_by: '5c3a01928006af0d36955de9' // test only
               }
               result = await this.$store.dispatch('poem/add', data)
               if (result.status === false) {
