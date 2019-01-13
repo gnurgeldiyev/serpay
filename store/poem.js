@@ -69,6 +69,9 @@ export const mutations = {
       state.all.splice(index, 1, data)
     }
   },
+  clear: (state) => {
+    state.one = {}
+  },
   remove: (state, data) => {
     let index
     state.all.map((item, i) => {
@@ -134,6 +137,26 @@ export const actions = {
         }
       })
   },
+  fetchOne({ commit }, data) {
+    return this.$axios.$get(`/api/poems?title=${data}`)
+      .then((res) => {
+        commit('setOne', res.data)
+        return {
+          status: true,
+          error: {}
+        }
+      })
+      .catch((err) => {
+        const { error } = err.response.data.meta
+        return {
+          status: false,
+          error: {
+            code: error.code,
+            message: error.message
+          }
+        }
+      })
+  },
   fetchAllUnapproved({ commit }, data) {
     return this.$axios.$get(`/api/poems?approved=false&poet=${data}`)
       .then((res) => {
@@ -158,9 +181,10 @@ export const actions = {
       })
   },
   add({ commit }, data) {
+    console.log(data)
     return this.$axios.$post('/api/poems', data)
       .then((res) => {
-        commit('add', res.data)
+        commit('addUnapproved', res.data)
         return {
           status: true,
           error: {}
@@ -239,6 +263,13 @@ export const actions = {
           }
         }
       })
+  },
+  clear({ commit }) {
+    commit('clear')
+    return {
+      status: true,
+      error: {}
+    }
   },
   delete({ commit }, data) {
     return this.$axios.$delete(`/api/poems/${data}`)
