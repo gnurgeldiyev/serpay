@@ -1,6 +1,6 @@
 <template>
   <div>
-    serpay
+    [ Serpaý • Public beta ]
   </div>
 </template>
 
