@@ -84,6 +84,51 @@ exports.getAll = (req, res) => {
 }
 
 /** 
+ * GET | get one by id
+*/
+exports.getOne = (req, res) => {
+  const id = req.params.id
+  // ObjectID validation
+  if (id && !isMongoId(id)) {
+    return res.status(400).json({
+      data: {},
+      meta: {
+        code: 400,
+        error: { code: 'BAD_REQUEST', message: 'ID validation error' }
+      }
+    })
+  }
+  Editor.findOne({ _id: id, is_active: true })
+    .then((editor) => {
+      if (!editor) {
+        return res.status(404).json({
+          data: {},
+          meta: { 
+            code: 404, 
+            error: { code: 'NOT_FOUND', message: 'There is no any editor' }
+          } 
+        })
+      }
+      return res.status(200).json({
+        data: editor.toPublic(),
+        meta: {
+          code: 200,
+          error: {}
+        }
+      })
+    })
+    .catch((err) => {
+      return res.status(500).json({ 
+        data: {}, 
+        meta: { 
+          code: 500, 
+          error: { code: err.code, message: err.message }
+        } 
+      })
+    })
+}
+
+/** 
  * POST | Add new editor
 */
 exports.add = async (req, res) => {
@@ -360,4 +405,50 @@ exports.resetPassword = (req, res) => {
       }
     })
   })
+}
+
+/** 
+ * PUT | logout editor by id
+*/
+exports.logout = (req, res) => {
+  const id = req.params.id
+  // ObjectID validation
+  if (id && !isMongoId(id)) {
+    return res.status(400).json({
+      data: {},
+      meta: {
+        code: 400,
+        error: { code: 'BAD_REQUEST', message: 'ID validation error' }
+      }
+    })
+  }
+  Editor.findOneAndUpdate({ _id: id, is_active: true }, {
+    $set: {
+      token: null
+    }
+  }, { new: true })
+    .then((editor) => {
+      if (!editor) {
+        return res.status(404).json({ 
+          data: {}, 
+          meta: { 
+            code: 404, 
+            error: { code: 'NOT_FOUND', message: 'Editor not found' }
+          } 
+        })
+      }
+      return res.status(200).json({
+        data: {},
+        meta: { code: 200, error: {} }
+      })
+    })
+    .catch((err) => {
+      return res.status(400).json({ 
+        data: {}, 
+        meta: { 
+          code: 400, 
+          error: { code: err.code, message: err.message }
+        }
+      })
+    })
 }
