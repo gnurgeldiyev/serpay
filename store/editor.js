@@ -5,7 +5,9 @@ export const state = () => ({
   actives: [],
   deactives: [],
   inEdit: {},
-  inReset: {}
+  inReset: {},
+  one: {},
+  token: null
 })
 
 export const getters = {
@@ -14,6 +16,12 @@ export const getters = {
   },
   getDeactivated: (state) => {
     return state.deactives
+  },
+  getOne: (state) => {
+    return state.one
+  },
+  getToken: (state) => {
+    return state.token
   },
   addFormDialogVisibility: (state) => {
     return state.addFormDialogVisibility
@@ -38,6 +46,15 @@ export const mutations = {
   },
   setDeactivated: (state, data) => {
     state.deactives = data
+  },
+  setOne: (state, data) => {
+    state.one = data
+  },
+  setToken: (state, token) => {
+    state.token = token
+  },
+  clearToken: (state) => {
+    state.token = null
   },
   add: (state, data) => {
     state.actives.unshift(data)
@@ -124,6 +141,71 @@ export const actions = {
           }
         }
       })
+  },
+  login({ commit }, data) {
+    return this.$axios.$post('/api/editors/login', data)
+      .then((res) => {
+        commit('setOne', res.data)
+        this.$cookies.set('token', res.data.token, {
+          path: '/',
+          maxAge: 60 * 60 * 24
+        })
+        this.$cookies.set('id', res.data.id, {
+          path: '/',
+          maxAge: 60 * 60 * 24
+        })
+        return {
+          status: true,
+          error: {}
+        }
+      })
+      .catch((err) => {
+        const { error } = err.response.data.meta
+        console.log(error)
+        return {
+          status: false,
+          error: {
+            code: error.code,
+            message: error.message
+          }
+        }
+      })
+  },
+  initAuth({ commit, state }) {
+    const token = this.$cookies.get('token')
+    const id = this.$cookies.get('id')
+    if (!token || !id) {
+      commit('clearToken')
+    } else {
+      if (state.one.token === token) {
+        commit('setToken', token)
+      } else {
+        commit('clearToken')
+      }
+    }
+  },
+  logout({ commit }, data) {
+    return this.$axios.$put(`/api/editors/${data}/logout`)
+    .then(() => {
+      commit('clearToken')
+      this.$cookies.remove('token')
+      this.$cookies.remove('id')
+      return {
+        status: true,
+        error: {}
+      }
+    })
+    .catch((err) => {
+      const { error } = err.response.data.meta
+      console.log(err)
+      return {
+        status: false,
+        error: {
+          code: error.code,
+          message: error.message
+        }
+      }
+    })
   },
   add({ commit }, data) {
     return this.$axios.$post('/api/editors', data)
