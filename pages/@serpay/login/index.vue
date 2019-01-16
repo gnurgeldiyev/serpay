@@ -18,5 +18,6 @@ import LoginForm from '@/components/Panel/LoginForm'
 .container {
   width: 360px;
   height: auto;
+  margin: 0 auto;
 }
 </style>
