@@ -21,6 +21,7 @@ import PanelHeader from '@/components/Navigation/PanelHeader';
 import PanelMenu from '@/components/Navigation/PanelMenu';
 
 export default {
+  middleware: ['checkAuth', 'validateToken'],
   components: {
     'panel-header': PanelHeader,
     'panel-menu': PanelMenu,
