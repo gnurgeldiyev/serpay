@@ -1,6 +1,6 @@
 const webpack = require('webpack')
 const { base_url, node_env } = require('./config')
-const isDebugged = node_env !== 'production' ? true : false
+const isDevMode = node_env !== 'production' ? true : false
 
 module.exports = {
   mode: 'universal',
@@ -39,7 +39,7 @@ module.exports = {
     { src: '@/plugins/element-ui', ssr: true },
     { src: '@/plugins/quill-editor', ssr: false }
   ],
-
+  dev: isDevMode,
   /*
   ** Nuxt.js modules
   */
@@ -54,7 +54,7 @@ module.exports = {
   axios: {
     baseURL: base_url,
     credentials: true,
-    debug: isDebugged,
+    debug: isDevMode,
     retry: {
       retries: 3
     },
