@@ -9,14 +9,14 @@
       {{ i+1 }}. {{ poem.title }}
       <span class="list_item_action">
         <el-button 
-          v-if="poem.is_approved === false"
+          v-if="poem.is_approved === false && editor.role === 'admin'"
           class="list_item_action_item approve"
           icon="el-icon-circle-check-outline"
           type="text"
           title="Approve"
           @click="approvePoem(poem.id)" />
         <el-button 
-          v-if="poem.is_approved === true"
+          v-if="poem.is_approved === true && editor.role === 'admin'"
           class="list_item_action_item unapprove"
           icon="el-icon-circle-close-outline"
           type="text"
@@ -28,14 +28,14 @@
           type="text"
           @click="viewPoem(poem)" />
         <el-button 
-          v-if="poem.is_approved === false"
+          v-if="poem.is_approved === false && poem.added_by.id === editor.id"
           class="list_item_action_item edit"
           icon="el-icon-edit"
           type="text"
           title="Edit"
           @click="editPoem(poem)" />
         <el-button 
-          v-if="poem.is_approved === false"
+          v-if="poem.is_approved === false && poem.added_by.id === editor.id"
           class="list_item_action_item delete"
           icon="el-icon-delete"
           type="text"
@@ -52,6 +52,11 @@
       data: {
         type: Array,
         required: true
+      }
+    },
+    computed: {
+      editor() {
+        return this.$store.getters['editor/getOne']
       }
     },
     methods: {

@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="page_action">
-      <div class="page_action_item">
+      <div 
+        v-if="editor.role === 'admin'"
+        class="page_action_item">
         <el-button 
           icon="el-icon-circle-plus-outline" 
           plain
@@ -34,6 +36,7 @@ import EditorForm from '@/components/Panel/EditorForm'
 import EditorPasswordResetForm from '@/components/Panel/EditorPasswordResetForm'
 
   export default {
+    middleware: 'onlyAdmin',
     layout: 'panel',
     components: {
       'editor-list': EditorList,
@@ -43,6 +46,9 @@ import EditorPasswordResetForm from '@/components/Panel/EditorPasswordResetForm'
     computed: {
       editors() {
         return this.$store.getters['editor/getAll']
+      },
+      editor() {
+        return this.$store.getters['editor/getOne']
       },
       deactivatedEditors() {
         return this.$store.getters['editor/getDeactivated']

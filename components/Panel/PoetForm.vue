@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-dialog 
+      v-if="editor.role === 'admin'"
       :lock-scroll="true"
       :top="'2vh'"
       :visible="dialogVisibility"
@@ -131,6 +132,9 @@ import { unlinkObj } from '@/assets/helper'
       }
     },
     computed: {
+      editor() {
+        return this.$store.getters['editor/getOne']
+      },
       dialogVisibility() {
         if (this.type === 'edit') {
           return this.$store.getters['poet/editFormDialogVisibility']

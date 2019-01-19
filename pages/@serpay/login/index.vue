@@ -8,6 +8,11 @@
 import LoginForm from '@/components/Panel/LoginForm'
 
   export default {
+    head() {
+      return {
+        meta: [{ name: 'robots', content: 'noindex nofollow' }]
+      }
+    },
     components: {
       'login-form': LoginForm
     } 

@@ -13,6 +13,14 @@ import ProfileView from '@/components/ProfileView'
 import PoemList from '@/components/PoemList'
 
   export default {
+    head () {
+      return {
+        title: this.title,
+        meta: [
+          { hid: 'description', name: 'description', content: `${this.poet.fullname} goşgulary` }
+        ]
+      }
+    },
     components: {
       'profile-view': ProfileView,
       'poem-list': PoemList
@@ -23,6 +31,14 @@ import PoemList from '@/components/PoemList'
       },
       poems() {
         return this.$store.getters['poem/getAll']
+      },
+      title() {
+        const poet = this.$store.getters['poet/getOne']
+        if (poet && poet.fullname) {
+          return `${poet.fullname} • Serpaý Goşgular Çemeni`
+        } else {
+          return 'Serpaý Goşgular Çemeni'
+        }
       }
     },
     async beforeCreate() {

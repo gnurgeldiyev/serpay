@@ -14,11 +14,13 @@
           type="text"
           @click="viewPoet(poet)" />
         <el-button 
+          v-if="editor.role === 'admin'"
           class="list_item_action_item edit"
           icon="el-icon-edit"
           type="text"
           @click="editPoet(poet)" />
         <el-button 
+          v-if="editor.role === 'admin'"
           class="list_item_action_item delete"
           icon="el-icon-delete"
           type="text"
@@ -34,6 +36,11 @@
       data: {
         type: Array,
         required: true
+      }
+    },
+    computed: {
+      editor() {
+        return this.$store.getters['editor/getOne']
       }
     },
     methods: {

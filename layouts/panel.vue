@@ -22,6 +22,11 @@ import PanelMenu from '@/components/Navigation/PanelMenu';
 
 export default {
   middleware: ['checkAuth', 'validateToken'],
+  head() {
+    return {
+      meta: [{ name: 'robots', content: 'noindex nofollow' }]
+    }
+  },
   components: {
     'panel-header': PanelHeader,
     'panel-menu': PanelMenu,

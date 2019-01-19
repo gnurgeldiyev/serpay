@@ -50,7 +50,8 @@
             class="el-icon-more"
             style="font-size:1.2em;" />
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>
+            <el-dropdown-item 
+              v-if="editor.role === 'admin' || scope.row.id === editor.id">
               <el-button
                 type="text"
                 style="color:#606266;"
@@ -58,7 +59,8 @@
                 Edit Details
               </el-button>
             </el-dropdown-item>
-            <el-dropdown-item>
+            <el-dropdown-item 
+              v-if="editor.role === 'admin' || scope.row.id === editor.id">
               <el-button
                 type="text"
                 style="color:#606266;"
@@ -66,7 +68,9 @@
                 Reset Password
               </el-button>
             </el-dropdown-item>
-            <el-dropdown-item divided>
+            <el-dropdown-item 
+              v-if="editor.role === 'admin'"
+              divided>
               <el-button
                 type="text"
                 style="color:red;"
@@ -87,6 +91,11 @@
       data: {
         type: Array,
         required: true
+      }
+    },
+    computed: {
+      editor() {
+        return this.$store.getters['editor/getOne']
       }
     },
     methods: {

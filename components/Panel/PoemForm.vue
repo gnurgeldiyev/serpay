@@ -198,6 +198,9 @@ import { unlinkObj } from '@/assets/helper'
       categories() {
         return this.$store.getters['poem/categories']
       },
+      editor() {
+        return this.$store.getters['editor/getOne']
+      },
       dialogVisibility() {
         if (this.type === 'edit') {
           return this.$store.getters['poem/editFormDialogVisibility']
@@ -259,7 +262,7 @@ import { unlinkObj } from '@/assets/helper'
                 notes: this.form.notes,
                 youtube_link: this.form.youtube_link ? this.getEmbedLink(this.form.youtube_link) : null,
                 category: this.form.category,
-                added_by: '5c3a01928006af0d36955de9' // test only
+                added_by: this.form.added_by.id
               }
               result = await this.$store.dispatch('poem/update', data)
               if (result.status === false) {
@@ -287,7 +290,7 @@ import { unlinkObj } from '@/assets/helper'
                 notes: this.form.notes,
                 youtube_link: this.form.youtube_link ? this.getEmbedLink(this.form.youtube_link) : null,
                 category: this.form.category,
-                added_by: '5c3a01928006af0d36955de9' // test only
+                added_by: this.editor.id
               }
               result = await this.$store.dispatch('poem/add', data)
               if (result.status === false) {
@@ -314,11 +317,9 @@ import { unlinkObj } from '@/assets/helper'
       open() {
         if (this.type === 'view') {
           let p = this.inView
-          console.log(p)
           this.form = unlinkObj(p)
         } else if (this.type === 'edit') {
           let p = this.inEdit
-          console.log(p)
           this.form = unlinkObj(p)
         }
       },

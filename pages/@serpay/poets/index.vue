@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="page_action">
-      <div class="page_action_item">
+      <div 
+        v-if="editor.role === 'admin'"
+        class="page_action_item">
         <el-button 
           icon="el-icon-circle-plus-outline" 
           plain
@@ -30,6 +32,9 @@ import PoetForm from '@/components/Panel/PoetForm'
     computed: {
       poets() {
         return this.$store.getters['poet/getAll']
+      },
+      editor() {
+        return this.$store.getters['editor/getOne']
       },
       addFormDialogVisibility() {
         return this.$store.getters['poet/addFormDialogVisibility']

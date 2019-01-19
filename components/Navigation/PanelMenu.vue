@@ -11,7 +11,7 @@
       <span>Poets</span>
     </el-menu-item>
     <el-menu-item
-      v-if="true"
+      v-if="editor.role === 'admin'"
       index="/@serpay/editors">
       <span>Editors</span>
     </el-menu-item>
@@ -20,6 +20,10 @@
 
 <script>
   export default {
-    
+    computed: {
+      editor() {
+        return this.$store.getters['editor/getOne']
+      }
+    }
   }
 </script>
