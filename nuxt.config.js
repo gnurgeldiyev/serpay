@@ -1,5 +1,5 @@
 const webpack = require('webpack')
-const { base_url, node_env } = require('./config')
+const { base_url, node_env, google_analytics } = require('./config')
 const isDevMode = node_env !== 'production' ? true : false
 
 module.exports = {
@@ -16,7 +16,19 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+    ],
+    noscript: [
+      { innerHTML: 'This website requires JavaScript.' }
+    ],
+    script: [
+      { src: `https://www.googletagmanager.com/gtag/js?id=${google_analytics}`, async: true },
+      { 
+        innerHTML: `window.dataLayer = window.dataLayer || [];function gtag(){window.dataLayer.push(arguments);}gtag('js', new Date());gtag('config', '${google_analytics}');`, 
+        type: 'text/javascript',
+        defer: true
+      }
+    ],
+    __dangerouslyDisableSanitizers: ['script']
   },
 
   /*
