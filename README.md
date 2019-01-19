@@ -5,18 +5,12 @@
 ## Build Setup
 
 ``` bash
-# install dependencies
-$ yarn install
+#clone repo
+$ git clone [repo url]
 
-# serve with hot reload at localhost:3000
-$ yarn run dev
+# add .env file into ./app folder
+$ nano app/.env
 
 # build for production and launch server
-$ yarn run build
-$ yarn start
-
-# generate static project
-$ yarn run generate
+$ docker-compose up -d --build
 ```
-
-For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
