@@ -17,6 +17,18 @@
           class="poem_category_item"> 
           {{ c }}
         </div>
+        <div 
+          v-if="addedInfo"
+          class="poem_category_item">
+          <el-popover
+            :content="addedInfo"
+            placement="top"
+            trigger="hover">
+            <i 
+              slot="reference"
+              class="el-icon-info" />
+          </el-popover>
+        </div>
       </div>
       <div 
         v-if="data.notes"
@@ -52,6 +64,16 @@
         } 
         if (d.author && d.author.fullname) {
           i += d.author.fullname
+        }
+        return i
+      },
+      addedInfo() {
+        let i
+        const { added_by } = this.data
+        if (added_by) {
+          i = `Bu goşgy ${added_by.firstname} ${added_by.lastname} tarapyndan goşuldy.`
+        } else {
+          i = null
         }
         return i
       }
