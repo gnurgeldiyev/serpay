@@ -15,7 +15,8 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'Türkmen edebiýatyndan goşgular çemeni' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/png', href: '/favicon.png' }
     ],
     noscript: [
       { innerHTML: 'This website requires JavaScript.' }
