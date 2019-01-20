@@ -9,7 +9,7 @@ ADD . ${APP_ROOT}
 RUN yarn install
 RUN yarn run build
 
-ENV HOST localhost
+ENV HOST 0.0.0.0
 
 # Clear the cache
 #RUN yarn cache clean
