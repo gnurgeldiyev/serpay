@@ -42,7 +42,8 @@ import PoemList from '@/components/PoemList'
       }
     },
     async beforeCreate() {
-      const poetUrl = this.$route.params.poetUrl
+      let poetUrl = this.$route.params.poetUrl
+      poetUrl = encodeURI(poetUrl)
       let result = await this.$store.dispatch('poet/fetchOne', poetUrl)
       const poet = this.$store.getters['poet/getOne']
       this.$store.dispatch('poem/fetchAll', poet.id)

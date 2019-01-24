@@ -41,7 +41,8 @@ import PoemView from '@/components/PoemView'
       }
     },
     beforeCreate() {
-      const poemUrl = this.$route.params.poemUrl
+      let poemUrl = this.$route.params.poemUrl
+      poemUrl = encodeURI(poemUrl)
       this.$store.dispatch('poem/fetchOne', poemUrl)
     },
     destroyed() {
