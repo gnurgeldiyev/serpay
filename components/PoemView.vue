@@ -92,7 +92,7 @@
   .poem_title {
     color: #080808;
     font-size: 1.4em;
-    font-weigth: 600;
+    font-weight: 600;
     font-family: Georgia, serif;
     line-height: 1;
     text-align: center;
@@ -162,7 +162,7 @@
   .poem_title {
     color: #080808;
     font-size: 1.4em;
-    font-weigth: 600;
+    font-weight: 600;
     font-family: Georgia, serif;
     line-height: 1;
     text-align: center;
@@ -232,7 +232,7 @@
   .poem_title {
     color: #080808;
     font-size: 1.5em;
-    font-weigth: 600;
+    font-weight: 600;
     font-family: Georgia, serif;
     line-height: 1;
     text-align: center;
@@ -302,7 +302,7 @@
   .poem_title {
     color: #080808;
     font-size: 1.6em;
-    font-weigth: 600;
+    font-weight: 600;
     font-family: Georgia, serif;
     line-height: 1;
     text-align: center;

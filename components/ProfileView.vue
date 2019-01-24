@@ -68,7 +68,7 @@
     color: #080808;
     font-size: 1.4em;
     line-height: 1;
-    font-weigth: 600;
+    font-weight: 600;
     font-family: Georgia, serif;
   }
   .pv_info_description {
@@ -103,7 +103,7 @@
     color: #080808;
     font-size: 1.5em;
     line-height: 1;
-    font-weigth: 600;
+    font-weight: 600;
     font-family: Georgia, serif;
   }
   .pv_info_description {
@@ -139,7 +139,7 @@
     color: #080808;
     font-size: 1.6em;
     line-height: 1;
-    font-weigth: 600;
+    font-weight: 600;
     font-family: Georgia, serif;
   }
   .pv_info_description {
@@ -181,7 +181,7 @@
     color: #080808;
     font-size: 2em;
     line-height: 1;
-    font-weigth: 600;
+    font-weight: 600;
     font-family: Georgia, serif;
   }
   .pv_info_description {

@@ -87,7 +87,7 @@
     font-size: 0.9em;
     line-height: 1;
     font-family: Georgia, serif;
-    font-weigth: 600;
+    font-weight: 600;
     padding-bottom: 4px;
   }
   .h_menu_list_item a:hover {
@@ -145,7 +145,7 @@
     font-size: 1em;
     line-height: 1;
     font-family: Georgia, serif;
-    font-weigth: 600;
+    font-weight: 600;
     padding-bottom: 4px;
   }
   .h_menu_list_item a:hover {
@@ -203,7 +203,7 @@
     font-size: 1.1em;
     line-height: 1;
     font-family: Georgia, serif;
-    font-weigth: 600;
+    font-weight: 600;
     padding-bottom: 4px;
   }
   .h_menu_list_item a:hover {
@@ -261,7 +261,7 @@
     font-size: 1.2em;
     line-height: 1;
     font-family: Georgia, serif;
-    font-weigth: 600;
+    font-weight: 600;
     padding-bottom: 4px;
   }
   .h_menu_list_item a:hover {

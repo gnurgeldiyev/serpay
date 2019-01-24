@@ -41,7 +41,7 @@
   .f_item {
     color: #656565;
     font-size: 0.9rem;
-    font-weigth: 600;
+    font-weight: 600;
     margin: 0 4px;
   }
   .f_item a {
