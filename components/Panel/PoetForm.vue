@@ -52,20 +52,30 @@
             @keypress.native="onlyNumbers"/>
         </el-form-item>
         <el-form-item 
-          prop="avatar"
-          label="Avatar Link">
-          <el-input 
-            v-model="form.avatar"
-            :disabled="type === 'view'"
-            :placeholder="type === 'view' ? '' : 'Avatar image link of the poet'"/>
-        </el-form-item>
-        <el-form-item 
           prop="wiki_link"
           label="Wikipedia Link">
           <el-input 
             v-model="form.wiki_link"
             :disabled="type === 'view'"
             :placeholder="type === 'view' ? '' : 'Wikipedia page link of the poet'"/>
+        </el-form-item>
+        <el-form-item 
+          prop="avatar"
+          label="Avatar">
+          <el-upload
+            :show-file-list="true"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+            action="/api/poets/upload"
+            class="upload">
+            <img 
+              v-if="imageUrl" 
+              :src="imageUrl" 
+              class="avatar">
+            <i 
+              v-else 
+              class="el-icon-plus upload-icon" />
+          </el-upload>
         </el-form-item>
         <el-form-item style="float:right;">
           <el-button 
@@ -115,6 +125,8 @@ import { unlinkObj } from '@/assets/helper'
           wiki_link: '',
           avatar: ''
         },
+        fileList: [],
+        imageUrl: '',
         rules: {
           fullname: [
             { required: true, message: 'Please enter a full name', trigger: 'blur' },
@@ -256,6 +268,21 @@ import { unlinkObj } from '@/assets/helper'
         }
         this.$refs.form.resetFields()
       },
+      handleAvatarSuccess(res, file) {
+        this.imageUrl = URL.createObjectURL(file.raw);
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+    
+        if (!isJPG) {
+          this.$message.error('Avatar picture must be JPG format!');
+        }
+        if (!isLt2M) {
+          this.$message.error('Avatar picture size can not exceed 2MB!');
+        }
+        return isJPG && isLt2M;
+      },
       onlyNumbers(e){
         const numbers = /^[0-9]*$/
         if (numbers.test(e.key)) {
@@ -271,6 +298,7 @@ import { unlinkObj } from '@/assets/helper'
 .form_dialog {
   margin: 0 !important;
   width: 100%;
+  height: auto;
   min-height: 100vh;
   border-radius: 0;
 }
@@ -282,6 +310,7 @@ import { unlinkObj } from '@/assets/helper'
   width: 90%;
   max-width: 600px;
   margin: 0 auto;
+  padding-bottom: 60px;
 }
 .form_title {
   margin-bottom: 16px;
@@ -307,5 +336,36 @@ import { unlinkObj } from '@/assets/helper'
   min-height: 360px !important;
   height: auto !important;
   padding: 40px 0 0 0 !important;
+}
+.el-form-item__label {
+  width: 100%;
+  text-align: left;
+}
+.el-upload-list {
+  width: 200px;
+}
+.upload .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.upload .el-upload:hover {
+  border-color: #409EFF;
+}
+.upload-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 200px;
+  height: 200px;
+  line-height: 200px;
+  text-align: center;
+}
+.avatar {
+  width: 200px;
+  height: 200px;
+  display: block;
+  object-fit: cover;
 }
 </style>
