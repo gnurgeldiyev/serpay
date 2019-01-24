@@ -50,16 +50,6 @@ html {
 }
 @font-face {
 	font-family:'Inria Serif';
-	src:	url('../assets/font/InriaSerif-Italic.eot');
-	src:	url('../assets/font/InriaSerif-Italic.eot?#iefix') format('embedded-opentype'),
-			url('../assets/font/InriaSerif-Italic.woff2') format('woff2'),
-			url('../assets/font/InriaSerif-Italic.woff') format('woff'),
-			url('../assets/font/InriaSerif-Italic.svg') format('svg');
-	font-weight: 400;
-	font-style: italic;
-}
-@font-face {
-	font-family:'Inria Serif';
 	src:	url('../assets/font/InriaSerif-Regular.eot');
 	src:	url('../assets/font/InriaSerif-Regular.eot?#iefix') format('embedded-opentype'),
 			url('../assets/font/InriaSerif-Regular.woff2') format('woff2'),
@@ -87,8 +77,8 @@ html {
   .title {
     color: #080808;
     font-size: 1.4em;
-    font-weight: 700;
-    font-family: 'Inria Serif', Georgia, serif;
+    font-weight: 600;
+    font-family: Georgia, serif;
     line-height: 1;
     display: inline-block;
   }
@@ -102,8 +92,8 @@ html {
   .title {
     color: #080808;
     font-size: 1.4em;
-    font-weight: 700;
-    font-family: 'Inria Serif', Georgia, serif;
+    font-weight: 600;
+    font-family: Georgia, serif;
     line-height: 1;
     display: inline-block;
   }
@@ -117,8 +107,8 @@ html {
   .title {
     color: #080808;
     font-size: 1.5em;
-    font-weight: 700;
-    font-family: 'Inria Serif', Georgia, serif;
+    font-weight: 600;
+    font-family: Georgia, serif;
     line-height: 1;
     display: inline-block;
   }
@@ -133,8 +123,8 @@ html {
   .title {
     color: #080808;
     font-size: 1.6em;
-    font-weight: 700;
-    font-family: 'Inria Serif', Georgia, serif;
+    font-weight: 600;
+    font-family: Georgia, serif;
     line-height: 1;
     display: inline-block;
   }

@@ -68,8 +68,8 @@
     color: #080808;
     font-size: 1.4em;
     line-height: 1;
-    font-weight: 700;
-    font-family: 'Inria Serif', Georgia, serif;
+    font-weigth: 600;
+    font-family: Georgia, serif;
   }
   .pv_info_description {
     color: #656565;
@@ -103,8 +103,8 @@
     color: #080808;
     font-size: 1.5em;
     line-height: 1;
-    font-weight: 700;
-    font-family: 'Inria Serif', Georgia, serif;
+    font-weigth: 600;
+    font-family: Georgia, serif;
   }
   .pv_info_description {
     color: #656565;
@@ -139,8 +139,8 @@
     color: #080808;
     font-size: 1.6em;
     line-height: 1;
-    font-weight: 700;
-    font-family: 'Inria Serif', Georgia, serif;
+    font-weigth: 600;
+    font-family: Georgia, serif;
   }
   .pv_info_description {
     color: #656565;
@@ -181,8 +181,8 @@
     color: #080808;
     font-size: 2em;
     line-height: 1;
-    font-weight: 700;
-    font-family: 'Inria Serif', Georgia, serif;
+    font-weigth: 600;
+    font-family: Georgia, serif;
   }
   .pv_info_description {
     color: #656565;

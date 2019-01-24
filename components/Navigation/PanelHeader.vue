@@ -97,7 +97,7 @@
   color: #656565;
   text-decoration: none;
   font-family: inherit;
-  font-weight: 500;
+  font-weigth: 600;
 }
 .pheader_menu_item a:hover {
   cursor: pointer;

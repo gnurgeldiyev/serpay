@@ -92,8 +92,8 @@
   .poem_title {
     color: #080808;
     font-size: 1.4em;
-    font-weight: 700;
-    font-family: 'Inria Serif', Georgia, serif;
+    font-weigth: 600;
+    font-family: Georgia, serif;
     line-height: 1;
     text-align: center;
   }
@@ -101,7 +101,7 @@
     color: #080808;
     font-size: 1em;
     font-weight: 400;
-    font-family: 'Inria Serif', Georgia, serif;
+    font-family: Georgia, serif;
     line-height: 1.5;
   }
   .poem_info {
@@ -109,7 +109,7 @@
     color: #080808;
     font-size: 1em;
     font-weight: 400;
-    font-family: 'Inria Serif', Georgia, serif;
+    font-family: Georgia, serif;
     font-style: italic;
   }
   .poem_category {
@@ -162,8 +162,8 @@
   .poem_title {
     color: #080808;
     font-size: 1.4em;
-    font-weight: 700;
-    font-family: 'Inria Serif', Georgia, serif;
+    font-weigth: 600;
+    font-family: Georgia, serif;
     line-height: 1;
     text-align: center;
   }
@@ -171,7 +171,7 @@
     color: #080808;
     font-size: 1em;
     font-weight: 400;
-    font-family: 'Inria Serif', Georgia, serif;
+    font-family: Georgia, serif;
     line-height: 1.5;
   }
   .poem_info {
@@ -179,7 +179,7 @@
     color: #080808;
     font-size: 1em;
     font-weight: 400;
-    font-family: 'Inria Serif', Georgia, serif;
+    font-family: Georgia, serif;
     font-style: italic;
   }
   .poem_category {
@@ -232,8 +232,8 @@
   .poem_title {
     color: #080808;
     font-size: 1.5em;
-    font-weight: 700;
-    font-family: 'Inria Serif', Georgia, serif;
+    font-weigth: 600;
+    font-family: Georgia, serif;
     line-height: 1;
     text-align: center;
   }
@@ -241,7 +241,7 @@
     color: #080808;
     font-size: 1em;
     font-weight: 400;
-    font-family: 'Inria Serif', Georgia, serif;
+    font-family: Georgia, serif;
     line-height: 1.5;
   }
   .poem_info {
@@ -249,7 +249,7 @@
     color: #080808;
     font-size: 1em;
     font-weight: 400;
-    font-family: 'Inria Serif', Georgia, serif;
+    font-family: Georgia, serif;
     font-style: italic;
   }
   .poem_category {
@@ -302,8 +302,8 @@
   .poem_title {
     color: #080808;
     font-size: 1.6em;
-    font-weight: 700;
-    font-family: 'Inria Serif', Georgia, serif;
+    font-weigth: 600;
+    font-family: Georgia, serif;
     line-height: 1;
     text-align: center;
   }
@@ -311,7 +311,7 @@
     color: #080808;
     font-size: 1.1em;
     font-weight: 400;
-    font-family: 'Inria Serif', Georgia, serif;
+    font-family: Georgia, serif;
     line-height: 1.5;
   }
   .poem_info {
@@ -319,7 +319,7 @@
     color: #080808;
     font-size: 1.1em;
     font-weight: 400;
-    font-family: 'Inria Serif', Georgia, serif;
+    font-family: Georgia, serif;
     font-style: italic;
   }
   .poem_category {

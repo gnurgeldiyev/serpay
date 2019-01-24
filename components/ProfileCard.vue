@@ -82,14 +82,14 @@
     display: inline;
     color: #080808;
     font-size: 0.9em;
-    font-weight: 500;
+    font-weigth: 600;
     font-family: inherit;
   }
   .pc_info_subtitle {
     display: inline;
     color: #656565;
     font-size: 0.8em;
-    font-weight: 500;
+    font-weigth: 600;
     font-family: inherit;
   }
 }
@@ -128,14 +128,14 @@
     display: inline;
     color: #080808;
     font-size: 1em;
-    font-weight: 500;
+    font-weigth: 600;
     font-family: inherit;
   }
   .pc_info_subtitle {
     display: inline;
     color: #656565;
     font-size: 0.8em;
-    font-weight: 500;
+    font-weigth: 600;
     font-family: inherit;
   }
 }
@@ -174,14 +174,14 @@
     display: inline;
     color: #080808;
     font-size: 1em;
-    font-weight: 500;
+    font-weigth: 600;
     font-family: inherit;
   }
   .pc_info_subtitle {
     display: inline;
     color: #656565;
     font-size: 0.8em;
-    font-weight: 500;
+    font-weigth: 600;
     font-family: inherit;
   }
 }
@@ -226,14 +226,14 @@
     display: inline;
     color: #080808;
     font-size: 1em;
-    font-weight: 500;
+    font-weigth: 600;
     font-family: inherit;
   }
   .pc_info_subtitle {
     display: inline;
     color: #656565;
     font-size: 0.8em;
-    font-weight: 500;
+    font-weigth: 600;
     font-family: inherit;
   }
 }
