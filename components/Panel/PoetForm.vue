@@ -63,14 +63,17 @@
           prop="avatar"
           label="Avatar">
           <el-upload
-            :show-file-list="true"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
+            :disabled="type === 'view'"
+            :before-upload="beforeUpload"
+            :on-remove="onRemove"
+            :on-error="handleError"
+            :on-success="handleSuccess"
+            :file-list="fileList"
             action="/api/poets/upload"
             class="upload">
             <img 
-              v-if="imageUrl" 
-              :src="imageUrl" 
+              v-if="form.avatar" 
+              :src="'/' + form.avatar" 
               class="avatar">
             <i 
               v-else 
@@ -126,7 +129,6 @@ import { unlinkObj } from '@/assets/helper'
           avatar: ''
         },
         fileList: [],
-        imageUrl: '',
         rules: {
           fullname: [
             { required: true, message: 'Please enter a full name', trigger: 'blur' },
@@ -137,8 +139,7 @@ import { unlinkObj } from '@/assets/helper'
           bio: [],
           wiki_link: [],
           avatar: [
-            { required: true, message: 'Please enter a avatar link', trigger: 'blur' },
-            { type: 'url', message: 'Please input correct link', trigger: ['blur', 'change'] }
+            { required: true, message: 'Please upload a avatar', trigger: 'blur' }
           ]
         }
       }
@@ -252,7 +253,7 @@ import { unlinkObj } from '@/assets/helper'
       open() {
         if (this.type === 'view') {
           let p = this.inView
-          this.form = unlinkObj(p)
+          this.form = unlinkObj(p) 
         } else if (this.type === 'edit') {
           let p = this.inEdit
           this.form = unlinkObj(p)
@@ -266,22 +267,39 @@ import { unlinkObj } from '@/assets/helper'
         } else {
           this.$store.dispatch('poet/addFormDialogVisibility', false)
         }
+        if (this.fileList.length > 0) {
+          this.$axios.$delete(`/api/poets/upload/${this.fileList[0]}`)
+          // this.fileList = []
+        }
         this.$refs.form.resetFields()
       },
-      handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
-      },
-      beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
-    
+      beforeUpload(file) {
+        const isJPG = file.type === 'image/jpeg'
+        const isLt2M = file.size / 1024 < 50
         if (!isJPG) {
-          this.$message.error('Avatar picture must be JPG format!');
+          this.$message.error('Avatar picture must be JPG format!')
         }
         if (!isLt2M) {
-          this.$message.error('Avatar picture size can not exceed 2MB!');
+          this.$message.error('Avatar picture size can not exceed 50kb!')
         }
-        return isJPG && isLt2M;
+        return isJPG && isLt2M
+      },
+      onRemove(file, fileList) {
+        this.$axios.$delete(`/api/poets/upload/${file.response.file.filename}`)
+          .then(() => {
+            this.fileList = fileList
+            this.form.avatar = ''
+          })
+          .catch((err) => {
+            this.$message.error(err.message)
+          })
+      },
+      handleSuccess(response, file, fileList) {
+        this.fileList[0] = response.file.filename
+        this.form.avatar = response.file.filename
+      },
+      handleError(err, file, fileList) {
+        this.$message.error(err.message)
       },
       onlyNumbers(e){
         const numbers = /^[0-9]*$/

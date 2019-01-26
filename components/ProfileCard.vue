@@ -6,7 +6,7 @@
     <div class="pc">
       <div class="pc_media">
         <img 
-          :src="data.avatar" 
+          :src="'/' + data.avatar" 
           :alt="data.fullname"
           class="pc_media_avatar">
       </div>

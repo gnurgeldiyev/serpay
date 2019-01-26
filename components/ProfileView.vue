@@ -18,7 +18,7 @@
     </div>
     <div class="pv_media">
       <img 
-        :src="data.avatar" 
+        :src="'/' + data.avatar"
         :alt="data.fullname"
         class="pv_media_avatar">
     </div>
