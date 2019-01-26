@@ -3,6 +3,7 @@ const poetController = require('../controllers/poet')
 const multer = require('multer')
 const uuid = require('uuid')
 const fs = require('fs')
+const path = require('path')
 
 /** 
  * file upload 
@@ -55,9 +56,10 @@ router.post('/upload',
 router.put('/:id', poetController.update)
 router.put('/:id/delete', poetController.delete)
 router.delete('/upload/:filename', (req, res) => {
-  fs.unlink(`./static/${req.params.filename}`, function(err) {
+  const file = path.join(`${__dirname}./../../static/${req.params.filename}`)
+  fs.unlink(file, (err) => {
     if (err) {
-      return res.sendStatus(500)
+      console.log(err)
     }
     return res.sendStatus(204)
   })

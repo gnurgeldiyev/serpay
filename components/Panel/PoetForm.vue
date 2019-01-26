@@ -269,7 +269,12 @@ import { unlinkObj } from '@/assets/helper'
         }
         if (this.fileList.length > 0) {
           this.$axios.$delete(`/api/poets/upload/${this.fileList[0]}`)
-          // this.fileList = []
+            .then(() => {
+              this.fileList = []
+            })
+            .catch((err) => {
+              this.$message.error(err.message)
+            })
         }
         this.$refs.form.resetFields()
       },
