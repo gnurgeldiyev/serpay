@@ -1,6 +1,3 @@
 export const unlinkObj = (o) => {
-  if (o) {
-    return JSON.parse(JSON.stringify(o))
-  }
-  return
+  return JSON.parse(JSON.stringify(o))
 }
