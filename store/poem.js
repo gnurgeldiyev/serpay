@@ -181,7 +181,6 @@ export const actions = {
       })
   },
   add({ commit }, data) {
-    console.log(data)
     return this.$axios.$post('/api/poems', data)
       .then((res) => {
         commit('addUnapproved', res.data)
@@ -192,7 +191,6 @@ export const actions = {
       })
       .catch((err) => {
         const { error } = err.response.data.meta
-        console.log(error)
         return {
           status: false,
           error: {
@@ -210,7 +208,6 @@ export const actions = {
       })
       .catch((err) => {
         const { error } = err.response.data.meta
-        console.log(err.response.data)
         return {
           status: false,
           error: {
@@ -232,7 +229,6 @@ export const actions = {
       })
       .catch((err) => {
         const { error } = err.response.data.meta
-        console.log(error)
         return {
           status: false,
           error: {
@@ -254,7 +250,6 @@ export const actions = {
       })
       .catch((err) => {
         const { error } = err.response.data.meta
-        console.log(error)
         return {
           status: false,
           error: {
@@ -282,7 +277,6 @@ export const actions = {
       })
       .catch((err) => {
         const { error } = err.response.data.meta
-        console.log(error)
         return {
           status: false,
           error: {

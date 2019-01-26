@@ -98,7 +98,6 @@ export const actions = {
       })
       .catch((err) => {
         const { error } = err.response.data.meta
-        console.log(error)
         return {
           status: false,
           error: {
@@ -119,7 +118,6 @@ export const actions = {
       })
       .catch((err) => {
         const { error } = err.response.data.meta
-        console.log(error)
         return {
           status: false,
           error: {
@@ -140,7 +138,6 @@ export const actions = {
       })
       .catch((err) => {
         const { error } = err.response.data.meta
-        console.log(error)
         return {
           status: false,
           error: {
@@ -161,7 +158,6 @@ export const actions = {
       })
       .catch((err) => {
         const { error } = err.response.data.meta
-        console.log(error)
         return {
           status: false,
           error: {
@@ -189,7 +185,6 @@ export const actions = {
       })
       .catch((err) => {
         const { error } = err.response.data.meta
-        console.log(error)
         return {
           status: false,
           error: {
