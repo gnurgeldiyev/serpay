@@ -36,10 +36,10 @@
         v-html="data.notes" />
     </div>
     <div 
-      v-if="data.video"
+      v-if="data.youtube_link"
       class="poem_video">
       <iframe 
-        :src="data.video" 
+        :src="data.youtube_link" 
         frameborder="0" 
         allow="autoplay; encrypted-media" 
         allowfullscreen />
