@@ -125,11 +125,12 @@ import { unlinkObj } from '@/assets/helper'
       const validateVideoLink = (rule, value, callback) => {
         const ytRgx = /^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+/gm
         if (value && value !== '') {
-          if (!this.form.youtube_link
-            && (this.form.youtube_link.match(ytRgx))) {
+          let result = ytRgx.test(this.form.youtube_link)
+          if (result) {
             callback()
+          } else {
+            callback(new Error('Please enter a valid YouTube video URL'))
           }
-          callback(new Error('Please enter a valid YouTube video URL'))
         } else {
           callback()
         }
@@ -245,8 +246,8 @@ import { unlinkObj } from '@/assets/helper'
         this.form.content = html;
       },
       getEmbedLink(url) {        
-        const videoId = /^https?:\/\/(www\.)?youtu\.be/.test(url) ? url.replace(/^https?:\/\/(www\.)?youtu\.be\/([\w-]{11}).*/,"$2") : url.replace(/.*\?v=([\w-]{11}).*/,"$1");
-        return 'https://www.youtube.com/embed/' + videoId;
+        const videoId = /^https?:\/\/(www\.)?youtu\.be/.test(url) ? url.replace(/^https?:\/\/(www\.)?youtu\.be\/([\w-]{11}).*/,"$2") : url.replace(/.*\?v=([\w-]{11}).*/,"$1")
+        return 'https://www.youtube.com/embed/' + videoId
       },
       submitForm() {
         this.$refs.form.validate(async (valid) => {
