@@ -76,8 +76,8 @@ html {
   }
   .title {
     color: #080808;
-    font-size: 1.4em;
-    font-weight: 600;
+    font-size: 1.2em;
+    font-weight: 500;
     font-family: Georgia, serif;
     line-height: 1;
     display: inline-block;
@@ -91,8 +91,8 @@ html {
   }
   .title {
     color: #080808;
-    font-size: 1.4em;
-    font-weight: 600;
+    font-size: 1.2em;
+    font-weight: 500;
     font-family: Georgia, serif;
     line-height: 1;
     display: inline-block;
@@ -106,8 +106,8 @@ html {
   }
   .title {
     color: #080808;
-    font-size: 1.5em;
-    font-weight: 600;
+    font-size: 1.4em;
+    font-weight: 500;
     font-family: Georgia, serif;
     line-height: 1;
     display: inline-block;
@@ -122,8 +122,8 @@ html {
   }
   .title {
     color: #080808;
-    font-size: 1.6em;
-    font-weight: 600;
+    font-size: 1.4em;
+    font-weight: 500;
     font-family: Georgia, serif;
     line-height: 1;
     display: inline-block;
