@@ -23,7 +23,7 @@
           <el-popover
             :content="addedInfo"
             placement="top"
-            trigger="hover">
+            trigger="click">
             <i 
               slot="reference"
               class="el-icon-info" />
