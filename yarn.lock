@@ -6199,6 +6199,11 @@ nuxt-imagemin@^1.0.0:
   dependencies:
     imagemin-webpack-plugin "^2.1.1"
 
+nuxt-social-meta@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/nuxt-social-meta/-/nuxt-social-meta-0.0.1.tgz#f31cfee523dbf10920936b9ed90d6ecfc0030892"
+  integrity sha512-Jo72poDZdRdKO66wyAuP/XRE5wKhLkYDOz8GWzX5+fcbz5Gfwyw3Jz8VPOweDHmxjwE0ijTOdIU92y9puR3zuQ==
+
 nuxt@^2.3.4:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/nuxt/-/nuxt-2.3.4.tgz#61f5fe856ebbeced89f04a3734baa4ee91cc3cfa"

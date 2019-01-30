@@ -22,7 +22,9 @@ module.exports = {
       { innerHTML: 'This website requires JavaScript.' }
     ],
     script: [
-      { src: `https://www.googletagmanager.com/gtag/js?id=${google_analytics}`, async: true },
+      { 
+        src: `https://www.googletagmanager.com/gtag/js?id=${google_analytics}`, async: true 
+      },
       { 
         innerHTML: `window.dataLayer = window.dataLayer || [];function gtag(){window.dataLayer.push(arguments);}gtag('js', new Date());gtag('config', '${google_analytics}');`, 
         type: 'text/javascript',
@@ -60,13 +62,19 @@ module.exports = {
     // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios',
     'cookie-universal-nuxt',
-    [
-      "nuxt-imagemin",
-      {
+    ["nuxt-imagemin", {
         optipng: { optimizationLevel: 5 },
         gifsicle: { optimizationLevel: 2 }
-      }
-    ]
+    }],
+    ['nuxt-social-meta', {
+      url: 'https://serpay.penjire.com',
+      title: 'Serpaý – Goşgular Çemeni',
+      description: 'Türkmen edebiýatyndan goşgular çemeni',
+      img: '/favicon.png',
+      locale: 'tk_TM',
+      twitter: '@penjire',
+      themeColor: '#080808'
+    }]
   ],
   /*
   ** Axios module configuration
