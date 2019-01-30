@@ -59,7 +59,14 @@ module.exports = {
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios',
-    'cookie-universal-nuxt'
+    'cookie-universal-nuxt',
+    [
+      "nuxt-imagemin",
+      {
+        optipng: { optimizationLevel: 5 },
+        gifsicle: { optimizationLevel: 2 }
+      }
+    ]
   ],
   /*
   ** Axios module configuration
@@ -73,6 +80,8 @@ module.exports = {
     },
     proxy: true
   },
+  // enable caching
+  cache: true,
   /*
   ** Build configuration
   */
@@ -85,12 +94,9 @@ module.exports = {
         'window.Quill': 'quill'
       })
     ],
-    /*
-    ** You can extend webpack config here
-    */
-    extend(config, ctx) {
+    extend(config, { isDev, isClient}) {
       // Run ESLint on save
-      if (ctx.isDev && ctx.isClient) {
+      if (isDev && isClient) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
