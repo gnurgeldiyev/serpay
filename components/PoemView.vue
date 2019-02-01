@@ -174,6 +174,7 @@
     font-weight: 400;
     font-family: Georgia, serif;
     line-height: 1.5;
+    white-space: pre-wrap;
   }
   .poem_info {
     text-align: right;
@@ -244,6 +245,7 @@
     font-weight: 400;
     font-family: Georgia, serif;
     line-height: 1.5;
+    white-space: pre-wrap;
   }
   .poem_info {
     text-align: right;
@@ -314,6 +316,7 @@
     font-weight: 400;
     font-family: Georgia, serif;
     line-height: 1.5;
+    white-space: pre-wrap;
   }
   .poem_info {
     text-align: right;
