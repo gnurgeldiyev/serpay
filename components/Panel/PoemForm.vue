@@ -151,6 +151,7 @@ import { unlinkObj } from '@/assets/helper'
           modules: {
             toolbar: [
               ['bold', 'italic', 'underline'],
+              [{ 'align': [] }],
               ['clean']
             ]
           },
