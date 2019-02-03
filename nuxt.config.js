@@ -92,8 +92,9 @@ module.exports = {
     routes (callback) {
       axios.get(`${base_url}/api/poets`)
       .then((res) => {
+        let poets = JSON.parse(JSON.stringify(res.data))
         let routes = []
-        res.data.forEach((poet) => {
+        poets.map((poet) => {
           let r = '/p/' + poet.url
           routes.push(r)
         })
