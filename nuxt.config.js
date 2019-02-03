@@ -1,4 +1,5 @@
 const webpack = require('webpack')
+const axios = require('axios')
 const { base_url, node_env, google_analytics } = require('./config')
 const isDevMode = node_env !== 'production' ? true : false
 
@@ -62,6 +63,7 @@ module.exports = {
     // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios',
     'cookie-universal-nuxt',
+    '@nuxtjs/sitemap',
     ["nuxt-imagemin", {
         optipng: { optimizationLevel: 5 },
         gifsicle: { optimizationLevel: 2 }
@@ -76,6 +78,22 @@ module.exports = {
       themeColor: '#080808'
     }]
   ],
+  // app sitemap
+  sitemap: {
+    path: '/sitemap.xml',
+    hostname: 'https://serpay.penjire.com',
+    cacheTime: 1000 * 60 * 10,
+    gzip: true,
+    generate: false, // Enable me when using nuxt generate
+    exclude: [
+      '/@serpay',
+      '/@serpay/**'
+    ],
+    routes () {
+      return axios.get('/api/poets/')
+      .then(res => res.data.map(poet =>  '/p/' + poet.url))
+    }
+  },
   /*
   ** Axios module configuration
   */
