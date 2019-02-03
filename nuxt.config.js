@@ -92,7 +92,11 @@ module.exports = {
     
     routes () {
       return axios.get(`${base_url}/api/poets`)
-        .then(res => res.data.map(p =>  '/p/' + p.url))
+        .then((res) => {
+          if (res.data && res.data.length > 0) {
+            res.data.map(p =>  '/p/' + p.url)
+          }
+        })
     }
   },
   /*
