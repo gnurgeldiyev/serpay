@@ -41,12 +41,12 @@ import PoemList from '@/components/PoemList'
         }
       }
     },
-    async beforeCreate() {
-      let poetUrl = this.$route.params.poetUrl
+    async asyncData({ store, route }) {
+      let poetUrl = route.params.poetUrl
       poetUrl = encodeURI(poetUrl)
-      let result = await this.$store.dispatch('poet/fetchOne', poetUrl)
-      const poet = this.$store.getters['poet/getOne']
-      this.$store.dispatch('poem/fetchAll', poet.id)
+      await store.dispatch('poet/fetchOne', poetUrl)
+      const poet = store.getters['poet/getOne']
+      return store.dispatch('poem/fetchAll', poet.id)
     },
     destroyed() {
       this.$store.dispatch('poet/clear')

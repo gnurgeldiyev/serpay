@@ -40,10 +40,10 @@ import PoemView from '@/components/PoemView'
         }
       }
     },
-    beforeCreate() {
-      let poemUrl = this.$route.params.poemUrl
+    asyncData({ store, route }) {
+      let poemUrl = route.params.poemUrl
       poemUrl = encodeURI(poemUrl)
-      this.$store.dispatch('poem/fetchOne', poemUrl)
+      return store.dispatch('poem/fetchOne', poemUrl)
     },
     destroyed() {
       this.$store.dispatch('poem/clear')
