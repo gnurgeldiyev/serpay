@@ -89,18 +89,10 @@ module.exports = {
       '/@serpay',
       '/@serpay/**'
     ],
-    routes (callback) {
-      axios.get(`${base_url}/api/poets`)
-      .then((res) => {
-        let poets = JSON.parse(JSON.stringify(res.data))
-        let routes = []
-        poets.map((poet) => {
-          let r = '/p/' + poet.url
-          routes.push(r)
-        })
-        callback(null, routes)
-      })
-      .catch(callback)
+    
+    routes () {
+      return axios.get(`${base_url}/api/poets`)
+        .then(res => res.data.map(p =>  '/p/' + p.url))
     }
   },
   /*
