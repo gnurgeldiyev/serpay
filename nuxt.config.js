@@ -64,7 +64,8 @@ module.exports = {
     '@nuxtjs/axios',
     'cookie-universal-nuxt',
     '@nuxtjs/sitemap',
-    ["nuxt-imagemin", {
+    ['@nuxtjs/component-cache', { maxAge: 1000 * 60 * 60 }],
+    ['nuxt-imagemin', {
         optipng: { optimizationLevel: 5 },
         gifsicle: { optimizationLevel: 2 }
     }],
