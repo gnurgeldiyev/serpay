@@ -92,7 +92,11 @@ module.exports = {
     routes (callback) {
       axios.get(`${base_url}/api/poets`)
       .then((res) => {
-        let routes = res.data.map(poet => '/p/' + poet.url)
+        let routes = []
+        res.data.forEach((poet) => {
+          let r = '/p/' + poet.url
+          routes.push(r)
+        })
         callback(null, routes)
       })
       .catch(callback)
