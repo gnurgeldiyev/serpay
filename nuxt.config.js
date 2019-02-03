@@ -89,15 +89,13 @@ module.exports = {
       '/@serpay',
       '/@serpay/**'
     ],
-    
-    routes () {
-      return axios.get(`${base_url}/api/poets`)
-        .then((res) => {
-          if (res.data && res.data.length > 0) {
-            res.data.map(p =>  '/p/' + p.url)
-          }
-        })
-    }
+    routes: [
+      {
+        url: '/p/gurbannazar-ezizow',
+        changefreq: 'daily',
+        priority: 1,
+      }
+    ]
   },
   /*
   ** Axios module configuration
