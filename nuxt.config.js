@@ -1,8 +1,5 @@
 const webpack = require('webpack')
 const axios = require('axios')
-const agent = new https.Agent({  
-  rejectUnauthorized: false
-})
 const { base_url, node_env, google_analytics } = require('./config')
 const isDevMode = node_env !== 'production' ? true : false
 
@@ -93,7 +90,7 @@ module.exports = {
       '/@serpay/**'
     ],
     routes() {
-      return axios.get(`${base_url}/api/poets`, { httpsAgent: agent })
+      return axios.get(`${base_url}/api/poets`)
       .then(res => res.data.map(poet =>  '/p/' + poet.url))
     }
   },
