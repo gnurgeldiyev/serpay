@@ -10,7 +10,7 @@ module.exports = {
   */
   head: {
     htmlAttrs: {
-      lang: 'tk_TM',
+      lang: 'tk',
     },
     title: 'Serpaý – Goşgular Çemeni',
     meta: [
