@@ -116,22 +116,21 @@ module.exports = {
   },
   // enable caching
   cache: true,
-  /*
-  ** Build configuration
-  */
+  serverMiddleware: ['@/common/cache.js'],
   render: {
     http2: {
       push: true
     },
     static: {
-      maxAge: "1y",
+      maxAge: '1y',
       setHeaders(res, path) {
-        if (path.includes("sw.js")) {
-          res.setHeader("Cache-Control", `public, max-age=${15 * 60}`)
-        }
+        res.setHeader('Cache-Control', `public, max-age=${15 * 60}`)
       }
     }
   },
+  /*
+  ** Build configuration
+  */
   build: {
     /*
     ** You can extend webpack config here
