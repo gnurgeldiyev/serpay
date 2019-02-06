@@ -122,9 +122,8 @@ module.exports = {
       push: true
     },
     static: {
-      maxAge: '1y',
       setHeaders(res, path) {
-        res.setHeader('Cache-Control', `public, max-age=${15 * 60}`)
+        res.setHeader('Cache-Control', `public, max-age=${60 * 60 * 24 * 30}`)
       }
     }
   },
