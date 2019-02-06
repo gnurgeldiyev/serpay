@@ -123,7 +123,7 @@ module.exports = {
     },
     static: {
       setHeaders(res, path) {
-        res.setHeader('Cache-Control', `public, max-age=${60 * 60 * 24 * 30}`)
+        res.setHeader('Cache-Control', `public, max-age=${60 * 60 * 24 * 365}`)
       }
     }
   },
