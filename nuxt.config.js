@@ -138,19 +138,6 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-      if (isClient) {
-        const vendor = config.entry.vendor
-        // vendor2 is separated vendor file
-        const vendor2 = [
-          '@nuxtjs/sitemap',
-          'cookie-universal-nuxt',
-          'nuxt-imagemin',
-          'nuxt-social-meta'
-        ]
-        // remove from existing vendor
-        config.entry.vendor = vendor.filter(x => !vendor2.includes(x))
-        config.entry.vendor2 = vendor2
-      }
     }
   }
 }
