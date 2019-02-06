@@ -36,12 +36,13 @@ export default {
 
 <style>
 @font-face {
-	font-family:'Inria Serif';
-	src:	url('../assets/font/InriaSerif-Bold.eot');
-	src:	url('../assets/font/InriaSerif-Bold.eot?#iefix') format('embedded-opentype'),
-			url('../assets/font/InriaSerif-Bold.woff2') format('woff2'),
-			url('../assets/font/InriaSerif-Bold.woff') format('woff'),
-			url('../assets/font/InriaSerif-Bold.svg') format('svg');
+  font-family: 'Inria Serif';
+  font-display: auto;
+  src: local('Inria Serif'),	url('../assets/font/InriaSerif-Bold.eot'),
+    url('../assets/font/InriaSerif-Bold.eot?#iefix') format('embedded-opentype'),
+    url('../assets/font/InriaSerif-Bold.woff2') format('woff2'),
+    url('../assets/font/InriaSerif-Bold.woff') format('woff'),
+    url('../assets/font/InriaSerif-Bold.svg') format('svg');
 	font-weight: 700;
 	font-style: normal;
 }
