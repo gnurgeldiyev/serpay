@@ -1,12 +1,12 @@
 <template>
   <div>
-    <poem-view :data="poem" />
+    <poem-view 
+      v-if="poem && poem.title"
+      :data="poem" />
   </div>
 </template>
 
 <script>
-import PoemView from '@/components/PoemView'
-
   export default {
     head() {
       return {
@@ -17,7 +17,7 @@ import PoemView from '@/components/PoemView'
       }
     },
     components: {
-      'poem-view': PoemView
+      'poem-view': () => import('@/components/PoemView')
     },
     computed: {
       poem() {

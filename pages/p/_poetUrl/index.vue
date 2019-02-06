@@ -1,17 +1,17 @@
 <template>
   <div>
-    <profile-view :data="poet" />
+    <profile-view 
+      v-if="poet && poet.fullname"
+      :data="poet" />
     <h1 class="title">Goşgular</h1>
     <poem-list 
+      v-if="poems && poems.length > 0"
       :data="poems"
       :poet="poet" />
   </div>
 </template>
 
 <script>
-import ProfileView from '@/components/ProfileView'
-import PoemList from '@/components/PoemList'
-
   export default {
     head () {
       return {
@@ -22,8 +22,8 @@ import PoemList from '@/components/PoemList'
       }
     },
     components: {
-      'profile-view': ProfileView,
-      'poem-list': PoemList
+      'profile-view': () => import('@/components/ProfileView'),
+      'poem-list': () => import('@/components/PoemList')
     },
     computed: {
       poet() {
