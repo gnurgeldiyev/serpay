@@ -1,5 +1,4 @@
 const webpack = require('webpack')
-const axios = require('axios')
 const { base_url, node_env, google_analytics } = require('./config')
 const isDevMode = node_env !== 'production' ? true : false
 
@@ -117,14 +116,13 @@ module.exports = {
   // enable caching
   cache: true,
   serverMiddleware: ['@/common/cache.js'],
-  render: {
-    http2: {
-      push: true
-    },
-    static: {
-      setHeaders(res, path) {
-        res.setHeader('Cache-Control', `public, max-age=${60 * 60 * 24 * 365}`)
+  router: {
+    scrollBehavior(to, from, savedPosition) {
+      // savedPosition is only available for popstate navigations (back button)
+      if (savedPosition) {
+        return savedPosition
       }
+      return { x: 0, y: 0 }
     }
   },
   /*
