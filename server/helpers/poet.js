@@ -14,7 +14,7 @@ exports.validateData = async (t, d) => {
       || (d.bio && !isLength(d.bio, { max: 300 }))
       || (d.wiki_link && !isURL(d.wiki_link))
       || (d.avatar && !isLength(d.avatar, { max: 100 }))
-    ) { 
+    ) {
       return {
         status: false,
         error: {
@@ -24,7 +24,10 @@ exports.validateData = async (t, d) => {
       }
     }
     // fullname check, fullname field must be unique
-    let poet = await Poet.findOne({ fullname: d.fullname })
+    let poet = await Poet.findOne({
+      fullname: d.fullname,
+      is_deleted: false
+    })
     if (t === 'update') {
       if (poet && poet.fullname === d.fullname) {
         return {
