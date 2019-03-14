@@ -4,7 +4,7 @@ const {
   validateData
 } = require('../helpers/poet')
 
-/** 
+/**
  * GET | get all non deleted poets
 */
 exports.getAll = (req, res) => {
@@ -16,10 +16,10 @@ exports.getAll = (req, res) => {
         if (!poets.length) {
           return res.status(404).json({
             data: {},
-            meta: { 
-              code: 404, 
+            meta: {
+              code: 404,
               error: { code: 'NOT_FOUND', message: 'There is no any poet' }
-            } 
+            }
           })
         }
         let p = []
@@ -35,12 +35,12 @@ exports.getAll = (req, res) => {
         })
       })
       .catch((err) => {
-        return res.status(500).json({ 
-          data: {}, 
-          meta: { 
-            code: 500, 
+        return res.status(500).json({
+          data: {},
+          meta: {
+            code: 500,
             error: { code: err.code, message: err.message }
-          } 
+          }
         })
       })
   }
@@ -49,10 +49,10 @@ exports.getAll = (req, res) => {
       if (!poets.length) {
         return res.status(404).json({
           data: {},
-          meta: { 
-            code: 404, 
+          meta: {
+            code: 404,
             error: { code: 'NOT_FOUND', message: 'There is no any poet' }
-          } 
+          }
         })
       }
       let p = []
@@ -68,30 +68,31 @@ exports.getAll = (req, res) => {
       })
     })
     .catch((err) => {
-      return res.status(500).json({ 
-        data: {}, 
-        meta: { 
-          code: 500, 
+      return res.status(500).json({
+        data: {},
+        meta: {
+          code: 500,
           error: { code: err.code, message: err.message }
-        } 
+        }
       })
     })
 }
 
-/** 
+/**
  * GET | get one poet by id
 */
 exports.getOne = (req, res) => {
   const url = req.params.url
+  console.log(url);
   Poet.findOne({ url, is_deleted: false })
     .then((poet) => {
       if (!poet) {
-        return res.status(404).json({ 
-          data: {}, 
-          meta: { 
-            code: 404, 
+        return res.status(404).json({
+          data: {},
+          meta: {
+            code: 404,
             error: { code: 'NOT_FOUND', message: 'Poet not found' }
-          } 
+          }
         })
       }
       return res.status(200).json({
@@ -100,17 +101,17 @@ exports.getOne = (req, res) => {
       })
     })
     .catch((err) => {
-      return res.status(400).json({ 
-        data: {}, 
-        meta: { 
-          code: 400, 
+      return res.status(400).json({
+        data: {},
+        meta: {
+          code: 400,
           error: { code: err.code, message: err.message }
         }
       })
     })
 }
 
-/** 
+/**
  * POST | add new poet
 */
 exports.add = async (req, res) => {
@@ -119,9 +120,9 @@ exports.add = async (req, res) => {
   // request body data validation
   result = await validateData('add', d)
   if (!result.status) {
-    return res.status(400).json({ 
-      data: {}, 
-      meta: { code: 400, error: result.error } 
+    return res.status(400).json({
+      data: {},
+      meta: { code: 400, error: result.error }
     })
   }
   // add new poet
@@ -142,17 +143,17 @@ exports.add = async (req, res) => {
       })
     })
     .catch((err) => {
-      return res.status(400).json({ 
-        data: {}, 
-        meta: { 
-          code: 400, 
+      return res.status(400).json({
+        data: {},
+        meta: {
+          code: 400,
           error: { code: err.code, message: err.message }
-        } 
+        }
       })
     })
 }
 
-/** 
+/**
  * PUT | update poet by id
 */
 exports.update = async (req, res) => {
@@ -171,9 +172,9 @@ exports.update = async (req, res) => {
   // request body data validation
   let result = await validateData('update', d)
   if (!result.status) {
-    return res.status(400).json({ 
-      data: {}, 
-      meta: { code: 400, error: result.error } 
+    return res.status(400).json({
+      data: {},
+      meta: { code: 400, error: result.error }
     })
   }
   Poet.findOneAndUpdate({ _id: id, is_deleted: false }, {
@@ -189,12 +190,12 @@ exports.update = async (req, res) => {
   }, { new: true })
     .then((poet) => {
       if (!poet) {
-        return res.status(404).json({ 
-          data: {}, 
-          meta: { 
-            code: 404, 
+        return res.status(404).json({
+          data: {},
+          meta: {
+            code: 404,
             error: { code: 'NOT_FOUND', message: 'Poet not found' }
-          } 
+          }
         })
       }
       return res.status(200).json({
@@ -203,17 +204,17 @@ exports.update = async (req, res) => {
       })
     })
     .catch((err) => {
-      return res.status(400).json({ 
-        data: {}, 
-        meta: { 
-          code: 400, 
+      return res.status(400).json({
+        data: {},
+        meta: {
+          code: 400,
           error: { code: err.code, message: err.message }
         }
       })
     })
 }
 
-/** 
+/**
  * PUT | delete poet by id
 */
 exports.delete = (req, res) => {
@@ -235,12 +236,12 @@ exports.delete = (req, res) => {
   }, { new: true })
     .then((poet) => {
       if (!poet) {
-        return res.status(404).json({ 
-          data: {}, 
-          meta: { 
-            code: 404, 
+        return res.status(404).json({
+          data: {},
+          meta: {
+            code: 404,
             error: { code: 'NOT_FOUND', message: 'Poet not found' }
-          } 
+          }
         })
       }
       // set data if is_deleted false
@@ -250,10 +251,10 @@ exports.delete = (req, res) => {
       })
     })
     .catch((err) => {
-      return res.status(400).json({ 
-        data: {}, 
-        meta: { 
-          code: 400, 
+      return res.status(400).json({
+        data: {},
+        meta: {
+          code: 400,
           error: { code: err.code, message: err.message }
         }
       })
