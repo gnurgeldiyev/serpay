@@ -8,40 +8,28 @@
       <div class="poem_info">
         {{ poemInfo }}
       </div>
-      <div 
+      <div
         v-if="data.category && data.category.length > 0"
         class="poem_category">
         <div
           v-for="c in data.category"
           :key="c"
-          class="poem_category_item"> 
+          class="poem_category_item">
           {{ c }}
         </div>
-        <div 
-          v-if="addedInfo"
-          class="poem_category_item">
-          <el-popover
-            :content="addedInfo"
-            placement="top"
-            trigger="click">
-            <i 
-              slot="reference"
-              class="el-icon-info" />
-          </el-popover>
-        </div>
       </div>
-      <div 
+      <div
         v-if="data.notes"
         class="poem_notes"
         v-html="data.notes" />
     </div>
-    <div 
+    <div
       v-if="data.youtube_link"
       class="poem_video">
-      <iframe 
-        :src="data.youtube_link" 
-        frameborder="0" 
-        allow="autoplay; encrypted-media" 
+      <iframe
+        :src="data.youtube_link"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
         allowfullscreen />
     </div>
   </div>
@@ -61,19 +49,9 @@
         let i = ''
         if (d.year) {
           i += d.year + ', '
-        } 
+        }
         if (d.author && d.author.fullname) {
           i += d.author.fullname
-        }
-        return i
-      },
-      addedInfo() {
-        let i
-        const { added_by } = this.data
-        if (added_by) {
-          i = `Bu goşgy ${added_by.firstname} ${added_by.lastname} tarapyndan goşuldy.`
-        } else {
-          i = null
         }
         return i
       }
@@ -87,7 +65,7 @@
     width: 100%;
     display: grid;
     justify-content: center;
-    grid-row-gap: 16px; 
+    grid-row-gap: 16px;
   }
   .poem_title {
     color: #080808;
@@ -158,7 +136,7 @@
     width: 100%;
     display: grid;
     justify-content: center;
-    grid-row-gap: 16px; 
+    grid-row-gap: 16px;
   }
   .poem_title {
     color: #080808;
@@ -229,7 +207,7 @@
     width: 100%;
     display: grid;
     justify-content: center;
-    grid-row-gap: 12px; 
+    grid-row-gap: 12px;
   }
   .poem_title {
     color: #080808;
@@ -300,7 +278,7 @@
     width: 100%;
     display: grid;
     justify-content: center;
-    grid-row-gap: 16px; 
+    grid-row-gap: 16px;
   }
   .poem_title {
     color: #080808;
