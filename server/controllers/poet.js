@@ -82,8 +82,8 @@ exports.getAll = (req, res) => {
  * GET | get one poet by id
 */
 exports.getOne = (req, res) => {
-  const url = req.params.url
-  console.log(url);
+  const url = encodeURI(req.params.url || '')
+
   Poet.findOne({ url, is_deleted: false })
     .then((poet) => {
       if (!poet) {
