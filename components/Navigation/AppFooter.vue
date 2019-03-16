@@ -1,16 +1,16 @@
 <template>
   <div class="f">
     <div class="f-items">
-      <div class="f_item"> 
-        <img 
+      <div class="f_item">
+        <img
           class="f_item_icon"
-          src="/icon-heart.svg" 
-          alt="heart icon">
-        bilen döredildi  • 
+          src="/icon-heart.svg"
+          alt="söýgi">
+        bilen döredildi  •
       </div>
       <div class="f_item">
-        public beta • 
-        <a 
+        public beta •
+        <a
           href="https://penjire.com"
           title="Penjire Topary">
           penjire
@@ -22,7 +22,7 @@
 
 <script>
   export default {
-    
+
   }
 </script>
 
