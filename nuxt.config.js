@@ -26,11 +26,11 @@ module.exports = {
       { innerHTML: 'This website requires JavaScript.' }
     ],
     script: [
-      { 
-        src: `https://www.googletagmanager.com/gtag/js?id=${google_analytics}`, async: true 
+      {
+        src: `https://www.googletagmanager.com/gtag/js?id=${google_analytics}`, async: true
       },
-      { 
-        innerHTML: `window.dataLayer = window.dataLayer || [];function gtag(){window.dataLayer.push(arguments);}gtag('js', new Date());gtag('config', '${google_analytics}');`, 
+      {
+        innerHTML: `window.dataLayer = window.dataLayer || [];function gtag(){window.dataLayer.push(arguments);}gtag('js', new Date());gtag('config', '${google_analytics}');`,
         type: 'text/javascript',
         defer: true
       }
@@ -96,6 +96,11 @@ module.exports = {
     routes: [
       {
         url: '/p/gurbannazar-ezizow',
+        changefreq: 'daily',
+        priority: 1,
+      },
+      {
+        url: '/p/çary-ýegenmyradow',
         changefreq: 'daily',
         priority: 1,
       }
