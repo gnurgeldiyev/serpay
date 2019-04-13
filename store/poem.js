@@ -113,7 +113,7 @@ export const mutations = {
   }
 }
 
-export const actions = {  
+export const actions = {
   fetchAll({ commit }, data) {
     return this.$axios.$get(`/api/poems?poet=${data}`)
       .then((res) => {
@@ -169,7 +169,7 @@ export const actions = {
       .catch((err) => {
         const { error, code } = err.response.data.meta
         if (code === 404) {
-          commit('setAll', [])
+          commit('setAllUnapproved', [])
         }
         return {
           status: false,
