@@ -1,36 +1,44 @@
 <template>
   <div>
     <div class="poem">
-      <h1 class="poem_title">{{ data.title }}</h1>
+      <h1 class="poem_title">
+        {{ data.title }}
+      </h1>
       <div
         class="poem_body"
-        v-html="data.content" />
+        v-html="data.content"
+      />
       <div class="poem_info">
         {{ poemInfo }}
       </div>
       <div
         v-if="data.category && data.category.length > 0"
-        class="poem_category">
+        class="poem_category"
+      >
         <div
           v-for="c in data.category"
           :key="c"
-          class="poem_category_item">
+          class="poem_category_item"
+        >
           {{ c }}
         </div>
       </div>
       <div
         v-if="data.notes"
         class="poem_notes"
-        v-html="data.notes" />
+        v-html="data.notes"
+      />
     </div>
     <div
       v-if="data.youtube_link"
-      class="poem_video">
+      class="poem_video"
+    >
       <iframe
         :src="data.youtube_link"
         frameborder="0"
         allow="autoplay; encrypted-media"
-        allowfullscreen />
+        allowfullscreen
+      />
     </div>
   </div>
 </template>

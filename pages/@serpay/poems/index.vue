@@ -3,39 +3,48 @@
     <div class="page_action">
       <div 
         v-if="poets && poets.length > 0"
-        class="page_action_item">
+        class="page_action_item"
+      >
         <el-select 
           v-model="poetId" 
           filterable 
           placeholder="View by Poet"
-          @change="getPoemsOfPoet(poetId)">
+          @change="getPoemsOfPoet(poetId)"
+        >
           <el-option
             v-for="p in poets"
             :key="p.id"
             :label="p.fullname"
-            :value="p.id" />
+            :value="p.id"
+          />
         </el-select>
       </div>
       <div class="page_action_item">
         <el-button 
           icon="el-icon-circle-plus-outline" 
           plain
-          @click="openAddFormDialog">Add New</el-button>
+          @click="openAddFormDialog"
+        >
+          Add New
+        </el-button>
         <poem-form :type="'add'" />
       </div>
     </div>
     <div class="page_body">
       <el-tabs 
         value="approved"
-        @tab-click="handleTabClick">
+        @tab-click="handleTabClick"
+      >
         <el-tab-pane 
           label="Approved" 
-          name="approved">
+          name="approved"
+        >
           <poem-list :data="poems" />
         </el-tab-pane>
         <el-tab-pane 
           label="Unapproved" 
-          name="unapproved">
+          name="unapproved"
+        >
           <poem-list :data="unapprovedPoems" />
         </el-tab-pane>
       </el-tabs>

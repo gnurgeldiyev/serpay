@@ -9,7 +9,7 @@
           <panel-menu />
         </el-col>
         <el-col :span="20">
-          <nuxt/>
+          <nuxt />
         </el-col>
       </el-row>
     </el-main>

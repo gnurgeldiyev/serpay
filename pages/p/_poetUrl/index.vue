@@ -1,10 +1,13 @@
 <template>
   <div>
     <profile-view :data="poet" />
-    <h1 class="title">Goşgular</h1>
+    <h1 class="title">
+      Goşgular
+    </h1>
     <poem-list 
       :data="poems"
-      :poet="poet" />
+      :poet="poet"
+    />
   </div>
 </template>
 

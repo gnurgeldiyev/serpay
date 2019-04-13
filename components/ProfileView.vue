@@ -1,14 +1,17 @@
 <template>
   <div class="pv">
     <div class="pv_info">
-      <h1 class="pv_info_title">{{ data.fullname }}</h1>
+      <h1 class="pv_info_title">
+        {{ data.fullname }}
+      </h1>
       <p class="pv_info_description">
         {{ data.bio }} 
         <a
           v-if="data.wiki_link"
           :href="`${data.wiki_link}`"
           target="_self"
-          title="Wikipedia Sahypasy">
+          title="Wikipedia Sahypasy"
+        >
           Wikipedia
         </a>
       </p>
@@ -20,7 +23,8 @@
       <img 
         :src="'/' + data.avatar"
         :alt="data.fullname"
-        class="pv_media_avatar">
+        class="pv_media_avatar"
+      >
     </div>
   </div>
 </template>

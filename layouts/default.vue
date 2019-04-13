@@ -2,7 +2,7 @@
   <div>
     <app-header :brand="brand" />
     <section class="container">
-      <nuxt/>
+      <nuxt />
     </section>
     <app-footer />
   </div>

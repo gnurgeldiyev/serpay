@@ -8,60 +8,75 @@
       :close-on-click-modal="false"
       custom-class="form_dialog"
       @open="open"
-      @close="close">
+      @close="close"
+    >
       <el-form 
         ref="form" 
         :model="form"
         :rules="rules"
-        class="form">
-        <h2 class="form_title">{{ getFormTitle }}</h2>
+        class="form"
+      >
+        <h2 class="form_title">
+          {{ getFormTitle }}
+        </h2>
         <el-form-item 
           prop="fullname"
-          label="Full Name">
+          label="Full Name"
+        >
           <el-input 
             v-model="form.fullname"
             :disabled="type === 'view'"
-            :placeholder="type === 'view' ? '' : 'Full name of the poet'" />
+            :placeholder="type === 'view' ? '' : 'Full name of the poet'"
+          />
         </el-form-item>
         <el-form-item 
           prop="bio"
-          label="Short Bio">
+          label="Short Bio"
+        >
           <el-input
             v-model="form.bio"
             :rows="4"
             :disabled="type === 'view'"
             :placeholder="type === 'view' ? '' : 'Short bio of the poet'"
-            type="textarea" />
+            type="textarea"
+          />
         </el-form-item>
         <el-form-item 
           prop="birth_date"
-          label="Birth Date">
+          label="Birth Date"
+        >
           <el-input 
             v-model="form.birth_date"
             :disabled="type === 'view'"
             :placeholder="type === 'view' ? '' : 'Birth date of poet'"
-            @keypress.native="onlyNumbers"/>
+            @keypress.native="onlyNumbers"
+          />
         </el-form-item>
         <el-form-item 
           prop="death_date"
-          label="Death Date">
+          label="Death Date"
+        >
           <el-input 
             v-model="form.death_date"
             :disabled="type === 'view'"
             :placeholder="type === 'view' ? '' : 'Death date of poet'"
-            @keypress.native="onlyNumbers"/>
+            @keypress.native="onlyNumbers"
+          />
         </el-form-item>
         <el-form-item 
           prop="wiki_link"
-          label="Wikipedia Link">
+          label="Wikipedia Link"
+        >
           <el-input 
             v-model="form.wiki_link"
             :disabled="type === 'view'"
-            :placeholder="type === 'view' ? '' : 'Wikipedia page link of the poet'"/>
+            :placeholder="type === 'view' ? '' : 'Wikipedia page link of the poet'"
+          />
         </el-form-item>
         <el-form-item 
           prop="avatar"
-          label="Avatar">
+          label="Avatar"
+        >
           <el-upload
             :disabled="type === 'view'"
             :before-upload="beforeUpload"
@@ -70,25 +85,30 @@
             :on-success="handleSuccess"
             :file-list="fileList"
             action="/api/poets/upload"
-            class="upload">
+            class="upload"
+          >
             <img 
               v-if="form.avatar" 
               :src="'/' + form.avatar" 
-              class="avatar">
+              class="avatar"
+            >
             <i 
               v-else 
-              class="el-icon-plus upload-icon" />
+              class="el-icon-plus upload-icon"
+            />
           </el-upload>
         </el-form-item>
         <el-form-item style="float:right;">
           <el-button 
-            @click="close">
+            @click="close"
+          >
             {{ getCloseButtonText }}
           </el-button>
           <el-button 
             v-if="type !== 'view'"
             type="primary" 
-            @click="submitForm">
+            @click="submitForm"
+          >
             {{ getSubmitButtonText }}
           </el-button>
         </el-form-item>

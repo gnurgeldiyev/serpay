@@ -5,14 +5,16 @@
         <img
           class="f_item_icon"
           src="/icon-heart.svg"
-          alt="söýgi">
+          alt="söýgi"
+        >
         bilen döredildi  •
       </div>
       <div class="f_item">
         public beta •
         <a
           href="https://penjire.com"
-          title="Penjire Topary">
+          title="Penjire Topary"
+        >
           penjire
         </a>
       </div>

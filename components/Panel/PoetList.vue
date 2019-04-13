@@ -1,30 +1,35 @@
 <template>
   <ul 
     v-if="data && data.length > 0"
-    class="list">
+    class="list"
+  >
     <li 
       v-for="(poet, i) in data"
       :key="i"
-      class="list_item">
+      class="list_item"
+    >
       {{ i+1 }}. {{ poet.fullname }}
       <span class="list_item_action">
         <el-button 
           class="list_item_action_item view"
           icon="el-icon-view"
           type="text"
-          @click="viewPoet(poet)" />
+          @click="viewPoet(poet)"
+        />
         <el-button 
           v-if="editor.role === 'admin'"
           class="list_item_action_item edit"
           icon="el-icon-edit"
           type="text"
-          @click="editPoet(poet)" />
+          @click="editPoet(poet)"
+        />
         <el-button 
           v-if="editor.role === 'admin'"
           class="list_item_action_item delete"
           icon="el-icon-delete"
           type="text"
-          @click="deletePoet(poet.id)" />
+          @click="deletePoet(poet.id)"
+        />
       </span>
     </li>
   </ul>

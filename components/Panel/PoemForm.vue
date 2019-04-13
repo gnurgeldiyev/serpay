@@ -7,56 +7,70 @@
       :close-on-click-modal="false"
       custom-class="form_dialog"
       @open="open"
-      @close="close">
+      @close="close"
+    >
       <el-form 
         ref="form" 
         :model="form"
         :rules="rules"
-        class="form">
-        <h2 class="form_title">{{ getFormTitle }}</h2>
+        class="form"
+      >
+        <h2 class="form_title">
+          {{ getFormTitle }}
+        </h2>
         <el-form-item 
           prop="title"
-          label="Title">
+          label="Title"
+        >
           <el-input 
             v-model="form.title"
             :disabled="type === 'view'"
-            :placeholder="type === 'view' ? '' : 'Title of the poem'" />
+            :placeholder="type === 'view' ? '' : 'Title of the poem'"
+          />
         </el-form-item>
         <el-form-item 
           prop="author"
-          label="Author">
+          label="Author"
+        >
           <el-select 
             v-model="form.author"
             :disabled="type === 'view'" 
             :placeholder="type === 'view' ? '' : 'Author of the poem'"
-            style="width: 100%;">
+            style="width: 100%;"
+          >
             <el-option 
               v-for="poet in poets"
               :key="poet.id"
               :label="poet.fullname" 
-              :value="poet.id" />
+              :value="poet.id"
+            />
           </el-select>
         </el-form-item>
         <el-form-item 
           prop="year"
-          label="Year">
+          label="Year"
+        >
           <el-input 
             v-model="form.year"
             :disabled="type === 'view'"
             :placeholder="type === 'view' ? '' : 'Written year of the poem'"
-            @keypress.native="onlyNumbers"/>
+            @keypress.native="onlyNumbers"
+          />
         </el-form-item>
         <el-form-item 
           prop="youtube_link"
-          label="YouTube Video Link">
+          label="YouTube Video Link"
+        >
           <el-input 
             v-model="form.youtube_link"
             :disabled="type === 'view'"
-            :placeholder="type === 'view' ? '' : 'YouTube video link of the poem'"/>
+            :placeholder="type === 'view' ? '' : 'YouTube video link of the poem'"
+          />
         </el-form-item>
         <el-form-item 
           prop="category"
-          label="Category">
+          label="Category"
+        >
           <el-select
             v-model="form.category"
             :disabled="type === 'view'"
@@ -65,44 +79,52 @@
             style="width: 100%;"
             multiple
             filterable
-            default-first-option>
+            default-first-option
+          >
             <el-option
               v-for="item in categories"
               :key="item"
               :label="item"
-              :value="item" />
+              :value="item"
+            />
           </el-select>
         </el-form-item>
         <el-form-item 
           prop="notes"
-          label="Notes">
+          label="Notes"
+        >
           <el-input
             v-model="form.notes"
             :rows="4"
             :disabled="type === 'view'"
             :placeholder="type === 'view' ? '' : 'Notes of the poem'"
-            type="textarea" />
+            type="textarea"
+          />
         </el-form-item>
         <el-form-item 
           prop="content"
-          label="Poem">
+          label="Poem"
+        >
           <section class="container">
             <div 
               v-quill:myQuillEditor="editorOption"
               :content="form.content"
               :disabled="type === 'view'"
-              @change="onEditorChange($event)" />
+              @change="onEditorChange($event)"
+            />
           </section>
         </el-form-item>
         <el-form-item style="float:right;">
           <el-button 
-            @click="close">
+            @click="close"
+          >
             {{ getCloseButtonText }}
           </el-button>
           <el-button 
             v-if="type !== 'view'"
             type="primary" 
-            @click="submitForm">
+            @click="submitForm"
+          >
             {{ getSubmitButtonText }}
           </el-button>
         </el-form-item>

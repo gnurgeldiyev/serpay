@@ -1,11 +1,13 @@
 <template>
   <ul 
     v-if="data.length > 0"
-    class="list">
+    class="list"
+  >
     <li 
       v-for="(poem, i) in data"
       :key="i"
-      class="list_item">
+      class="list_item"
+    >
       {{ i+1 }}. {{ poem.title }}
       <span class="list_item_action">
         <el-button 
@@ -14,33 +16,38 @@
           icon="el-icon-circle-check-outline"
           type="text"
           title="Approve"
-          @click="approvePoem(poem.id)" />
+          @click="approvePoem(poem.id)"
+        />
         <el-button 
           v-if="poem.is_approved === true && editor.role === 'admin'"
           class="list_item_action_item unapprove"
           icon="el-icon-circle-close-outline"
           type="text"
           title="Unapprove"
-          @click="unapprovePoem(poem.id)" />
+          @click="unapprovePoem(poem.id)"
+        />
         <el-button 
           class="list_item_action_item view"
           icon="el-icon-view"
           type="text"
-          @click="viewPoem(poem)" />
+          @click="viewPoem(poem)"
+        />
         <el-button 
           v-if="poem.is_approved === false && poem.added_by.id === editor.id"
           class="list_item_action_item edit"
           icon="el-icon-edit"
           type="text"
           title="Edit"
-          @click="editPoem(poem)" />
+          @click="editPoem(poem)"
+        />
         <el-button 
           v-if="poem.is_approved === false && poem.added_by.id === editor.id"
           class="list_item_action_item delete"
           icon="el-icon-delete"
           type="text"
           title="Delete"
-          @click="deletePoem(poem.id)" />
+          @click="deletePoem(poem.id)"
+        />
       </span>
     </li>
   </ul>

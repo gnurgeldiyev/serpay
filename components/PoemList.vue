@@ -1,15 +1,18 @@
 <template>
   <div
-    v-if="data.length > 0">
+    v-if="data.length > 0"
+  >
     <ul class="list">
       <li
         v-for="(poem, i) in data"
         :key="i"
-        class="list_item">
+        class="list_item"
+      >
         <nuxt-link
           :to="'/p/' + poet.url + '/' + poem.url"
           :title="poem.title"
-          class="a">
+          class="a"
+        >
           {{ i+1 }}. {{ poem.title }}
         </nuxt-link>
       </li>

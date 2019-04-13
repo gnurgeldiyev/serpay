@@ -2,27 +2,32 @@
   <el-table
     ref="table"
     :data="data"
-    style="width: 100%;">
+    style="width: 100%;"
+  >
     <el-table-column
       prop="firstname"
       label="First Name"
       width="160"
       column-key="firstname"
-      sortable />
+      sortable
+    />
     <el-table-column
       prop="lastname"
       label="Last Name"
       width="160"
       column-key="lastname"
-      sortable />
+      sortable
+    />
     <el-table-column
       prop="email"
       label="Email"
-      width="240" />
+      width="240"
+    />
     <el-table-column
       prop="created_at"
       label="Joined"
-      width="160">
+      width="160"
+    >
       <template slot-scope="scope">
         {{ formatDate(scope.row.created_at) }}
       </template>
@@ -30,51 +35,61 @@
     <el-table-column
       prop="role"
       label="Role"
-      width="160">
+      width="160"
+    >
       <template slot-scope="scope">
         <el-tag
           :type="scope.row.role === 'admin' ? 'primary' : 'info'"
           size="small"
           style="margin-right:4px;"
-          disable-transitions>
+          disable-transitions
+        >
           {{ scope.row.role }}
         </el-tag>
       </template>
     </el-table-column>
     <el-table-column
       label="Operations"
-      align="center">
+      align="center"
+    >
       <template slot-scope="scope">
         <el-dropdown trigger="click">
           <span 
             class="el-icon-more"
-            style="font-size:1.2em;" />
+            style="font-size:1.2em;"
+          />
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item 
-              v-if="editor.role === 'admin' || scope.row.id === editor.id">
+              v-if="editor.role === 'admin' || scope.row.id === editor.id"
+            >
               <el-button
                 type="text"
                 style="color:#606266;"
-                @click="editItem(scope.row)">
+                @click="editItem(scope.row)"
+              >
                 Edit Details
               </el-button>
             </el-dropdown-item>
             <el-dropdown-item 
-              v-if="editor.role === 'admin' || scope.row.id === editor.id">
+              v-if="editor.role === 'admin' || scope.row.id === editor.id"
+            >
               <el-button
                 type="text"
                 style="color:#606266;"
-                @click="resetPassword(scope.row)">
+                @click="resetPassword(scope.row)"
+              >
                 Reset Password
               </el-button>
             </el-dropdown-item>
             <el-dropdown-item 
               v-if="editor.role === 'admin'"
-              divided>
+              divided
+            >
               <el-button
                 type="text"
                 style="color:red;"
-                @click="deactivateItem(scope.row)">
+                @click="deactivateItem(scope.row)"
+              >
                 Deactivate User
               </el-button>
             </el-dropdown-item>

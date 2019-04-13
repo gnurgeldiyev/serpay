@@ -3,11 +3,15 @@
     <div class="page_action">
       <div 
         v-if="editor.role === 'admin'"
-        class="page_action_item">
+        class="page_action_item"
+      >
         <el-button 
           icon="el-icon-circle-plus-outline" 
           plain
-          @click="openAddFormDialog">Add New</el-button>
+          @click="openAddFormDialog"
+        >
+          Add New
+        </el-button>
         <poet-form />
       </div>
     </div>

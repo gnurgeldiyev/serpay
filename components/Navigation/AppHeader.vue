@@ -4,21 +4,28 @@
       <nuxt-link
         :title="brand.title + ', ' + brand.subtitle"
         to="/"
-        class="h_brand_title">
+        class="h_brand_title"
+      >
         {{ brand.title }}
       </nuxt-link>
-      <p class="h_brand_subtitle">{{ brand.subtitle }}</p>
+      <p class="h_brand_subtitle">
+        {{ brand.subtitle }}
+      </p>
     </div>  
     <div class="h_menu">
       <ul 
         v-if="menu.length > 0"
-        class="h_menu_list">
+        class="h_menu_list"
+      >
         <li 
           v-for="item in menu"
           :key="item.url"
           :class="{ 'h_menu_list_item-active': isActive(item.url) }"
-          class="h_menu_list_item">
-          <nuxt-link :to="`/${item.url}`">{{ item.title }}</nuxt-link>
+          class="h_menu_list_item"
+        >
+          <nuxt-link :to="`/${item.url}`">
+            {{ item.title }}
+          </nuxt-link>
         </li>
       </ul>
     </div>

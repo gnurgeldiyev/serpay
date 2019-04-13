@@ -3,11 +3,15 @@
     <div class="page_action">
       <div 
         v-if="editor.role === 'admin'"
-        class="page_action_item">
+        class="page_action_item"
+      >
         <el-button 
           icon="el-icon-circle-plus-outline" 
           plain
-          @click="openFormDialog">Add New</el-button>
+          @click="openFormDialog"
+        >
+          Add New
+        </el-button>
         <editor-form />
       </div>
     </div>
@@ -15,14 +19,16 @@
       <el-tabs value="active">
         <el-tab-pane 
           label="Active" 
-          name="active">
+          name="active"
+        >
           <editor-list :data="editors" />
           <editor-form :type="'edit'" />
           <editor-password-reset-form />
         </el-tab-pane>
         <el-tab-pane 
           label="Deactivated" 
-          name="deactive">
+          name="deactive"
+        >
           <editor-list :data="deactivatedEditors" />
         </el-tab-pane>
       </el-tabs>

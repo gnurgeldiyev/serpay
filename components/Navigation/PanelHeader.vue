@@ -4,11 +4,13 @@
       <div>
         <nuxt-link 
           to="/@serpay" 
-          class="pheader_logo">
+          class="pheader_logo"
+        >
           Serpaý
         </nuxt-link>
         <span 
-          v-if="editor">
+          v-if="editor"
+        >
           {{ editor.role }}
         </span>
       </div>
@@ -19,7 +21,8 @@
           <nuxt-link 
             to="/" 
             target="_blank"
-            title="Serpaý, Goşgular Çemeni">
+            title="Serpaý, Goşgular Çemeni"
+          >
             serpay.penjire.com
           </nuxt-link>
         </li>
@@ -30,7 +33,8 @@
               <el-dropdown-item>
                 <el-button 
                   type="text"
-                  @click="handleLogout(editor.id)">
+                  @click="handleLogout(editor.id)"
+                >
                   Logout
                 </el-button>
               </el-dropdown-item>

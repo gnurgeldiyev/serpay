@@ -7,12 +7,14 @@
       :top="'4vh'"
       custom-class="form_dialog"
       @open="open"
-      @close="close">
+      @close="close"
+    >
       <el-form 
         ref="form" 
         :model="form"
         :rules="rules"
-        class="form">
+        class="form"
+      >
         <h2 class="form_title">
           Reset Password
         </h2>
@@ -21,21 +23,25 @@
         </h4>
         <el-form-item 
           prop="password"
-          label="New Password">
+          label="New Password"
+        >
           <el-input 
             v-model="form.password"
             type="password"
             autocomplete="off"
-            placeholder="••••••••" />
+            placeholder="••••••••"
+          />
         </el-form-item>
         <el-form-item style="float:right;">
           <el-button 
-            @click="close">
+            @click="close"
+          >
             Cancel
           </el-button>
           <el-button 
             type="primary" 
-            @click="submitForm">
+            @click="submitForm"
+          >
             Reset Password
           </el-button>
         </el-form-item>

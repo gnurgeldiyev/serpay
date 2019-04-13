@@ -7,70 +7,88 @@
       :top="'2vh'"
       custom-class="form_dialog"
       @open="open"
-      @close="close">
+      @close="close"
+    >
       <el-form 
         ref="form" 
         :model="form"
         :rules="rules"
-        class="form">
-        <h2 class="form_title">{{ getFormTitle }}</h2>
+        class="form"
+      >
+        <h2 class="form_title">
+          {{ getFormTitle }}
+        </h2>
         <el-form-item 
           prop="firstname"
-          label="First Name">
+          label="First Name"
+        >
           <el-input 
             v-model="form.firstname"
             autocomplete="off"
-            placeholder="Amalie" />
+            placeholder="Amalie"
+          />
         </el-form-item>
         <el-form-item 
           prop="lastname"
-          label="Last Name">
+          label="Last Name"
+        >
           <el-input 
             v-model="form.lastname"
             autocomplete="off"
-            placeholder="Stone" />
+            placeholder="Stone"
+          />
         </el-form-item>
         <el-form-item 
           prop="email"
-          label="Email Address">
+          label="Email Address"
+        >
           <el-input 
             v-model="form.email"
             autocomplete="off"
-            placeholder="example@mail.com"/>
+            placeholder="example@mail.com"
+          />
         </el-form-item>
         <el-form-item 
           v-if="type === 'add'"
           prop="password"
-          label="User Password">
+          label="User Password"
+        >
           <el-input 
             v-model="form.password"
             type="password"
             autocomplete="off"
-            placeholder="••••••••" />
+            placeholder="••••••••"
+          />
         </el-form-item>
         <el-form-item 
           prop="role"
-          label="Editor Role">
+          label="Editor Role"
+        >
           <el-select
             v-model="form.role"
             style="width: 100%;"
-            placeholder="Select editor role">
+            placeholder="Select editor role"
+          >
             <el-option
               label="Admin"
-              value="admin" />
+              value="admin"
+            />
             <el-option
               label="Editor"
-              value="editor" />
+              value="editor"
+            />
           </el-select>
         </el-form-item>
         <el-form-item style="float:right;">
           <el-button 
-            @click="close">
+            @click="close"
+          >
             Cancel
           </el-button>
           <el-button 
             type="primary" 
-            @click="submitForm">
+            @click="submitForm"
+          >
             {{ getSubmitButtonText }}
           </el-button>
         </el-form-item>

@@ -2,13 +2,15 @@
   <nuxt-link 
     :to="'/p/' + data.url"
     :title="'Şahyr ' + data.fullname"
-    class="a">
+    class="a"
+  >
     <div class="pc">
       <div class="pc_media">
         <img 
           :src="'/' + data.avatar" 
           :alt="data.fullname"
-          class="pc_media_avatar">
+          class="pc_media_avatar"
+        >
       </div>
       <div class="pc_info">
         <p class="pc_info_title">
@@ -16,7 +18,8 @@
         </p>
         <p 
           v-if="total > 0"
-          class="pc_info_subtitle">
+          class="pc_info_subtitle"
+        >
           {{ total }} goşgy
         </p>
       </div>

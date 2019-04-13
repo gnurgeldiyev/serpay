@@ -1,13 +1,17 @@
 <template>
   <div>
-    <h1 class="title">Şahyrlar</h1>
+    <h1 class="title">
+      Şahyrlar
+    </h1>
     <div 
       v-if="poets && poets.length > 0"
-      class="poets">
+      class="poets"
+    >
       <profile-card
         v-for="(poet, i) in poets"
         :key="i"
-        :data="poet" />
+        :data="poet"
+      />
     </div> 
   </div>
 </template>
