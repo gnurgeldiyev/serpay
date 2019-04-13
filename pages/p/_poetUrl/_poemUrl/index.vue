@@ -1,11 +1,13 @@
 <template>
   <div>
     <poem-view :data="poem" />
+    <profile-card :data="poet" />
   </div>
 </template>
 
 <script>
 import PoemView from '@/components/PoemView'
+const ProfileCard = () => require('@/components/ProfileCard')
 
   export default {
     head() {
@@ -17,11 +19,16 @@ import PoemView from '@/components/PoemView'
       }
     },
     components: {
-      'poem-view': PoemView
+      'poem-view': PoemView,
+      'profile-card': ProfileCard
     },
     computed: {
       poem() {
         return this.$store.getters['poem/getOne']
+      },
+      poet() {
+        const poem = this.$store.getters['poem/getOne']
+        return poem.author
       },
       title() {
         const poem = this.$store.getters['poem/getOne']
