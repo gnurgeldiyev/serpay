@@ -55,8 +55,8 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { src: '@/plugins/element-ui', ssr: true },
-    { src: '@/plugins/quill-editor', ssr: false }
+    { src: '@/plugins/element-ui.js' },
+    { src: '@/plugins/quill-editor.client.js' }
   ],
   dev: isDevMode,
   /*
@@ -68,10 +68,6 @@ module.exports = {
     'cookie-universal-nuxt',
     '@nuxtjs/sitemap',
     ['@nuxtjs/component-cache', { maxAge: 1000 * 60 * 60 }],
-    ['nuxt-imagemin', {
-        optipng: { optimizationLevel: 5 },
-        gifsicle: { optimizationLevel: 2 }
-    }],
     ['nuxt-social-meta', {
       url: 'https://serpay.penjire.com',
       title: 'Serpaý – Goşgular Çemeni',
@@ -118,8 +114,6 @@ module.exports = {
     },
     proxy: true
   },
-  // enable caching
-  cache: true,
   serverMiddleware: ['@/common/cache.js'],
   router: {
     scrollBehavior(to, from, savedPosition) {
@@ -131,17 +125,47 @@ module.exports = {
     }
   },
   /*
+  * Render (preload & prefetch)
+  */
+  render: {
+    http2: {
+      push: true
+    },
+    bundleRenderer: {
+      shouldPrefetch: (file, type) => ['script', 'style', 'font'].includes(type) && !file.includes('@admin')
+    }
+  },
+  /*
   ** Build configuration
   */
   build: {
-    /*
-    ** You can extend webpack config here
-    */
+    optimization: {
+      runtimeChunk: 'single',
+      splitChunks: {
+        chunks: 'all',
+        maxInitialRequests: Infinity,
+        minSize: 0,
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name(module) {
+              // get node_modules/packageName
+              const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+              // npm package names are URL-safe, but some servers don't like @ symbols
+              return `pkg.${packageName.replace('@', '')}`;
+            }
+          }
+        }
+      }
+    },
     plugins: [
       new webpack.ProvidePlugin({
         'window.Quill': 'quill'
       })
     ],
+    /*
+    ** You can extend webpack config here
+    */
     extend(config, { isDev, isClient}) {
       // Run ESLint on save
       if (isDev && isClient) {
