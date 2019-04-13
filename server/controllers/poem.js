@@ -1,11 +1,12 @@
-const Poem = require('../models/poem')
+const conn = require('../models')
+const Poem = conn.model('Poem')
 const { escape, ltrim, isMongoId } = require('validator')
 const {
   validateData,
   toPublic
 } = require('../helpers/poem')
 
-/** 
+/**
  * GET | get all by poet id, approved state queries
 */
 exports.getAll = (req, res) => {
@@ -20,10 +21,10 @@ exports.getAll = (req, res) => {
         if (!poem) {
           return res.status(404).json({
             data: {},
-            meta: { 
-              code: 404, 
+            meta: {
+              code: 404,
               error: { code: 'NOT_FOUND', message: 'There is no any poem' }
-            } 
+            }
           })
         }
         return res.status(200).json({
@@ -35,12 +36,12 @@ exports.getAll = (req, res) => {
         })
       })
       .catch((err) => {
-        return res.status(500).json({ 
-          data: {}, 
-          meta: { 
-            code: 500, 
+        return res.status(500).json({
+          data: {},
+          meta: {
+            code: 500,
             error: { code: err.code, message: err.message }
-          } 
+          }
         })
       })
   }
@@ -67,10 +68,10 @@ exports.getAll = (req, res) => {
         if (!poems.length) {
           return res.status(404).json({
             data: {},
-            meta: { 
-              code: 404, 
+            meta: {
+              code: 404,
               error: { code: 'NOT_FOUND', message: 'There is no any poem' }
-            } 
+            }
           })
         }
         let p = []
@@ -86,12 +87,12 @@ exports.getAll = (req, res) => {
         })
       })
       .catch((err) => {
-        return res.status(500).json({ 
-          data: {}, 
-          meta: { 
-            code: 500, 
+        return res.status(500).json({
+          data: {},
+          meta: {
+            code: 500,
             error: { code: err.code, message: err.message }
-          } 
+          }
         })
       })
   } else {
@@ -107,10 +108,10 @@ exports.getAll = (req, res) => {
         if (!poems.length) {
           return res.status(404).json({
             data: {},
-            meta: { 
-              code: 404, 
+            meta: {
+              code: 404,
               error: { code: 'NOT_FOUND', message: 'There is no any poem' }
-            } 
+            }
           })
         }
         let p = []
@@ -126,18 +127,18 @@ exports.getAll = (req, res) => {
         })
       })
       .catch((err) => {
-        return res.status(500).json({ 
-          data: {}, 
-          meta: { 
-            code: 500, 
+        return res.status(500).json({
+          data: {},
+          meta: {
+            code: 500,
             error: { code: err.code, message: err.message }
-          } 
+          }
         })
       })
   }
 }
 
-/** 
+/**
  * GET | get one by id, approved state queries
 */
 exports.getOne = (req, res) => {
@@ -163,10 +164,10 @@ exports.getOne = (req, res) => {
       if (!poem) {
         return res.status(404).json({
           data: {},
-          meta: { 
-            code: 404, 
+          meta: {
+            code: 404,
             error: { code: 'NOT_FOUND', message: 'There is no any poem' }
-          } 
+          }
         })
       }
       return res.status(200).json({
@@ -178,18 +179,18 @@ exports.getOne = (req, res) => {
       })
     })
     .catch((err) => {
-      return res.status(500).json({ 
-        data: {}, 
-        meta: { 
-          code: 500, 
+      return res.status(500).json({
+        data: {},
+        meta: {
+          code: 500,
           error: { code: err.code, message: err.message }
-        } 
+        }
       })
     })
 }
 
 
-/** 
+/**
  * POST | add new poem
 */
 exports.add = async (req, res) => {
@@ -198,9 +199,9 @@ exports.add = async (req, res) => {
   // request body data validation
   result = await validateData(d)
   if (!result.status) {
-    return res.status(400).json({ 
-      data: {}, 
-      meta: { code: 400, error: result.error } 
+    return res.status(400).json({
+      data: {},
+      meta: { code: 400, error: result.error }
     })
   }
   // add new poem
@@ -225,27 +226,27 @@ exports.add = async (req, res) => {
           })
         })
         .catch((err) => {
-          return res.status(400).json({ 
-            data: {}, 
-            meta: { 
-              code: 400, 
+          return res.status(400).json({
+            data: {},
+            meta: {
+              code: 400,
               error: { code: err.code, message: err.message }
-            } 
+            }
           })
         })
     })
     .catch((err) => {
-      return res.status(400).json({ 
-        data: {}, 
-        meta: { 
-          code: 400, 
+      return res.status(400).json({
+        data: {},
+        meta: {
+          code: 400,
           error: { code: err.code, message: err.message }
-        } 
+        }
       })
     })
 }
 
-/** 
+/**
  * PUT | update poem by id
 */
 exports.update = async (req, res) => {
@@ -265,9 +266,9 @@ exports.update = async (req, res) => {
   // request body data validation
   result = await validateData(d)
   if (!result.status) {
-    return res.status(400).json({ 
-      data: {}, 
-      meta: { code: 400, error: result.error } 
+    return res.status(400).json({
+      data: {},
+      meta: { code: 400, error: result.error }
     })
   }
   // update poem
@@ -286,12 +287,12 @@ exports.update = async (req, res) => {
   }, { new: true })
     .then((poem) => {
       if (!poem) {
-        return res.status(404).json({ 
-          data: {}, 
-          meta: { 
-            code: 404, 
+        return res.status(404).json({
+          data: {},
+          meta: {
+            code: 404,
             error: { code: 'NOT_FOUND', message: 'Editor not found' }
-          } 
+          }
         })
       }
       return res.status(200).json({
@@ -300,17 +301,17 @@ exports.update = async (req, res) => {
       })
     })
     .catch((err) => {
-      return res.status(400).json({ 
-        data: {}, 
-        meta: { 
-          code: 400, 
+      return res.status(400).json({
+        data: {},
+        meta: {
+          code: 400,
           error: { code: err.code, message: err.message }
         }
       })
     })
 }
 
-/** 
+/**
  * PUT | poem approve state toggle
 */
 exports.approve = (req, res) => {
@@ -338,12 +339,12 @@ exports.approve = (req, res) => {
   }, { new: true })
     .then((poem) => {
       if (!poem) {
-        return res.status(404).json({ 
-          data: {}, 
-          meta: { 
-            code: 404, 
+        return res.status(404).json({
+          data: {},
+          meta: {
+            code: 404,
             error: { code: 'NOT_FOUND', message: 'Editor not found' }
-          } 
+          }
         })
       }
       return res.status(200).json({
@@ -352,17 +353,17 @@ exports.approve = (req, res) => {
       })
     })
     .catch((err) => {
-      return res.status(400).json({ 
-        data: {}, 
-        meta: { 
-          code: 400, 
+      return res.status(400).json({
+        data: {},
+        meta: {
+          code: 400,
           error: { code: err.code, message: err.message }
         }
       })
     })
 }
 
-/** 
+/**
  * DELETE | delete poem, only for approved state is false
 */
 exports.delete = (req, res) => {
@@ -381,12 +382,12 @@ exports.delete = (req, res) => {
   Poem.findOneAndDelete({ _id: id, is_approved: false })
     .then((poem) => {
       if (!poem) {
-        return res.status(404).json({ 
-          data: {}, 
-          meta: { 
-            code: 404, 
+        return res.status(404).json({
+          data: {},
+          meta: {
+            code: 404,
             error: { code: 'NOT_FOUND', message: 'Editor not found' }
-          } 
+          }
         })
       }
       return res.status(200).json({
@@ -395,10 +396,10 @@ exports.delete = (req, res) => {
       })
     })
     .catch((err) => {
-      return res.status(400).json({ 
-        data: {}, 
-        meta: { 
-          code: 400, 
+      return res.status(400).json({
+        data: {},
+        meta: {
+          code: 400,
           error: { code: err.code, message: err.message }
         }
       })

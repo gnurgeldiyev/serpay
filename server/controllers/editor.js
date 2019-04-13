@@ -1,4 +1,5 @@
-const Editor = require('../models/editor')
+const conn = require('../models')
+const Editor = conn.model('Editor')
 const { isMongoId } = require('validator')
 const {
   validateData,
@@ -8,7 +9,7 @@ const {
   generateToken
 } = require('../helpers/editor')
 
-/** 
+/**
  * GET | get all active editors
 */
 exports.getAll = (req, res) => {
@@ -20,10 +21,10 @@ exports.getAll = (req, res) => {
         if (!editors.length) {
           return res.status(404).json({
             data: {},
-            meta: { 
-              code: 404, 
+            meta: {
+              code: 404,
               error: { code: 'NOT_FOUND', message: 'There is no any editor' }
-            } 
+            }
           })
         }
         let e = []
@@ -39,12 +40,12 @@ exports.getAll = (req, res) => {
         })
       })
       .catch((err) => {
-        return res.status(500).json({ 
-          data: {}, 
-          meta: { 
-            code: 500, 
+        return res.status(500).json({
+          data: {},
+          meta: {
+            code: 500,
             error: { code: err.code, message: err.message }
-          } 
+          }
         })
       })
   } else {
@@ -53,10 +54,10 @@ exports.getAll = (req, res) => {
       if (!editors.length) {
         return res.status(404).json({
           data: {},
-          meta: { 
-            code: 404, 
+          meta: {
+            code: 404,
             error: { code: 'NOT_FOUND', message: 'There is no any editor' }
-          } 
+          }
         })
       }
       let e = []
@@ -72,18 +73,18 @@ exports.getAll = (req, res) => {
       })
     })
     .catch((err) => {
-      return res.status(500).json({ 
-        data: {}, 
-        meta: { 
-          code: 500, 
+      return res.status(500).json({
+        data: {},
+        meta: {
+          code: 500,
           error: { code: err.code, message: err.message }
-        } 
+        }
       })
     })
   }
 }
 
-/** 
+/**
  * GET | get one by id
 */
 exports.getOne = (req, res) => {
@@ -103,10 +104,10 @@ exports.getOne = (req, res) => {
       if (!editor) {
         return res.status(404).json({
           data: {},
-          meta: { 
-            code: 404, 
+          meta: {
+            code: 404,
             error: { code: 'NOT_FOUND', message: 'There is no any editor' }
-          } 
+          }
         })
       }
       return res.status(200).json({
@@ -118,17 +119,17 @@ exports.getOne = (req, res) => {
       })
     })
     .catch((err) => {
-      return res.status(500).json({ 
-        data: {}, 
-        meta: { 
-          code: 500, 
+      return res.status(500).json({
+        data: {},
+        meta: {
+          code: 500,
           error: { code: err.code, message: err.message }
-        } 
+        }
       })
     })
 }
 
-/** 
+/**
  * POST | Add new editor
 */
 exports.add = async (req, res) => {
@@ -137,17 +138,17 @@ exports.add = async (req, res) => {
   // request body data validation
   result = await validateData('add', d)
   if (!result.status) {
-    return res.status(400).json({ 
-      data: {}, 
-      meta: { code: 400, error: result.error } 
+    return res.status(400).json({
+      data: {},
+      meta: { code: 400, error: result.error }
     })
   }
   // hash user password
   result = hashPassword(d.password)
   if (!result.status) {
-    return res.status(400).json({ 
-      data: {}, 
-      meta: { code: 400, error: result.error } 
+    return res.status(400).json({
+      data: {},
+      meta: { code: 400, error: result.error }
     })
   }
   // set returned hash password
@@ -168,17 +169,17 @@ exports.add = async (req, res) => {
       })
     })
     .catch((err) => {
-      return res.status(400).json({ 
-        data: {}, 
-        meta: { 
-          code: 400, 
+      return res.status(400).json({
+        data: {},
+        meta: {
+          code: 400,
           error: { code: err.code, message: err.message }
-        } 
+        }
       })
     })
 }
 
-/** 
+/**
  * POST | login editor
 */
 exports.login = async (req, res) => {
@@ -187,45 +188,47 @@ exports.login = async (req, res) => {
   // request body data validation
   result = await validateLoginData(d)
   if (!result.status) {
-    return res.status(400).json({ 
-      data: {}, 
-      meta: { code: 400, error: result.error } 
+    return res.status(400).json({
+      data: {},
+      meta: { code: 400, error: result.error }
     })
   }
   // hash user password
   result = await decodePassword(d.email, d.password)
   if (!result.status) {
-    return res.status(400).json({ 
-      data: {}, 
-      meta: { code: 400, error: result.error } 
+    return res.status(400).json({
+      data: {},
+      meta: { code: 400, error: result.error }
     })
   }
   // generate token
   result = generateToken(d.email)
 
   if (!result.status) {
-    return res.status(400).json({ 
-      data: {}, 
-      meta: { code: 400, error: result.error } 
+    return res.status(400).json({
+      data: {},
+      meta: { code: 400, error: result.error }
     })
   }
   // set generated token
   const token = result.data
-  Editor.findOneAndUpdate({
-    email: d.email
-  }, {
-    $set: {
-      token
-    }
-  }, { new: true })
+  Editor
+    .findOneAndUpdate({
+      email: d.email,
+      is_active: true
+    }, {
+      $set: {
+        token
+      }
+    }, { new: true })
     .then((editor) => {
       if (!editor) {
-        return res.status(400).json({ 
-          data: {}, 
-          meta: { 
-            code: 400, 
-            error: { code: 'NOT_AUTHORIZED', message: 'Not authorized' } 
-          } 
+        return res.status(400).json({
+          data: {},
+          meta: {
+            code: 400,
+            error: { code: 'NOT_AUTHORIZED', message: 'Not authorized' }
+          }
         })
       }
       return res.status(200).json({
@@ -235,7 +238,7 @@ exports.login = async (req, res) => {
     })
 }
 
-/** 
+/**
  * PUT | update editor by id
 */
 exports.update = async (req, res) => {
@@ -255,9 +258,9 @@ exports.update = async (req, res) => {
   d.id = id
   let result = await validateData('update', d)
   if (!result.status) {
-    return res.status(400).json({ 
-      data: {}, 
-      meta: { code: 400, error: result.error } 
+    return res.status(400).json({
+      data: {},
+      meta: { code: 400, error: result.error }
     })
   }
   Editor.findOneAndUpdate({ _id: id, is_active: true }, {
@@ -270,12 +273,12 @@ exports.update = async (req, res) => {
   }, { new: true })
     .then((editor) => {
       if (!editor) {
-        return res.status(404).json({ 
-          data: {}, 
-          meta: { 
-            code: 404, 
+        return res.status(404).json({
+          data: {},
+          meta: {
+            code: 404,
             error: { code: 'NOT_FOUND', message: 'Editor not found' }
-          } 
+          }
         })
       }
       return res.status(200).json({
@@ -284,17 +287,17 @@ exports.update = async (req, res) => {
       })
     })
     .catch((err) => {
-      return res.status(400).json({ 
-        data: {}, 
-        meta: { 
-          code: 400, 
+      return res.status(400).json({
+        data: {},
+        meta: {
+          code: 400,
           error: { code: err.code, message: err.message }
         }
       })
     })
 }
 
-/** 
+/**
  * PUT | deactivate editor by id
 */
 exports.deactivate = (req, res) => {
@@ -316,12 +319,12 @@ exports.deactivate = (req, res) => {
   }, { new: true })
     .then((editor) => {
       if (!editor) {
-        return res.status(404).json({ 
-          data: {}, 
-          meta: { 
-            code: 404, 
+        return res.status(404).json({
+          data: {},
+          meta: {
+            code: 404,
             error: { code: 'NOT_FOUND', message: 'Editor not found' }
-          } 
+          }
         })
       }
       return res.status(200).json({
@@ -330,17 +333,17 @@ exports.deactivate = (req, res) => {
       })
     })
     .catch((err) => {
-      return res.status(400).json({ 
-        data: {}, 
-        meta: { 
-          code: 400, 
+      return res.status(400).json({
+        data: {},
+        meta: {
+          code: 400,
           error: { code: err.code, message: err.message }
         }
       })
     })
 }
 
-/** 
+/**
  * PUT | reset editor password by id
 */
 exports.resetPassword = (req, res) => {
@@ -369,9 +372,9 @@ exports.resetPassword = (req, res) => {
   // hash user password
   result = hashPassword(d.password)
   if (!result.status) {
-    return res.status(400).json({ 
-      data: {}, 
-      meta: { code: 400, error: result.error } 
+    return res.status(400).json({
+      data: {},
+      meta: { code: 400, error: result.error }
     })
   }
   // set returned hash password
@@ -383,12 +386,12 @@ exports.resetPassword = (req, res) => {
   }, { new: true })
   .then((editor) => {
     if (!editor) {
-      return res.status(404).json({ 
-        data: {}, 
-        meta: { 
-          code: 404, 
+      return res.status(404).json({
+        data: {},
+        meta: {
+          code: 404,
           error: { code: 'NOT_FOUND', message: 'Editor not found' }
-        } 
+        }
       })
     }
     return res.status(200).json({
@@ -397,17 +400,17 @@ exports.resetPassword = (req, res) => {
     })
   })
   .catch((err) => {
-    return res.status(400).json({ 
-      data: {}, 
-      meta: { 
-        code: 400, 
+    return res.status(400).json({
+      data: {},
+      meta: {
+        code: 400,
         error: { code: err.code, message: err.message }
       }
     })
   })
 }
 
-/** 
+/**
  * PUT | logout editor by id
 */
 exports.logout = (req, res) => {
@@ -429,12 +432,12 @@ exports.logout = (req, res) => {
   }, { new: true })
     .then((editor) => {
       if (!editor) {
-        return res.status(404).json({ 
-          data: {}, 
-          meta: { 
-            code: 404, 
+        return res.status(404).json({
+          data: {},
+          meta: {
+            code: 404,
             error: { code: 'NOT_FOUND', message: 'Editor not found' }
-          } 
+          }
         })
       }
       return res.status(200).json({
@@ -443,10 +446,10 @@ exports.logout = (req, res) => {
       })
     })
     .catch((err) => {
-      return res.status(400).json({ 
-        data: {}, 
-        meta: { 
-          code: 400, 
+      return res.status(400).json({
+        data: {},
+        meta: {
+          code: 400,
           error: { code: err.code, message: err.message }
         }
       })

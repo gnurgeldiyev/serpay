@@ -28,6 +28,9 @@
         class="poem_notes"
         v-html="data.notes"
       />
+      <div class="poem_author">
+        <profile-card :data="data.author" />
+      </div>
     </div>
     <div
       v-if="data.youtube_link"
@@ -44,7 +47,11 @@
 </template>
 
 <script>
+import ProfileCard from '@/components/ProfileCard'
   export default {
+    components: {
+      'profile-card': ProfileCard
+    },
     props: {
       data: {
         type: Object,
@@ -126,6 +133,9 @@
     border-radius: 4px;
     box-shadow: 0 1px 4px rgba(0,0,0,.04);
   }
+  .poem_author {
+    margin-top: 24px;
+  }
   .poem_video {
     width: 100%;
     height: calc(100vw / 2);
@@ -197,6 +207,9 @@
     border: 1px solid rgba(0,0,0,.09);
     border-radius: 4px;
     box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  }
+  .poem_author {
+    margin-top: 24px;
   }
   .poem_video {
     width: 100%;
@@ -270,6 +283,9 @@
     border-radius: 4px;
     box-shadow: 0 1px 4px rgba(0,0,0,.04);
   }
+  .poem_author {
+    margin-top: 32px;
+  }
   .poem_video {
     width: 100%;
     height: calc(100vw / 2);
@@ -341,6 +357,9 @@
     border: 1px solid rgba(0,0,0,.09);
     border-radius: 4px;
     box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  }
+  .poem_author {
+    margin-top: 32px;
   }
   .poem_video {
     width: 100%;

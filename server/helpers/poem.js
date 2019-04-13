@@ -1,4 +1,5 @@
-const Poem = require('../models/poem')
+const conn = require('../models')
+const Poem = conn.model('Poem')
 const { isEmpty, matches, isMongoId, unescape } = require('validator')
 
 /**
@@ -15,7 +16,7 @@ exports.validateData = async (d) => {
       || (d.youtube_link && !matches(d.youtube_link, youtubeEmbedRgx))
       || (!d.category || d.category.length === 0)
       || (!d.added_by || !isMongoId(d.added_by))
-    ) { 
+    ) {
       return {
         status: false,
         error: {
@@ -93,7 +94,7 @@ exports.toPublic = (d) => {
   }
 }
 
-/** 
+/**
  * d: single editor document
 */
 const addedToPublic = (d) => {
@@ -107,7 +108,7 @@ const addedToPublic = (d) => {
   }
 }
 
-/** 
+/**
  * d: single poet document
 */
 const authorToPublic = (d) => {

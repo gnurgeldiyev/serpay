@@ -23,7 +23,7 @@ const poemSchema = mongoose.Schema({
     required: true
   },
   notes: {
-    type: String, 
+    type: String,
     default: null
   },
   youtube_link: {
@@ -50,6 +50,4 @@ const poemSchema = mongoose.Schema({
   }
 })
 
-const Poem = mongoose.model('Poem', poemSchema)
-
-module.exports = Poem
+module.exports = poemSchema

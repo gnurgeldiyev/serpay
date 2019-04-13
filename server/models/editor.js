@@ -26,7 +26,7 @@ const editorSchema = mongoose.Schema({
     default: 'editor'
   },
   password: {
-    type: String, 
+    type: String,
     required: [true, 'can\'t be blank']
   },
   is_active: {
@@ -57,6 +57,4 @@ editorSchema.methods.toPublic = function () {
   }
 }
 
-const Editor = mongoose.model('Editor', editorSchema)
-
-module.exports = Editor
+module.exports = editorSchema

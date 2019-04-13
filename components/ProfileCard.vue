@@ -1,13 +1,13 @@
 <template>
-  <nuxt-link 
+  <nuxt-link
     :to="'/p/' + data.url"
     :title="'Şahyr ' + data.fullname"
     class="a"
   >
     <div class="pc">
       <div class="pc_media">
-        <img 
-          :src="'/' + data.avatar" 
+        <img
+          :src="'/' + data.avatar"
           :alt="data.fullname"
           class="pc_media_avatar"
         >
@@ -16,7 +16,7 @@
         <p class="pc_info_title">
           {{ data.fullname }}
         </p>
-        <p 
+        <p
           v-if="total > 0"
           class="pc_info_subtitle"
         >
@@ -98,7 +98,9 @@
 }
 @media (min-width: 481px) and (max-width: 767px) {
   .pc {
+    min-width: 288px;
     width: 100%;
+    max-width: 320px;
     height: 80px;
     display: grid;
     grid-template-columns: 1fr 5fr;
@@ -144,7 +146,9 @@
 }
 @media (min-width: 768px) and (max-width: 1087px) {
   .pc {
+    min-width: 288px;
     width: 100%;
+    max-width: 320px;
     height: 80px;
     display: grid;
     grid-template-columns: 1fr 5fr;

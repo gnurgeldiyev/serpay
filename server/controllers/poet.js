@@ -1,4 +1,5 @@
-const Poet = require('../models/poet')
+const conn = require('../models')
+const Poet = conn.model('Poet')
 const { isMongoId } = require('validator')
 const {
   validateData

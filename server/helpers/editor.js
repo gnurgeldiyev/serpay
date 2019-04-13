@@ -1,4 +1,5 @@
-const Editor = require('../models/editor')
+const conn = require('../models')
+const Editor = conn.model('Editor')
 const jwt = require('jsonwebtoken')
 const { isEmail, isLength, isEmpty } = require('validator')
 const { password_salt, token_salt } = require('../../config')
@@ -13,13 +14,13 @@ exports.validateData = async (t, d) => {
       if (
         (!d.firstname || isEmpty(d.firstname))
         || (!d.lastname || isEmpty(d.lastname))
-        || (!d.email || isEmpty(d.email)) 
+        || (!d.email || isEmpty(d.email))
         || !isEmail(d.email)
         || (!d.password || isEmpty(d.password))
         || !isLength(d.password, { min: 8 })
         || (!d.role || isEmpty(d.role))
         || !((d.role === 'editor') || (d.role === 'admin'))
-      ) { 
+      ) {
         return {
           status: false,
           error: {
@@ -47,11 +48,11 @@ exports.validateData = async (t, d) => {
       if (
         (!d.firstname || isEmpty(d.firstname))
         || (!d.lastname || isEmpty(d.lastname))
-        || (!d.email || isEmpty(d.email)) 
+        || (!d.email || isEmpty(d.email))
         || !isEmail(d.email)
         || (!d.role || isEmpty(d.role))
         || !((d.role === 'editor') || (d.role === 'admin'))
-      ) { 
+      ) {
         return {
           status: false,
           error: {
@@ -102,16 +103,16 @@ exports.validateData = async (t, d) => {
   }
 }
 
-/** 
+/**
  * d: request body data
 */
-exports.validateLoginData = (d) => {
+exports.validateLoginData = async (d) => {
   if (
-    ((!d.email || isEmpty(d.email)) 
+    ((!d.email || isEmpty(d.email))
     || !isEmail(d.email)
     || (!d.password || isEmpty(d.password))
     || !isLength(d.password, { min: 8 }))
-  ) { 
+  ) {
     return {
       status: false,
       error: {
@@ -120,14 +121,22 @@ exports.validateLoginData = (d) => {
       }
     }
   }
-  return Editor.findOne({ email: d.email })
+  const editors = await Editor.find()
+  console.log(editors)
+  console.log(d)
+  return Editor
+    .findOne({
+      email: d.email,
+      is_active: true
+    })
     .then((editor) => {
+      console.log(editor)
       if (!editor) {
         return {
           status: false,
           error: {
             code: 'BAD_REQUEST',
-            message: 'Data validation error'
+            message: 'Validation error: Not Found'
           }
         }
       }

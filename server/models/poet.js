@@ -55,6 +55,4 @@ poetSchema.methods.toPublic = function () {
   }
 }
 
-const Poet = mongoose.model('Poet', poetSchema)
-
-module.exports = Poet
+module.exports = poetSchema

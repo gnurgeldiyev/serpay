@@ -1,13 +1,16 @@
 const express = require('express')
 const consola = require('consola')
 const bodyParser = require('body-parser')
-const mongoose = require('mongoose')
 const cors = require('cors')
 const compression = require('compression')
 const helmet = require('helmet')
 const { Nuxt, Builder } = require('nuxt')
 const app = express()
-const { node_env, host, port, mongodb_uri } = require('../config')
+const {
+  node_env,
+  host,
+  port
+} = require('../config')
 
 app.set('port', port)
 
@@ -27,13 +30,8 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }))
 
-// Setup MongoDB with mongoose
-mongoose.Promise = global.Promise
-mongoose.connect(mongodb_uri, { useNewUrlParser: true, autoIndex: false })
-mongoose.set('useFindAndModify', false)
-mongoose.connection.on('error', (err) => {
-  console.log(`MongoDB connection is failed → ${err.message}`)
-})
+// Connect DBs
+require('./models')
 
 // request body parser middleware
 app.use(bodyParser.json())
