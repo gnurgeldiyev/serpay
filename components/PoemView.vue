@@ -74,6 +74,7 @@
     font-family: Georgia, serif;
     line-height: 1;
     text-align: center;
+    margin-bottom: 8px;
   }
   .poem_body {
     color: #080808;
@@ -145,6 +146,7 @@
     font-family: Georgia, serif;
     line-height: 1;
     text-align: center;
+    margin-bottom: 12px;
   }
   .poem_body {
     color: #080808;
@@ -216,6 +218,7 @@
     font-family: Georgia, serif;
     line-height: 1;
     text-align: center;
+    margin-bottom: 16px;
   }
   .poem_body {
     color: #080808;
@@ -287,6 +290,7 @@
     font-family: Georgia, serif;
     line-height: 1;
     text-align: center;
+    margin-bottom: 16px;
   }
   .poem_body {
     color: #080808;

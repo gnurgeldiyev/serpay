@@ -1,12 +1,12 @@
 <template>
-  <div 
+  <div
     v-if="data.length > 0">
     <ul class="list">
-      <li 
+      <li
         v-for="(poem, i) in data"
         :key="i"
         class="list_item">
-        <nuxt-link 
+        <nuxt-link
           :to="'/p/' + poet.url + '/' + poem.url"
           :title="poem.title"
           class="a">
@@ -51,7 +51,7 @@
     box-shadow: 0 1px 4px rgba(0,0,0,.04);
     margin: 12px 0;
   }
-  .list_item { 
+  .list_item {
     padding: 16px;
     border-bottom: 1px solid rgba(0,0,0,.09);
   }
@@ -64,6 +64,7 @@
     font-family: inherit;
     font-weight: 400;
     line-height: 1.3;
+    text-decoration: none;
   }
 }
 @media (min-width: 481px) and (max-width: 767px) {
@@ -77,7 +78,7 @@
     box-shadow: 0 1px 4px rgba(0,0,0,.04);
     margin: 12px 0;
   }
-  .list_item { 
+  .list_item {
     padding: 16px;
     border-bottom: 1px solid rgba(0,0,0,.09);
   }
@@ -90,6 +91,7 @@
     font-family: inherit;
     font-weight: 400;
     line-height: 1.3;
+    text-decoration: none;
   }
 }
 @media (min-width: 768px) and (max-width: 1087px) {
@@ -103,7 +105,7 @@
     box-shadow: 0 1px 4px rgba(0,0,0,.04);
     margin: 12px 0;
   }
-  .list_item { 
+  .list_item {
     padding: 16px;
     border-bottom: 1px solid rgba(0,0,0,.09);
   }
@@ -117,6 +119,7 @@
     font-family: inherit;
     font-weight: 400;
     line-height: 1.3;
+    text-decoration: none;
   }
   .list_item .a,
   .list_item .a *:hover {
@@ -135,7 +138,7 @@
     box-shadow: 0 1px 4px rgba(0,0,0,.04);
     margin: 16px 0;
   }
-  .list_item { 
+  .list_item {
     padding: 16px;
     border-bottom: 1px solid rgba(0,0,0,.09);
   }
@@ -149,6 +152,7 @@
     font-family: inherit;
     font-weight: 400;
     line-height: 1.3;
+    text-decoration: none;
   }
   .list_item .a:hover {
     cursor: pointer;
