@@ -64,7 +64,6 @@
     font-family: inherit;
     font-weight: 400;
     line-height: 1.3;
-    text-decoration: none;
   }
 }
 @media (min-width: 481px) and (max-width: 767px) {
@@ -91,7 +90,6 @@
     font-family: inherit;
     font-weight: 400;
     line-height: 1.3;
-    text-decoration: none;
   }
 }
 @media (min-width: 768px) and (max-width: 1087px) {
@@ -119,9 +117,7 @@
     font-family: inherit;
     font-weight: 400;
     line-height: 1.3;
-    text-decoration: none;
   }
-  .list_item .a,
   .list_item .a *:hover {
     cursor: pointer;
     border-bottom: 1px solid #080808;
@@ -152,7 +148,6 @@
     font-family: inherit;
     font-weight: 400;
     line-height: 1.3;
-    text-decoration: none;
   }
   .list_item .a:hover {
     cursor: pointer;
