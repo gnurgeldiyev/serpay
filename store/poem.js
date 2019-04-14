@@ -52,10 +52,10 @@ export const mutations = {
     state.one = data
   },
   add: (state, data) => {
-    state.all.push(data)
+    state.all.unshift(data)
   },
   addUnapproved: (state, data) => {
-    state.allUnapproved.push(data)
+    state.allUnapproved.unshift(data)
   },
   update: (state, data) => {
     let index

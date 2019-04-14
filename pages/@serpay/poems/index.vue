@@ -68,9 +68,7 @@ import PoemList from '@/components/Panel/PoemList'
     },
     data() {
       return {
-        poetId: '',
-        poems: [],
-        unapprovedPoems: []
+        poetId: ''
       }
     },
     computed: {
@@ -85,6 +83,14 @@ import PoemList from '@/components/Panel/PoemList'
       },
       editFormDialogVisibility() {
         return this.$store.getters['poem/editFormDialogVisibility']
+      },
+      poems() {
+        let poems = this.$store.getters['poem/getAll']
+        return this.sortByDateDesc(unlinkObj(poems))
+      },
+      unapprovedPoems() {
+        let unapprovedPoems = this.$store.getters['poem/getAllUnapproved']
+        return this.sortByDateDesc(unlinkObj(unapprovedPoems))
       }
     },
     beforeCreate() {
@@ -97,20 +103,12 @@ import PoemList from '@/components/Panel/PoemList'
           this.$store.dispatch('poem/fetchAllUnapproved', this.poetId)
         ]
         await Promise.all(promises)
-        let poems = this.$store.getters['poem/getAll']
-        let unapprovedPoems = this.$store.getters['poem/getAllUnapproved']
-        this.poems = this.sortByDateDesc(unlinkObj(poems))
-        this.unapprovedPoems = this.sortByDateDesc(unlinkObj(unapprovedPoems))
       },
       async handleTabClick(tab) {
         if (tab.name === 'unapproved' && this.poetId !== '') {
           await this.$store.dispatch('poem/fetchAllUnapproved', this.poetId)
-          let unapprovedPoems = this.$store.getters['poem/getAllUnapproved']
-          this.unapprovedPoems = this.sortByDateDesc(unlinkObj(unapprovedPoems))
         } else if (tab.name === 'approved' && this.poetId !== '') {
           await this.$store.dispatch('poem/fetchAll', this.poetId)
-          let poems = this.$store.getters['poem/getAll']
-          this.poems = this.sortByDateDesc(unlinkObj(poems))
         }
       },
       openAddFormDialog() {
