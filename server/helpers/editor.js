@@ -122,15 +122,12 @@ exports.validateLoginData = async (d) => {
     }
   }
   const editors = await Editor.find()
-  console.log(editors)
-  console.log(d)
   return Editor
     .findOne({
       email: d.email,
       is_active: true
     })
     .then((editor) => {
-      console.log(editor)
       if (!editor) {
         return {
           status: false,
