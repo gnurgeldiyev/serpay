@@ -1,13 +1,13 @@
 <template>
   <div>
     <div class="page_action">
-      <div 
+      <div
         v-if="poets && poets.length > 0"
         class="page_action_item"
       >
-        <el-select 
-          v-model="poetId" 
-          filterable 
+        <el-select
+          v-model="poetId"
+          filterable
           placeholder="View by Poet"
           @change="getPoemsOfPoet(poetId)"
         >
@@ -20,8 +20,8 @@
         </el-select>
       </div>
       <div class="page_action_item">
-        <el-button 
-          icon="el-icon-circle-plus-outline" 
+        <el-button
+          icon="el-icon-circle-plus-outline"
           plain
           @click="openAddFormDialog"
         >
@@ -31,24 +31,24 @@
       </div>
     </div>
     <div class="page_body">
-      <el-tabs 
+      <el-tabs
         value="approved"
         @tab-click="handleTabClick"
       >
-        <el-tab-pane 
-          label="Approved" 
+        <el-tab-pane
+          label="Approved"
           name="approved"
         >
           <poem-list :data="poems" />
         </el-tab-pane>
-        <el-tab-pane 
-          label="Unapproved" 
+        <el-tab-pane
+          label="Unapproved"
           name="unapproved"
         >
           <poem-list :data="unapprovedPoems" />
         </el-tab-pane>
       </el-tabs>
-      
+
       <poem-form :type="'view'" />
       <poem-form :type="'edit'" />
     </div>
@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import { unlinkObj } from '@/assets/helper'
 import PoemForm from '@/components/Panel/PoemForm'
 import PoemList from '@/components/Panel/PoemList'
 
@@ -96,20 +97,32 @@ import PoemList from '@/components/Panel/PoemList'
           this.$store.dispatch('poem/fetchAllUnapproved', this.poetId)
         ]
         await Promise.all(promises)
-        this.poems = this.$store.getters['poem/getAll']
-        this.unapprovedPoems = this.$store.getters['poem/getAllUnapproved']
+        let poems = this.$store.getters['poem/getAll']
+        let unapprovedPoems = this.$store.getters['poem/getAllUnapproved']
+        this.poems = this.sortByDateDesc(unlinkObj(poems))
+        this.unapprovedPoems = this.sortByDateDesc(unlinkObj(unapprovedPoems))
       },
       async handleTabClick(tab) {
         if (tab.name === 'unapproved' && this.poetId !== '') {
           await this.$store.dispatch('poem/fetchAllUnapproved', this.poetId)
-          this.unapprovedPoems = this.$store.getters['poem/getAllUnapproved']
+          let unapprovedPoems = this.$store.getters['poem/getAllUnapproved']
+          this.unapprovedPoems = this.sortByDateDesc(unlinkObj(unapprovedPoems))
         } else if (tab.name === 'approved' && this.poetId !== '') {
           await this.$store.dispatch('poem/fetchAll', this.poetId)
-          this.poems = this.$store.getters['poem/getAll']
+          let poems = this.$store.getters['poem/getAll']
+          this.poems = this.sortByDateDesc(unlinkObj(poems))
         }
       },
       openAddFormDialog() {
         this.$store.dispatch('poem/addFormDialogVisibility', true)
+      },
+      sortByDateDesc(d) {
+        d.sort(function(a, b) {
+          let dateA = new Date(a.created_at)
+          let dateB = new Date(b.created_at)
+          return dateB - dateA
+        })
+        return d
       }
     }
   }
