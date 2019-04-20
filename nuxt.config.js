@@ -93,12 +93,17 @@ module.exports = {
       {
         url: '/p/gurbannazar-ezizow',
         changefreq: 'daily',
-        priority: 1,
+        priority: 1
       },
       {
         url: '/p/çary-ýegenmyradow',
         changefreq: 'daily',
-        priority: 1,
+        priority: 1
+      },
+      {
+        url: '/p/kerim-gurbannepesow',
+        changefreq: 'daily',
+        priority: 1
       }
     ]
   },
