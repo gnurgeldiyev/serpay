@@ -99,7 +99,7 @@ export const mutations = {
   }
 }
 
-export const actions = {  
+export const actions = {
   fetchAll({ commit }) {
     return this.$axios.$get('/api/editors/')
       .then((res) => {
@@ -146,11 +146,11 @@ export const actions = {
         commit('setOne', res.data)
         this.$cookies.set('token', res.data.token, {
           path: '/',
-          maxAge: 60 * 60 * 24
+          maxAge: 60 * 60 * 24 * 30
         })
         this.$cookies.set('id', res.data.id, {
           path: '/',
-          maxAge: 60 * 60 * 24
+          maxAge: 60 * 60 * 24 * 30
         })
         return {
           status: true,
