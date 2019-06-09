@@ -1,16 +1,16 @@
 <template>
-  <ul 
+  <ul
     v-if="data.length > 0"
     class="list"
   >
-    <li 
+    <li
       v-for="(poem, i) in data"
       :key="i"
       class="list_item"
     >
       {{ i+1 }}. {{ poem.title }}
       <span class="list_item_action">
-        <el-button 
+        <el-button
           v-if="poem.is_approved === false && editor.role === 'admin'"
           class="list_item_action_item approve"
           icon="el-icon-circle-check-outline"
@@ -18,7 +18,7 @@
           title="Approve"
           @click="approvePoem(poem.id)"
         />
-        <el-button 
+        <el-button
           v-if="poem.is_approved === true && editor.role === 'admin'"
           class="list_item_action_item unapprove"
           icon="el-icon-circle-close-outline"
@@ -26,22 +26,22 @@
           title="Unapprove"
           @click="unapprovePoem(poem.id)"
         />
-        <el-button 
+        <el-button
           class="list_item_action_item view"
           icon="el-icon-view"
           type="text"
           @click="viewPoem(poem)"
         />
-        <el-button 
-          v-if="poem.is_approved === false && poem.added_by.id === editor.id"
+        <el-button
+          v-if="poem.is_approved === false && (poem.added_by.id === editor.id || editor.role === 'admin')"
           class="list_item_action_item edit"
           icon="el-icon-edit"
           type="text"
           title="Edit"
           @click="editPoem(poem)"
         />
-        <el-button 
-          v-if="poem.is_approved === false && poem.added_by.id === editor.id"
+        <el-button
+          v-if="poem.is_approved === false && (poem.added_by.id === editor.id || editor.role === 'admin')"
           class="list_item_action_item delete"
           icon="el-icon-delete"
           type="text"
@@ -89,7 +89,7 @@
           this.$message({
             type: 'info',
             message: 'Approvement canceled.'
-          });          
+          });
         });
       },
       unapprovePoem(id) {
@@ -114,7 +114,7 @@
           this.$message({
             type: 'info',
             message: 'Approvement canceled.'
-          });          
+          });
         });
       },
       viewPoem(poem) {
@@ -147,7 +147,7 @@
           this.$message({
             type: 'info',
             message: 'Delete canceled.'
-          });          
+          });
         });
       }
     }
@@ -172,7 +172,7 @@
   box-shadow: 0 1px 4px rgba(0,0,0,.04);
   margin: 16px 0;
 }
-.list_item { 
+.list_item {
   padding: 16px;
   border-bottom: 1px solid rgba(0,0,0,.09);
 }
