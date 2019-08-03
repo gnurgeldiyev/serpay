@@ -9,13 +9,20 @@
         >
         bilen döredildi  •
       </div>
-      <div class="f_item">
+      <!-- <div class="f_item">
         public beta •
         <a
           href="https://penjire.com"
           title="Penjire Topary"
         >
           penjire
+        </a>
+      </div> -->
+      <div class="f_item">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSd5K8ZYsrCkoLvUQOlnbZGsIJfmD-pdgWeJv3ZEl4feLvG14w/viewform?usp=pp_url"
+          title="Contribute to creating a new website for the Serpay project"
+        >
+          Help us for a new UI design
         </a>
       </div>
     </div>
