@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog 
+    <el-dialog
       :lock-scroll="true"
       :top="'2vh'"
       :visible="dialogVisibility"
@@ -9,8 +9,8 @@
       @open="open"
       @close="close"
     >
-      <el-form 
-        ref="form" 
+      <el-form
+        ref="form"
         :model="form"
         :rules="rules"
         class="form"
@@ -18,56 +18,56 @@
         <h2 class="form_title">
           {{ getFormTitle }}
         </h2>
-        <el-form-item 
+        <el-form-item
           prop="title"
           label="Title"
         >
-          <el-input 
+          <el-input
             v-model="form.title"
             :disabled="type === 'view'"
             :placeholder="type === 'view' ? '' : 'Title of the poem'"
           />
         </el-form-item>
-        <el-form-item 
+        <el-form-item
           prop="author"
           label="Author"
         >
-          <el-select 
+          <el-select
             v-model="form.author"
-            :disabled="type === 'view'" 
+            :disabled="type === 'view'"
             :placeholder="type === 'view' ? '' : 'Author of the poem'"
             style="width: 100%;"
           >
-            <el-option 
+            <el-option
               v-for="poet in poets"
               :key="poet.id"
-              :label="poet.fullname" 
+              :label="poet.fullname"
               :value="poet.id"
             />
           </el-select>
         </el-form-item>
-        <el-form-item 
+        <el-form-item
           prop="year"
           label="Year"
         >
-          <el-input 
+          <el-input
             v-model="form.year"
             :disabled="type === 'view'"
             :placeholder="type === 'view' ? '' : 'Written year of the poem'"
             @keypress.native="onlyNumbers"
           />
         </el-form-item>
-        <el-form-item 
+        <el-form-item
           prop="youtube_link"
           label="YouTube Video Link"
         >
-          <el-input 
+          <el-input
             v-model="form.youtube_link"
             :disabled="type === 'view'"
             :placeholder="type === 'view' ? '' : 'YouTube video link of the poem'"
           />
         </el-form-item>
-        <el-form-item 
+        <el-form-item
           prop="category"
           label="Category"
         >
@@ -89,7 +89,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item 
+        <el-form-item
           prop="notes"
           label="Notes"
         >
@@ -101,12 +101,12 @@
             type="textarea"
           />
         </el-form-item>
-        <el-form-item 
+        <el-form-item
           prop="content"
           label="Poem"
         >
           <section class="container">
-            <div 
+            <div
               v-quill:myQuillEditor="editorOption"
               :content="form.content"
               :disabled="type === 'view'"
@@ -115,14 +115,14 @@
           </section>
         </el-form-item>
         <el-form-item style="float:right;">
-          <el-button 
+          <el-button
             @click="close"
           >
             {{ getCloseButtonText }}
           </el-button>
-          <el-button 
+          <el-button
             v-if="type !== 'view'"
-            type="primary" 
+            type="primary"
             @click="submitForm"
           >
             {{ getSubmitButtonText }}
@@ -162,7 +162,7 @@ import { unlinkObj } from '@/assets/helper'
           const year = new Date().getFullYear()
           if (value <= year) {
             callback()
-          } 
+          }
           callback(new Error('Writter year must be valid'))
         } else {
           callback()
@@ -268,7 +268,7 @@ import { unlinkObj } from '@/assets/helper'
       onEditorChange({ quill, html }) {
         this.form.content = html;
       },
-      getEmbedLink(url) {        
+      getEmbedLink(url) {
         const videoId = /^https?:\/\/(www\.)?youtu\.be/.test(url) ? url.replace(/^https?:\/\/(www\.)?youtu\.be\/([\w-]{11}).*/,"$2") : url.replace(/.*\?v=([\w-]{11}).*/,"$1")
         return 'https://www.youtube.com/embed/' + videoId
       },
@@ -342,9 +342,11 @@ import { unlinkObj } from '@/assets/helper'
         if (this.type === 'view') {
           let p = this.inView
           this.form = unlinkObj(p)
+          this.form.author = p.author.id
         } else if (this.type === 'edit') {
           let p = this.inEdit
           this.form = unlinkObj(p)
+          this.form.author = p.author.id
         }
       },
       close() {
@@ -361,7 +363,7 @@ import { unlinkObj } from '@/assets/helper'
         const numbers = /^[0-9]*$/
         if (numbers.test(e.key)) {
           return true
-        } 
+        }
         return e.preventDefault()
       }
     }
