@@ -1,16 +1,5 @@
-# serpay
+# Serpaý - Turken Poetry
 
-> turkmen poems
+> A digital turkmen poetry archive library. A Penjire.com project
 
-## Build Setup
-
-``` bash
-#clone repo
-$ git clone [repo url]
-
-# add .env file into ./app folder
-$ nano app/.env
-
-# build for production and launch server
-$ docker-compose up -d --build
-```
+Project link: [serpay.penjire.com](http://serpay.penjire.com "serpay.penjire.com")
