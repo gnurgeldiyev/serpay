@@ -13,7 +13,8 @@ const options = {
   useFindAndModify: false,
   useCreateIndex: true,
   connectTimeoutMS: 10000,
-  socketTimeoutMS: 45000
+  socketTimeoutMS: 45000,
+  useUnifiedTopology: true
 }
 // connect to db
 const conn = mongoose.createConnection(mongodb_uri, options)
