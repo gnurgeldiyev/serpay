@@ -19,7 +19,8 @@
         </a>
       </div> -->
       <div class="f_item">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSd5K8ZYsrCkoLvUQOlnbZGsIJfmD-pdgWeJv3ZEl4feLvG14w/viewform?usp=pp_url"
+        <a
+          href="https://docs.google.com/forms/d/e/1FAIpQLSd5K8ZYsrCkoLvUQOlnbZGsIJfmD-pdgWeJv3ZEl4feLvG14w/viewform?usp=pp_url"
           title="Contribute to creating a new website for the Serpay project"
         >
           Help us for a new UI design
