@@ -4,7 +4,7 @@
     <h1 class="title">
       Goşgular
     </h1>
-    <poem-list 
+    <poem-list
       :data="poems"
       :poet="poet"
     />
@@ -45,11 +45,20 @@ import PoemList from '@/components/PoemList'
       }
     },
     async asyncData({ store, route }) {
-      let poetUrl = route.params.poetUrl
-      poetUrl = encodeURI(poetUrl)
-      await store.dispatch('poet/fetchOne', poetUrl)
-      const poet = store.getters['poet/getOne']
-      return store.dispatch('poem/fetchAll', poet.id)
+      try {
+        let poetUrl = route.params.poetUrl
+        poetUrl = encodeURI(poetUrl)
+        await store.dispatch('poet/fetchOne', poetUrl)
+        const poet = store.getters['poet/getOne']
+        return store.dispatch('poem/fetchAll', poet.id)
+      } catch (err) {
+        this.$notify({
+          title: 'Error',
+          message: 'An error occuried.',
+          type: 'danger'
+        })
+        this.$router.push('/')
+      }
     },
     destroyed() {
       this.$store.dispatch('poet/clear')

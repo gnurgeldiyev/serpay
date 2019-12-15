@@ -41,9 +41,18 @@ import PoemView from '@/components/PoemView'
       }
     },
     asyncData({ store, route }) {
-      let poemUrl = route.params.poemUrl
-      poemUrl = encodeURI(poemUrl)
-      return store.dispatch('poem/fetchOne', poemUrl)
+      try {
+        let poemUrl = route.params.poemUrl
+        poemUrl = encodeURI(poemUrl)
+        return store.dispatch('poem/fetchOne', poemUrl)
+      } catch (err) {
+        this.$notify({
+          title: 'Error',
+          message: 'An error occuried.',
+          type: 'danger'
+        })
+        this.$router.push('/')
+      }
     },
     destroyed() {
       this.$store.dispatch('poem/clear')
