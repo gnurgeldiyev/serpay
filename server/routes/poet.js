@@ -5,8 +5,8 @@ const uuid = require('uuid')
 const fs = require('fs')
 const path = require('path')
 
-/** 
- * file upload 
+/**
+ * file upload
 */
 const storage = multer.diskStorage({
   destination(req, file, cb) {
@@ -40,30 +40,30 @@ router.get('/', poetController.getAll)
 router.get('/:url', poetController.getOne)
 
 /**
- * POST requests
+ * POST requestsrouter.post('/', poemController.add)
 */
-router.post('/', poetController.add)
-router.post('/upload', 
-  upload.single('file'),
-  (req, res) => {
-    return res.status(201).json({ file: req.file })
-  }
-)
+// router.post('/', poetController.add)
+// router.post('/upload',
+//   upload.single('file'),
+//   (req, res) => {
+//     return res.status(201).json({ file: req.file })
+//   }
+// )
 
 /**
  * PUT requests
 */
-router.put('/:id', poetController.update)
-router.put('/:id/delete', poetController.delete)
-router.delete('/upload/:filename', (req, res) => {
-  const file = path.join(`${__dirname}./../../static/${req.params.filename}`)
-  fs.unlink(file, (err) => {
-    if (err) {
-      console.log(err)
-    }
-    return res.sendStatus(204)
-  })
-})
+// router.put('/:id', poetController.update)
+// router.put('/:id/delete', poetController.delete)
+// router.delete('/upload/:filename', (req, res) => {
+//   const file = path.join(`${__dirname}./../../static/${req.params.filename}`)
+//   fs.unlink(file, (err) => {
+//     if (err) {
+//       console.log(err)
+//     }
+//     return res.sendStatus(204)
+//   })
+// })
 
 /**
  * DELETE requests
