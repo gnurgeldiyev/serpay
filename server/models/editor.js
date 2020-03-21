@@ -1,9 +1,9 @@
-const mongoose = require('mongoose')
+const { Schema } = require('mongoose')
 
-const editorSchema = mongoose.Schema({
+const editorSchema = Schema({
   email: {
     type: String,
-    required: [true, 'can\'t be blank'],
+    required: true,
     trim: true,
     unique: true,
     lowercase: true
@@ -27,7 +27,7 @@ const editorSchema = mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, 'can\'t be blank']
+    required: true
   },
   is_active: {
     type: Boolean,

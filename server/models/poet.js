@@ -1,9 +1,9 @@
-const mongoose = require('mongoose')
+const { Schema } = require('mongoose')
 
-const poetSchema = mongoose.Schema({
+const poetSchema = Schema({
   fullname: {
     type: String,
-    required: [true, 'can\'t be blank'],
+    required: true,
     unique: true
   },
   url: {

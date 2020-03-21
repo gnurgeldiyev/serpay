@@ -1,16 +1,16 @@
-const mongoose = require('mongoose')
+const { Schema } = require('mongoose')
 
-const poemSchema = mongoose.Schema({
+const poemSchema = Schema({
   title: {
     type: String,
-    required: [true, 'can\'t be blank']
+    required: true
   },
   url: {
     type: String,
     required: true
   },
   author: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Poet',
     required: true
   },
@@ -35,7 +35,7 @@ const poemSchema = mongoose.Schema({
     default: null
   },
   added_by: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Editor',
     required: true
   },
