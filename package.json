@@ -27,7 +27,7 @@
     "cross-env": "^7.0.2",
     "dotenv": "^8.0.0",
     "element-ui": "^2.4.6",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "helmet": "^3.21.3",
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.9.5",
