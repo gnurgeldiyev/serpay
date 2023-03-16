@@ -9,13 +9,13 @@ const password_salt = process.env.PASSWORD_SALT
 const token_salt = process.env.TOKEN_SALT
 const google_analytics = process.env.GOOGLE_ANALYTICS
 
-module.exports = { 
-  node_env,
-  host,
-  port,
-  base_url,
-  mongodb_uri,
-  password_salt,
-  token_salt,
-  google_analytics
+module.exports = {
+    node_env,
+    host,
+    port,
+    base_url,
+    mongodb_uri,
+    password_salt,
+    token_salt,
+    google_analytics,
 }

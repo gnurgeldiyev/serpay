@@ -1,28 +1,29 @@
 <template>
-  <div class="container">
-    <login-form />
-  </div>
+    <div class="container">
+        <login-form />
+    </div>
 </template>
 
 <script>
 import LoginForm from '@/components/Panel/LoginForm'
 
-  export default {
-    head() {
-      return {
-        meta: [{ name: 'robots', content: 'noindex nofollow' }]
-      }
-    },
+export default {
+    name: 'LoginPage',
     components: {
-      'login-form': LoginForm
-    } 
-  }
+        'login-form': LoginForm,
+    },
+    // head() {
+    //   return {
+    //     meta: [{ name: 'robots', content: 'noindex nofollow' }]
+    //   }
+    // }
+}
 </script>
 
 <style scoped>
 .container {
-  width: 360px;
-  height: auto;
-  margin: 0 auto;
+    width: 360px;
+    height: auto;
+    margin: 0 auto;
 }
 </style>
