@@ -55,6 +55,7 @@ module.exports = {
   plugins: [
     { src: "@/plugins/element-ui.js" },
     { src: "@/plugins/quill-editor.client.js" },
+    { src: "@/plugins/axios.js" },
   ],
   dev: isDevMode,
   /*
