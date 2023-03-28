@@ -13,6 +13,10 @@ router.get("/:id", editorController.getOne);
  */
 router.post("/", authMiddleware, editorController.add);
 router.post("/login", editorController.login);
+router.post("/logingoogle", (req, res) => {
+  console.log(req.body);
+  res.send("ok");
+});
 
 /**
  * PUT requests

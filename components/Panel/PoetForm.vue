@@ -1,7 +1,6 @@
 <template>
   <div>
     <el-dialog
-      v-if="editor.role === 'admin'"
       :lock-scroll="true"
       :top="'2vh'"
       :visible="dialogVisibility"

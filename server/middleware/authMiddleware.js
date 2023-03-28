@@ -1,6 +1,13 @@
 const jwt = require("jsonwebtoken");
 
-const authMiddleware = (req, res, next) => {
+const admin = require("firebase-admin");
+const serviceAccount = require("../../serpay-5ecc7-firebase-adminsdk-izwww-28f37a6bf4.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
+const authMiddleware = async (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -11,12 +18,11 @@ const authMiddleware = (req, res, next) => {
   }
 
   try {
-    const secretKey = process.env.JWT_SECRET || "your_salt";
-    const decoded = jwt.verify(token, secretKey);
-    req.user = decoded;
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    req.user = decodedToken;
     next();
   } catch (error) {
-    res.status(400).json({ message: "Invalid token." });
+    return res.status(401).send({ message: "Unauthorized" });
   }
 };
 

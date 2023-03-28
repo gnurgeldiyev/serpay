@@ -1,5 +1,7 @@
-const { base_url, node_env, google_analytics } = require("./config");
+// eslint-disable-next-line nuxt/no-cjs-in-config
+const { base_url, node_env, google_analytics, firebase } = require("./config");
 const isDevMode = node_env !== "production" ? true : false;
+// eslint-disable-next-line nuxt/no-cjs-in-config
 module.exports = {
   telemetry: false,
   /*
@@ -65,6 +67,7 @@ module.exports = {
     // Doc: https://github.com/nuxt-community/axios-module#usage
     "@nuxtjs/axios",
     "cookie-universal-nuxt",
+    "@nuxtjs/firebase",
     "@nuxtjs/sitemap",
     ["@nuxtjs/component-cache", { maxAge: 1000 * 60 * 60 }],
     [
@@ -80,6 +83,22 @@ module.exports = {
       },
     ],
   ],
+
+  firebase: {
+    config: {
+      apiKey: firebase.apiKey,
+      authDomain: firebase.authDomain,
+      projectId: firebase.projectId,
+      storageBucket: firebase.storageBucket,
+      messagingSenderId: firebase.messagingSenderId,
+      appId: firebase.appId,
+      measurementId: firebase.measurementId,
+    },
+    services: {
+      auth: true,
+    },
+  },
+
   // app sitemap
   sitemap: {
     path: "/sitemap.xml",
@@ -135,6 +154,7 @@ module.exports = {
    ** Build configuration
    */
   build: {
+    // transpile: ["defu"],
     // plugins: [
     //   new ProvidePlugin({
     //     "window.Quill": "quill",
@@ -143,15 +163,15 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
-    extend(config, { isDev, isClient }) {
-      // Run ESLint on save
-      if (isDev && isClient) {
-        config.module.rules.push({
-          enforce: "pre",
-          test: /\.(js|vue)$/,
-          exclude: /(node_modules)/,
-        });
-      }
-    },
+    // extend(config, { isDev, isClient }) {
+    // Run ESLint on save
+    // if (isDev && isClient) {
+    //   config.module.rules.push({
+    //     enforce: "pre",
+    //     test: /\.(js|vue)$/,
+    //     exclude: /(node_modules)/,
+    //   });
+    // }
+    // },
   },
 };
