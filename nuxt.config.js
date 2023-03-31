@@ -95,7 +95,17 @@ module.exports = {
       measurementId: firebase.measurementId,
     },
     services: {
-      auth: true,
+      auth: {
+        persistence: "local", // default
+        initialize: {
+          onAuthStateChangedMutation: "user/ON_AUTH_STATE_CHANGED_MUTATION",
+          onAuthStateChangedAction: "user/onAuthStateChanged",
+          subscribeManually: false,
+        },
+        ssr: false, // default
+        emulatorPort: undefined,
+        emulatorHost: undefined,
+      },
     },
   },
 

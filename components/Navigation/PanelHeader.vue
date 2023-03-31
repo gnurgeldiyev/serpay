@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     async handleLogout() {
-      await this.$store.dispatch("editor/logout");
+      await this.$store.dispatch("user/logout");
       this.$router.push("/@serpay/login");
     },
   },

@@ -16,8 +16,16 @@ export default {
   },
   methods: {
     async loginWithGoogle() {
-      await this.$store.dispatch("editor/login");
-      this.$router.push("/@serpay/poets");
+      try {
+        const provider = new this.$fireModule.auth.GoogleAuthProvider();
+        provider.setCustomParameters({
+          prompt: "select_account",
+        });
+        await this.$fire.auth.signInWithPopup(provider);
+        this.$router.push("/@serpay/poets");
+      } catch (error) {
+        console.error(error);
+      }
     },
   },
   head() {
