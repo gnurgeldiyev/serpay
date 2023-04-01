@@ -2,7 +2,7 @@
   <el-container>
     <el-header class="pheader">
       <panel-header />
-    </el-header> 
+    </el-header>
     <el-main>
       <el-row :gutter="16">
         <el-col :span="4">
@@ -17,38 +17,39 @@
 </template>
 
 <script>
-import PanelHeader from '@/components/Navigation/PanelHeader';
-import PanelMenu from '@/components/Navigation/PanelMenu';
+import PanelHeader from "@/components/Navigation/PanelHeader";
+import PanelMenu from "@/components/Navigation/PanelMenu";
 
 export default {
-  middleware: ['checkAuth', 'validateToken'],
+  name: "PanelLayout",
+  components: {
+    "panel-header": PanelHeader,
+    "panel-menu": PanelMenu,
+  },
+  middleware: "auth",
   head() {
     return {
-      meta: [{ name: 'robots', content: 'noindex nofollow' }]
-    }
+      meta: [{ name: "robots", content: "noindex nofollow" }],
+    };
   },
-  components: {
-    'panel-header': PanelHeader,
-    'panel-menu': PanelMenu,
-  }
-}
+};
 </script>
 
 <style>
 @font-face {
-  font-family: 'Inria Serif';
+  font-family: "Inria Serif";
   font-display: auto;
-  src: local('Inria Serif'),	url('../assets/font/InriaSerif-Bold.eot'),
-    url('../assets/font/InriaSerif-Bold.eot?#iefix') format('embedded-opentype'),
-    url('../assets/font/InriaSerif-Bold.woff2') format('woff2'),
-    url('../assets/font/InriaSerif-Bold.woff') format('woff'),
-    url('../assets/font/InriaSerif-Bold.svg') format('svg');
-	font-weight: 700;
-	font-style: normal;
+  src: local("Inria Serif"), url("../assets/font/InriaSerif-Bold.eot"),
+    url("../assets/font/InriaSerif-Bold.eot?#iefix") format("embedded-opentype"),
+    url("../assets/font/InriaSerif-Bold.woff2") format("woff2"),
+    url("../assets/font/InriaSerif-Bold.woff") format("woff"),
+    url("../assets/font/InriaSerif-Bold.svg") format("svg");
+  font-weight: 700;
+  font-style: normal;
 }
 html {
-  font-family:  'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Avenir',
-    Roboto, 'Helvetica Neue', Helvetica, sans-serif;
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Avenir",
+    Roboto, "Helvetica Neue", Helvetica, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -64,12 +65,14 @@ html {
   margin: 0;
 }
 *:hover {
-	cursor: default;
+  cursor: default;
 }
-.page-enter-active, .page-leave-active {
-  transition: opacity .3s ease;
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.3s ease;
 }
-.page-enter, .page-leave-active {
-  opacity: 0
+.page-enter,
+.page-leave-active {
+  opacity: 0;
 }
 </style>

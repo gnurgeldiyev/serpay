@@ -2,27 +2,13 @@
   <el-row :gutter="20">
     <el-col :span="8">
       <div>
-        <nuxt-link 
-          to="/@serpay" 
-          class="pheader_logo"
-        >
-          Serpaý
-        </nuxt-link>
-        <span 
-          v-if="editor"
-        >
-          {{ editor.role }}
-        </span>
+        <nuxt-link to="/@serpay" class="pheader_logo"> Serpaý </nuxt-link>
       </div>
     </el-col>
     <el-col :span="16">
       <ul class="pheader_menu">
         <li class="pheader_menu_item">
-          <nuxt-link 
-            to="/" 
-            target="_blank"
-            title="Serpaý, Goşgular Çemeni"
-          >
+          <nuxt-link to="/" target="_blank" title="Serpaý, Goşgular Çemeni">
             serpay.penjire.com
           </nuxt-link>
         </li>
@@ -31,10 +17,7 @@
             <span class="el-icon-more icon" />
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
-                <el-button 
-                  type="text"
-                  @click="handleLogout(editor.id)"
-                >
+                <el-button type="text" @click="handleLogout()">
                   Logout
                 </el-button>
               </el-dropdown-item>
@@ -47,30 +30,19 @@
 </template>
 
 <script>
-  export default {
-    computed: {
-      editor() {
-        return this.$store.getters['editor/getOne']
-      }
+export default {
+  computed: {
+    editor() {
+      return this.$store.getters["editor/getOne"];
     },
-    methods: {
-      async handleLogout(data) {
-        const result = await this.$store.dispatch('editor/logout', data)
-        if (!result.status) {
-          this.$message({
-            message: 'An error occurred.',
-            type: 'error'
-          })
-        } else {
-          this.$router.push('/')
-          this.$message({
-            message: 'Logged out.',
-            type: 'success'
-          })
-        }
-      }
-    }
-  }
+  },
+  methods: {
+    async handleLogout() {
+      await this.$store.dispatch("user/logout");
+      this.$router.push("/@serpay/login");
+    },
+  },
+};
 </script>
 
 <style>
@@ -86,7 +58,7 @@
   font-size: 2rem;
   line-height: 1;
   font-weight: 700;
-  font-family: 'Inria Serif', Georgia, serif;
+  font-family: "Inria Serif", Georgia, serif;
 }
 .pheader_menu {
   float: right;

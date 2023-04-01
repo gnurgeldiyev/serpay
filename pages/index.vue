@@ -1,34 +1,26 @@
 <template>
   <div>
-    <h1 class="title">
-      Şahyrlar
-    </h1>
-    <div 
-      v-if="poets && poets.length > 0"
-      class="poets"
-    >
-      <profile-card
-        v-for="(poet, i) in poets"
-        :key="i"
-        :data="poet"
-      />
-    </div> 
+    <h1 class="title">Shahyrlar</h1>
+    <div v-if="poets && poets.length > 0" class="poets">
+      <profile-card v-for="(poet, i) in poets" :key="i" :data="poet" />
+    </div>
   </div>
 </template>
 
 <script>
-import ProfileCard from '@/components/ProfileCard'
+import ProfileCard from "@/components/ProfileCard";
 
 export default {
+  name: "HomePage",
   components: {
-    'profile-card': ProfileCard
+    "profile-card": ProfileCard,
   },
   computed: {
     poets() {
-      return this.$store.getters['poet/getAll']
-    }
-  }
-}
+      return this.$store.getters["poet/getAll"];
+    },
+  },
+};
 </script>
 
 <style>

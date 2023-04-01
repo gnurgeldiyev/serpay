@@ -1,30 +1,21 @@
 <template>
-  <ul 
-    v-if="data && data.length > 0"
-    class="list"
-  >
-    <li 
-      v-for="(poet, i) in data"
-      :key="i"
-      class="list_item"
-    >
-      {{ i+1 }}. {{ poet.fullname }}
+  <ul v-if="data && data.length > 0" class="list">
+    <li v-for="(poet, i) in data" :key="i" class="list_item">
+      {{ i + 1 }}. {{ poet.fullname }}
       <span class="list_item_action">
-        <el-button 
+        <el-button
           class="list_item_action_item view"
           icon="el-icon-view"
           type="text"
           @click="viewPoet(poet)"
         />
-        <el-button 
-          v-if="editor.role === 'admin'"
+        <el-button
           class="list_item_action_item edit"
           icon="el-icon-edit"
           type="text"
           @click="editPoet(poet)"
         />
-        <el-button 
-          v-if="editor.role === 'admin'"
+        <el-button
           class="list_item_action_item delete"
           icon="el-icon-delete"
           type="text"
@@ -36,54 +27,60 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      data: {
-        type: Array,
-        required: true
-      }
+export default {
+  props: {
+    data: {
+      type: Array,
+      required: true,
     },
-    computed: {
-      editor() {
-        return this.$store.getters['editor/getOne']
-      }
+  },
+  computed: {
+    editor() {
+      return this.$store.getters["editor/getOne"];
     },
-    methods: {
-      viewPoet(item) {
-        this.$store.dispatch('poet/inView', item)
-        this.$store.dispatch('poet/viewFormDialogVisibility', true)
-      },
-      editPoet(item) {
-        this.$store.dispatch('poet/inEdit', item)
-        this.$store.dispatch('poet/editFormDialogVisibility', true)
-      },
-      deletePoet(id) {
-        this.$confirm('This will permanently delete the poet. Continue?', 'Warning', {
-          confirmButtonText: 'OK',
-          cancelButtonText: 'Cancel',
-          type: 'warning',
-        }).then(async () => {
-          const result = await this.$store.dispatch('poet/delete', id)
+  },
+  methods: {
+    viewPoet(item) {
+      this.$store.dispatch("poet/inView", item);
+      this.$store.dispatch("poet/viewFormDialogVisibility", true);
+    },
+    editPoet(item) {
+      this.$store.dispatch("poet/inEdit", item);
+      this.$store.dispatch("poet/editFormDialogVisibility", true);
+    },
+    deletePoet(id) {
+      this.$confirm(
+        "This will permanently delete the poet. Continue?",
+        "Warning",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "warning",
+        }
+      )
+        .then(async () => {
+          const result = await this.$store.dispatch("poet/delete", id);
           if (!result) {
             this.$message({
-              message: 'An error occurred.',
-              type: 'error'
-            })
+              message: "An error occurred.",
+              type: "error",
+            });
           } else {
             this.$message({
-              type: 'success',
-              message: 'Delete completed.'
-            })
+              type: "success",
+              message: "Delete completed.",
+            });
           }
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: 'Delete canceled.'
-          })          
         })
-      }
-    }
-  }
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "Delete canceled.",
+          });
+        });
+    },
+  },
+};
 </script>
 
 <style>
@@ -99,14 +96,14 @@
   grid-template-columns: 1fr 1fr;
   list-style: none;
   padding: 0;
-  border: 1px solid rgba(0,0,0,.09);
+  border: 1px solid rgba(0, 0, 0, 0.09);
   border-radius: 4px;
-  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
   margin: 32px 0;
 }
-.list_item { 
+.list_item {
   padding: 16px;
-  border-bottom: 1px solid rgba(0,0,0,.09);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.09);
 }
 .list_item:nth-last-child(2),
 .list_item:last-child {

@@ -1,15 +1,12 @@
 <template>
-  <div>
-    [ Serpaý • Public beta ]
-  </div>
+    <div>[ Serpaý • Public beta ]</div>
 </template>
 
 <script>
-  export default {
-    layout: 'panel'
-  }
+export default {
+    name: 'HomePage',
+    layout: 'panel',
+}
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
