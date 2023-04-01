@@ -4,31 +4,37 @@ export const state = () => ({
 });
 
 export const mutations = {
-  ON_AUTH_STATE_CHANGED_MUTATION: (state, { authUser, claims }) => {
+  SET_USER: (state, { authUser, claims }) => {
     if (!authUser) {
-      // User is not logged in.
       state.user = null;
     } else {
-      // User is logged in.
-      state.user = { uid: authUser.uid, email: authUser.email };
+      state.user = {
+        uid: authUser.uid,
+        email: authUser.email,
+        accessToken: authUser.multiFactor.user.accessToken,
+      };
     }
+  },
+};
+
+export const getters = {
+  getToken: (state) => {
+    return state.user;
   },
 };
 
 export const actions = {
   async onAuthStateChanged({ commit }, { authUser }) {
-    console.log("barde");
     if (!authUser) {
-      // User is not logged in.
-      commit("ON_AUTH_STATE_CHANGED_MUTATION", { authUser: null });
+      commit("SET_USER", { authUser: null });
     } else {
-      // User is logged in.
-      commit("ON_AUTH_STATE_CHANGED_MUTATION", { authUser });
+      commit("SET_USER", { authUser });
     }
   },
   async logout({ commit }) {
     try {
       await this.$fire.auth.signOut();
+      this.$cookies.remove("accessToken");
     } catch (error) {
       console.log(error);
     }

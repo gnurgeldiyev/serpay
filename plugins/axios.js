@@ -1,3 +1,4 @@
-export default function ({ $axios, store }) {
-  $axios.setToken(store.state.editor.token, "Bearer");
+export default function ({ $axios, $cookies }) {
+  const token = $cookies.get("accessToken");
+  $axios.setToken(token, "Bearer");
 }

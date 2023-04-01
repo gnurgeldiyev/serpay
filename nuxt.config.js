@@ -96,15 +96,11 @@ module.exports = {
     },
     services: {
       auth: {
-        persistence: "local", // default
+        persistence: "local",
         initialize: {
-          onAuthStateChangedMutation: "user/ON_AUTH_STATE_CHANGED_MUTATION",
+          onAuthStateChangedMutation: "user/SET_USER",
           onAuthStateChangedAction: "user/onAuthStateChanged",
-          subscribeManually: false,
         },
-        ssr: false, // default
-        emulatorPort: undefined,
-        emulatorHost: undefined,
       },
     },
   },

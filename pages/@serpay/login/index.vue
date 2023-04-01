@@ -22,6 +22,9 @@ export default {
           prompt: "select_account",
         });
         await this.$fire.auth.signInWithPopup(provider);
+        const token = await this.$fire.auth.currentUser.getIdToken();
+        this.$cookies.set("accessToken", token);
+        this.$axios.setToken(token, "Bearer");
         this.$router.push("/@serpay/poets");
       } catch (error) {
         console.error(error);

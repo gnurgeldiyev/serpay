@@ -163,7 +163,7 @@ export default {
       return this.$store.getters["poet/inView"];
     },
     getToken() {
-      return this.$store.getters["editor/getToken"];
+      return this.$cookies.get("accessToken");
     },
     getFormTitle() {
       if (this.type === "edit") {

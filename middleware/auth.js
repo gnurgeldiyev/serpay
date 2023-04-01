@@ -1,14 +1,18 @@
-export default async function ({ store, redirect }) {
-  // Wait for the onAuthStateChanged event
-  const isAuthenticated = await new Promise((resolve) => {
-    const unsubscribe = store.$fire.auth.onAuthStateChanged((user) => {
-      unsubscribe();
-      resolve(user);
-    });
-  });
+export default async function ({ store, redirect, app, req }) {
+  let isAuthenticated = false;
 
-  // If the user is not authenticated, redirect to the login page.
+  if (process.server) {
+    isAuthenticated = !!app.$cookies.get("accessToken");
+  } else if (process.client) {
+    isAuthenticated = await new Promise((resolve) => {
+      const unsubscribe = store.$fire.auth.onAuthStateChanged((user) => {
+        unsubscribe();
+        resolve(user);
+      });
+    });
+  }
+
   if (!isAuthenticated) {
-    return redirect("/@serpay/login");
+    return redirect("/@serpay/login/");
   }
 }

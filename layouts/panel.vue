@@ -26,7 +26,7 @@ export default {
     "panel-header": PanelHeader,
     "panel-menu": PanelMenu,
   },
-  middleware: ["auth"],
+  middleware: "auth",
   head() {
     return {
       meta: [{ name: "robots", content: "noindex nofollow" }],
