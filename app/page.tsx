@@ -67,19 +67,29 @@ async function getPoets(): Promise<PoetWithCount[]> {
 			},
 			{
 				$project: {
+					_id: 0,
 					id: { $toString: '$_id' },
 					fullname: 1,
 					url: 1,
-					avatar: 1,
-					birth_date: 1,
-					death_date: 1,
+					avatar: { $ifNull: ['$avatar', null] },
+					birth_date: { $ifNull: ['$birth_date', null] },
+					death_date: { $ifNull: ['$death_date', null] },
 					poems_count: { $size: '$poems' }
 				}
 			},
 			{ $sort: { fullname: 1 } }
 		]);
 		
-		return poets;
+		// Ensure all data is properly serialized as plain objects
+		return JSON.parse(JSON.stringify(poets.map(poet => ({
+			id: poet.id,
+			fullname: poet.fullname,
+			url: poet.url,
+			avatar: poet.avatar || undefined,
+			birth_date: poet.birth_date || undefined,
+			death_date: poet.death_date || undefined,
+			poems_count: poet.poems_count || 0
+		}))));
 	} catch (error) {
 		console.error("Error fetching poets:", error);
 		return [];
