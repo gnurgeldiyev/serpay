@@ -144,7 +144,10 @@ export async function updatePoem(poemId: string, formData: FormData) {
     
     // Revalidate both old and new poet pages with encoded URLs
     if (oldPoem && oldPoem.author && typeof oldPoem.author === 'object' && 'url' in oldPoem.author) {
-      revalidatePath(`/p/${encodeURIComponent(oldPoem.author.url)}`)
+      const authorUrl = (oldPoem.author as any).url
+      if (typeof authorUrl === 'string') {
+        revalidatePath(`/p/${encodeURIComponent(authorUrl)}`)
+      }
     }
     if (newPoet) {
       revalidatePath(`/p/${encodeURIComponent(newPoet.url)}`)
