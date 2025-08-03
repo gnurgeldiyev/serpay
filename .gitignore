@@ -58,6 +58,8 @@ typings/
 
 # dotenv environment variables file
 .env
+.env.local
+.env.production
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -82,3 +84,16 @@ dist
 *.DS_Store
 
 yarn-error.log
+.vercel
+
+# Claude AI settings (contains sensitive data)
+.claude/
+
+# Screenshots
+Screenshot*.png
+
+# Serena AI assistant
+.serena/
+
+# MCP configuration
+.mcp.json
