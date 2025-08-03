@@ -1,5 +1,7 @@
 import { PoetCard } from "@/components/PoetCard";
 import { Metadata } from "next";
+import dbConnect from "@/lib/db/mongodb";
+import { Poet } from "@/lib/db/models";
 
 export const metadata: Metadata = {
 	title: "Serpaý – Goşgular Çemeni",
@@ -26,16 +28,58 @@ export const metadata: Metadata = {
 	]
 };
 
-async function getPoets() {
+export const revalidate = 3600; // Revalidate every hour
+
+type PoetWithCount = {
+	id: string;
+	fullname: string;
+	url: string;
+	avatar?: string;
+	birth_date?: string;
+	death_date?: string;
+	poems_count: number;
+}
+
+async function getPoets(): Promise<PoetWithCount[]> {
 	try {
-		const res = await fetch(
-			`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"}/api/poets`,
+		await dbConnect();
+		
+		const poets = await Poet.aggregate([
+			{ $match: { is_deleted: { $ne: true } } },
 			{
-				next: { revalidate: 3600 } // Revalidate every hour
+				$lookup: {
+					from: 'poems',
+					let: { poetId: '$_id' },
+					pipeline: [
+						{
+							$match: {
+								$expr: {
+									$and: [
+										{ $eq: ['$author', '$$poetId'] },
+										{ $ne: ['$is_deleted', true] }
+									]
+								}
+							}
+						}
+					],
+					as: 'poems'
+				}
 			},
-		);
-		if (!res.ok) throw new Error("Failed to fetch");
-		return res.json();
+			{
+				$project: {
+					id: { $toString: '$_id' },
+					fullname: 1,
+					url: 1,
+					avatar: 1,
+					birth_date: 1,
+					death_date: 1,
+					poems_count: { $size: '$poems' }
+				}
+			},
+			{ $sort: { fullname: 1 } }
+		]);
+		
+		return poets;
 	} catch (error) {
 		console.error("Error fetching poets:", error);
 		return [];
@@ -53,7 +97,7 @@ export default async function HomePage() {
 				</h2>
 
 				<div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-					{poets.map((poet: any) => (
+					{poets.map((poet) => (
 						<PoetCard key={poet.id} poet={poet} />
 					))}
 				</div>
