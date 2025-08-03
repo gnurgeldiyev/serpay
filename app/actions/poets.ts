@@ -40,38 +40,33 @@ export async function deletePoet(poetId: string) {
 export async function createPoet(formData: FormData) {
   const session = await auth()
   if (!session) {
-    return { success: false, error: 'Unauthorized' }
+    redirect('/admin/login')
   }
 
-  try {
-    await dbConnect()
-    
-    const data = {
-      fullname: formData.get('fullname') as string,
-      url: formData.get('url') as string,
-      birth_date: formData.get('birth_date') as string || undefined,
-      death_date: formData.get('death_date') as string || undefined,
-      avatar: formData.get('avatar') as string || undefined,
-      created_by: session.id,
-      created_at: new Date(),
-      updated_at: new Date(),
-      is_deleted: false
-    }
-    
-    // Check if URL already exists
-    const existingPoet = await Poet.findOne({ url: data.url, is_deleted: false })
-    if (existingPoet) {
-      return { success: false, error: 'Bu URL eýýäm ulanylýar' }
-    }
-    
-    await Poet.create(data)
-    
-    revalidatePath('/admin/poets')
-    revalidatePath('/')
-  } catch (error) {
-    console.error('Create poet error:', error)
-    return { success: false, error: 'Failed to create poet' }
+  await dbConnect()
+  
+  const data = {
+    fullname: formData.get('fullname') as string,
+    url: formData.get('url') as string,
+    birth_date: formData.get('birth_date') as string || undefined,
+    death_date: formData.get('death_date') as string || undefined,
+    avatar: formData.get('avatar') as string || undefined,
+    created_by: session.id,
+    created_at: new Date(),
+    updated_at: new Date(),
+    is_deleted: false
   }
+  
+  // Check if URL already exists
+  const existingPoet = await Poet.findOne({ url: data.url, is_deleted: false })
+  if (existingPoet) {
+    throw new Error('Bu URL eýýäm ulanylýar')
+  }
+  
+  await Poet.create(data)
+  
+  revalidatePath('/admin/poets')
+  revalidatePath('/')
   
   redirect('/admin/poets')
 }
@@ -79,41 +74,36 @@ export async function createPoet(formData: FormData) {
 export async function updatePoet(poetId: string, formData: FormData) {
   const session = await auth()
   if (!session) {
-    return { success: false, error: 'Unauthorized' }
+    redirect('/admin/login')
   }
 
-  try {
-    await dbConnect()
-    
-    const data = {
-      fullname: formData.get('fullname') as string,
-      url: formData.get('url') as string,
-      birth_date: formData.get('birth_date') as string || undefined,
-      death_date: formData.get('death_date') as string || undefined,
-      avatar: formData.get('avatar') as string || undefined,
-      updated_at: new Date()
-    }
-    
-    // Check if URL already exists (excluding current poet)
-    const existingPoet = await Poet.findOne({ 
-      url: data.url, 
-      is_deleted: false,
-      _id: { $ne: poetId }
-    })
-    if (existingPoet) {
-      return { success: false, error: 'Bu URL eýýäm ulanylýar' }
-    }
-    
-    await Poet.findByIdAndUpdate(poetId, data)
-    
-    revalidatePath('/admin/poets')
-    revalidatePath(`/admin/poets/${poetId}/edit`)
-    revalidatePath('/')
-    revalidatePath(`/p/${encodeURIComponent(data.url)}`)
-  } catch (error) {
-    console.error('Update poet error:', error)
-    return { success: false, error: 'Failed to update poet' }
+  await dbConnect()
+  
+  const data = {
+    fullname: formData.get('fullname') as string,
+    url: formData.get('url') as string,
+    birth_date: formData.get('birth_date') as string || undefined,
+    death_date: formData.get('death_date') as string || undefined,
+    avatar: formData.get('avatar') as string || undefined,
+    updated_at: new Date()
   }
+  
+  // Check if URL already exists (excluding current poet)
+  const existingPoet = await Poet.findOne({ 
+    url: data.url, 
+    is_deleted: false,
+    _id: { $ne: poetId }
+  })
+  if (existingPoet) {
+    throw new Error('Bu URL eýýäm ulanylýar')
+  }
+  
+  await Poet.findByIdAndUpdate(poetId, data)
+  
+  revalidatePath('/admin/poets')
+  revalidatePath(`/admin/poets/${poetId}/edit`)
+  revalidatePath('/')
+  revalidatePath(`/p/${encodeURIComponent(data.url)}`)
   
   redirect('/admin/poets')
 }

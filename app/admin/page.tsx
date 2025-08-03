@@ -28,7 +28,9 @@ async function getStats() {
     recentPoems: recentPoems.map(poem => ({
       id: poem._id.toString(),
       title: poem.title,
-      author: poem.author?.fullname || 'Näbelli',
+      author: (poem.author && typeof poem.author === 'object' && 'fullname' in poem.author) 
+        ? String(poem.author.fullname) 
+        : 'Näbelli',
       date: poem.created_at
     }))
   }
