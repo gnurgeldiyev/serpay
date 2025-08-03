@@ -3,6 +3,8 @@ import { Users, BookOpen, UserCog, ArrowRight, Activity } from 'lucide-react'
 import dbConnect from '@/lib/db/mongodb'
 import { Poet, Poem, Editor } from '@/lib/db/models'
 
+export const dynamic = 'force-dynamic'
+
 async function getStats() {
   await dbConnect()
   

@@ -4,6 +4,8 @@ import dbConnect from '@/lib/db/mongodb'
 import { Poet, Poem } from '@/lib/db/models'
 import { DeletePoetButton } from '@/components/admin/DeletePoetButton'
 
+export const dynamic = 'force-dynamic'
+
 async function getPoets() {
   await dbConnect()
   const poets = await Poet.find({ is_deleted: false }).sort({ created_at: -1 }).lean()

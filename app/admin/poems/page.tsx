@@ -4,6 +4,8 @@ import dbConnect from '@/lib/db/mongodb'
 import { Poem, Poet } from '@/lib/db/models'
 import { PoemsListView } from '@/components/admin/PoemsListView'
 
+export const dynamic = 'force-dynamic'
+
 async function getPoemsGroupedByPoet() {
   await dbConnect()
   

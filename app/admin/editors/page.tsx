@@ -4,6 +4,8 @@ import dbConnect from '@/lib/db/mongodb'
 import { Editor } from '@/lib/db/models'
 import { DeleteEditorButton } from '@/components/admin/DeleteEditorButton'
 
+export const dynamic = 'force-dynamic'
+
 async function getEditors() {
   await dbConnect()
   const editors = await Editor.find({ is_deleted: false }).sort({ created_at: -1 }).lean()
