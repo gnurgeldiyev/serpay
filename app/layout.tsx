@@ -3,6 +3,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { Navbar } from '@/components/Navbar'
 import { Toaster } from '@/components/ui/sonner'
 import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import { inriaSerifBold, inriaSerifRegular } from './fonts'
 import './globals.css'
 
@@ -46,6 +47,7 @@ export default function RootLayout({
           <Toaster />
         </ThemeProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
