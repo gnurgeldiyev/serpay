@@ -4,6 +4,7 @@ import { Navbar } from '@/components/Navbar'
 import { Toaster } from '@/components/ui/sonner'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { PageLoader } from '@/components/PageLoader'
 import { inriaSerifBold, inriaSerifRegular } from './fonts'
 import './globals.css'
 
@@ -35,6 +36,7 @@ export default function RootLayout({
   return (
     <html lang="tk" suppressHydrationWarning>
       <body className={`${inriaSerifBold.variable} ${inriaSerifRegular.variable}`}>
+        <PageLoader />
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
