@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Navbar } from '@/components/Navbar'
 import { Toaster } from '@/components/ui/sonner'
+import { Analytics } from '@vercel/analytics/next'
 import { inriaSerifBold, inriaSerifRegular } from './fonts'
 import './globals.css'
 
@@ -44,6 +45,7 @@ export default function RootLayout({
           <main className="min-h-screen">{children}</main>
           <Toaster />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   )
