@@ -13,7 +13,7 @@ export async function signIn(email: string, password: string) {
     const editor = await Editor.findOne({ 
       email,
       is_deleted: false 
-    })
+    }).lean()
 
     if (!editor) {
       return { error: 'Invalid credentials' }

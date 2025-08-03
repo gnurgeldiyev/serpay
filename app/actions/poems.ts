@@ -134,16 +134,16 @@ export async function updatePoem(poemId: string, formData: FormData) {
     }
     
     // Get both old and new poet info for revalidation
-    const oldPoem = await Poem.findById(poemId).populate('author')
+    const oldPoem = await Poem.findById(poemId).populate('author').lean()
     await Poem.findByIdAndUpdate(poemId, data)
-    const newPoet = await Poet.findById(poetId)
+    const newPoet = await Poet.findById(poetId).lean()
     
     revalidatePath('/admin/poems')
     revalidatePath(`/admin/poems/${poemId}/edit`)
     revalidatePath('/')
     
     // Revalidate both old and new poet pages with encoded URLs
-    if (oldPoem && oldPoem.author) {
+    if (oldPoem && oldPoem.author && typeof oldPoem.author === 'object' && 'url' in oldPoem.author) {
       revalidatePath(`/p/${encodeURIComponent(oldPoem.author.url)}`)
     }
     if (newPoet) {
