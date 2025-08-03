@@ -33,6 +33,20 @@ async function getPoem(poetUrl: string, poemUrl: string) {
     return null
   }
   
+  const authorData = poem.author && typeof poem.author === 'object' && '_id' in poem.author
+    ? {
+        id: poem.author._id.toString(),
+        fullname: 'fullname' in poem.author ? String(poem.author.fullname) : '',
+        url: 'url' in poem.author ? String(poem.author.url) : '',
+        avatar: 'avatar' in poem.author ? poem.author.avatar : undefined
+      }
+    : {
+        id: '',
+        fullname: '',
+        url: '',
+        avatar: undefined
+      }
+
   return {
     id: poem._id.toString(),
     title: poem.title,
@@ -40,12 +54,7 @@ async function getPoem(poetUrl: string, poemUrl: string) {
     category: poem.category || [],
     year: poem.year,
     created_at: poem.created_at,
-    author: {
-      id: poem.author._id.toString(),
-      fullname: poem.author.fullname,
-      url: poem.author.url,
-      avatar: poem.author.avatar
-    }
+    author: authorData
   }
 }
 
@@ -80,9 +89,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       type: 'article',
       authors: [poem.author.fullname],
-      publishedTime: poem.created_at,
-      modifiedTime: poem.created_at,
-      images: poem.author.avatar ? [{ 
+      publishedTime: new Date(poem.created_at).toISOString(),
+      modifiedTime: new Date(poem.created_at).toISOString(),
+      images: poem.author.avatar && typeof poem.author.avatar === 'string' ? [{ 
         url: poem.author.avatar.startsWith('http') ? poem.author.avatar : `https://serpay.penjire.com${poem.author.avatar}`,
         width: 1200,
         height: 630,
@@ -95,7 +104,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       card: 'summary_large_image',
       title: `${poem.title} - ${poem.author.fullname}`,
       description,
-      images: poem.author.avatar ? [poem.author.avatar] : []
+      images: poem.author.avatar && typeof poem.author.avatar === 'string' ? [poem.author.avatar] : []
     },
     alternates: {
       canonical: `https://serpay.penjire.com/p/${poetUrl}/${poemUrl}`

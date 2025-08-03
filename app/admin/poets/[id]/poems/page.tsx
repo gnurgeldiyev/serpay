@@ -36,7 +36,7 @@ async function getPoetWithPoems(id: string, searchQuery?: string) {
       id: poem._id.toString(),
       title: poem.title,
       url: poem.url,
-      created_at: poem.created_at
+      created_at: poem.created_at.toISOString()
     }))
   }
 }

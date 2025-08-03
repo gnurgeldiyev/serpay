@@ -47,7 +47,9 @@ export async function GET(request: NextRequest) {
       ...poems.map(poem => ({
         id: poem._id.toString(),
         title: poem.title,
-        subtitle: poem.author?.fullname || 'Näbelli',
+        subtitle: (poem.author && typeof poem.author === 'object' && 'fullname' in poem.author) 
+          ? String(poem.author.fullname) 
+          : 'Näbelli',
         type: 'poem' as const,
         url: `/admin/poems/${poem._id}/edit`
       }))

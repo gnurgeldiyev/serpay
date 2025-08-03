@@ -35,9 +35,9 @@ async function getPoet(poetUrl: string) {
     bio: poet.bio || '',
     birth_date: poet.birth_date,
     death_date: poet.death_date,
-    birth_place: poet.birth_place,
-    education: poet.education,
-    quote: poet.quote,
+    birth_place: (poet as any).birth_place || undefined,
+    education: (poet as any).education || undefined,
+    quote: (poet as any).quote || undefined,
     avatar: poet.avatar,
     poems: poems.map(poem => ({
       id: poem._id.toString(),

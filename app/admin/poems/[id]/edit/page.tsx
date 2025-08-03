@@ -9,14 +9,16 @@ import { PoemForm } from '@/components/admin/PoemForm'
 async function getPoem(id: string) {
   await dbConnect()
   const poem = await Poem.findById(id).populate('author').lean()
-  if (!poem || poem.is_deleted === true) {
+  if (!poem || (poem as any).is_deleted === true) {
     notFound()
   }
   return {
     id: poem._id.toString(),
     title: poem.title,
     content: poem.content,
-    poetId: poem.author._id.toString()
+    poetId: (poem.author && typeof poem.author === 'object' && '_id' in poem.author)
+      ? poem.author._id.toString()
+      : ''
   }
 }
 
