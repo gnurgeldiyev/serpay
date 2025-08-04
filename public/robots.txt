@@ -1,0 +1,15 @@
+# Robots.txt for Serpaý - Goşgular Çemeni
+
+# Allow all web crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin pages
+Disallow: /admin/
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://serpay.penjire.com/sitemap.xml
+
+# Crawl delay (in seconds) - optional, helps prevent server overload
+Crawl-delay: 1
