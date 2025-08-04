@@ -200,9 +200,10 @@ export default async function PoemPage({ params }: PageProps) {
         
         {/* Poem content */}
         <div 
-          className="prose prose-lg max-w-none font-[family-name:var(--font-inria-serif-regular)] [&_p]:mb-4"
-          dangerouslySetInnerHTML={{ __html: poem.content }}
-        />
+          className="prose prose-lg max-w-none font-[family-name:var(--font-inria-serif-regular)] whitespace-pre-line [&_p]:mb-4"
+        >
+          {poem.content}
+        </div>
       </article>
     </>
   )
