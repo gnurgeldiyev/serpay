@@ -3,6 +3,8 @@ import dbConnect from '@/lib/db/mongodb'
 import Poem from '@/lib/db/models/poem'
 import Poet from '@/lib/db/models/poet'
 
+export const revalidate = 3600 // Revalidate every hour
+
 export async function GET(request: NextRequest) {
   try {
     await dbConnect()
@@ -20,7 +22,7 @@ export async function GET(request: NextRequest) {
       .lean()
     
     const total = await Poem.countDocuments({ is_approved: true })
-    
+
     return NextResponse.json({
       poems: poems.map(poem => ({
         id: poem._id.toString(),
@@ -36,6 +38,10 @@ export async function GET(request: NextRequest) {
         limit,
         total,
         pages: Math.ceil(total / limit)
+      }
+    }, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=7200'
       }
     })
   } catch (error) {

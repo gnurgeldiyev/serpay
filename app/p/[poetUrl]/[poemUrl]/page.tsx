@@ -62,6 +62,8 @@ type PageProps = {
   params: Promise<{ poetUrl: string; poemUrl: string }>
 }
 
+export const revalidate = 3600 // Revalidate every hour
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { poetUrl, poemUrl } = await params
   const poem = await getPoem(poetUrl, poemUrl)
