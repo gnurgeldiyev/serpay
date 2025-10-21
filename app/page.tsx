@@ -60,7 +60,8 @@ async function getPoets(): Promise<PoetWithCount[]> {
 									]
 								}
 							}
-						}
+						},
+						{ $project: { _id: 1 } } // Only count, don't fetch full poem data
 					],
 					as: 'poems'
 				}

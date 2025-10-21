@@ -4,6 +4,8 @@ import { Poet, Poem } from '@/lib/db/models'
 
 const SITE_URL = 'https://serpay.penjire.com'
 
+export const revalidate = 86400 // Revalidate once per day
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   await dbConnect()
   

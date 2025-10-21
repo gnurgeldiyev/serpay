@@ -21,10 +21,11 @@ async function getPoet(poetUrl: string) {
     return null
   }
   
-  const poems = await Poem.find({ 
+  const poems = await Poem.find({
     author: poet._id,
     is_deleted: { $ne: true }
   })
+  .select('title url category year')
   .sort({ title: 1 })
   .lean()
   
@@ -51,6 +52,49 @@ async function getPoet(poetUrl: string) {
 
 type PageProps = {
   params: Promise<{ poetUrl: string }>
+}
+
+export const revalidate = 3600 // Revalidate every hour
+
+export async function generateStaticParams() {
+  await dbConnect()
+
+  // Pre-generate pages for top 20 poets with most poems
+  const topPoets = await Poet.aggregate([
+    { $match: { is_deleted: { $ne: true } } },
+    {
+      $lookup: {
+        from: 'poems',
+        let: { poetId: '$_id' },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $eq: ['$author', '$$poetId'] },
+                  { $ne: ['$is_deleted', true] }
+                ]
+              }
+            }
+          },
+          { $project: { _id: 1 } }
+        ],
+        as: 'poems'
+      }
+    },
+    {
+      $project: {
+        url: 1,
+        poems_count: { $size: '$poems' }
+      }
+    },
+    { $sort: { poems_count: -1 } },
+    { $limit: 20 }
+  ])
+
+  return topPoets.map(poet => ({
+    poetUrl: poet.url
+  }))
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
