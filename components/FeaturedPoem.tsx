@@ -16,7 +16,7 @@ export function FeaturedPoem({ poem }: { poem: FeaturedPoemData }) {
 		<section className="mt-16">
 			<Link
 				href={poem.href}
-				className="group relative block overflow-hidden rounded-3xl border border-brand-border bg-linear-to-br from-brand-subtle via-background to-brand-subtle/50 px-6 py-10 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl sm:px-14 sm:py-16"
+				className="group relative block overflow-hidden rounded-3xl border border-brand-border bg-linear-to-br from-brand-subtle via-background to-brand-subtle/50 px-6 py-10 transition-colors duration-300 hover:border-brand/40 sm:px-14 sm:py-16"
 			>
 				{/* Decorative quotation watermark */}
 				<span
@@ -40,9 +40,9 @@ export function FeaturedPoem({ poem }: { poem: FeaturedPoemData }) {
 					{poem.title}
 				</h2>
 
-				{/* Excerpt as a blockquote */}
+				{/* Excerpt */}
 				{poem.excerpt && (
-					<p className="relative mt-6 max-w-2xl whitespace-pre-line border-l-2 border-brand/30 pl-5 font-serif text-lg italic leading-relaxed text-foreground/75 sm:text-xl">
+					<p className="relative mt-6 max-w-2xl whitespace-pre-line font-serif text-lg leading-relaxed text-foreground/75 sm:text-xl">
 						{poem.excerpt}
 					</p>
 				)}
