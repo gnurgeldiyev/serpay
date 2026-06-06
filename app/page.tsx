@@ -1,4 +1,5 @@
 import { PoetGrid } from "@/components/PoetGrid";
+import { HomeSearch } from "@/components/HomeSearch";
 import { FeaturedPoem, type FeaturedPoemData } from "@/components/FeaturedPoem";
 import { Metadata } from "next";
 import dbConnect from "@/lib/db/mongodb";
@@ -147,6 +148,8 @@ export default async function HomePage() {
 					Häzirlikçe şahyr goşulmady.
 				</p>
 			)}
+
+			<HomeSearch />
 
 			{featured && <FeaturedPoem poem={featured} />}
 		</div>
