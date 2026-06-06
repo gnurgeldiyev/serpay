@@ -177,7 +177,7 @@ export default async function HomePage() {
 
 	return (
 		<div className="mx-auto max-w-7xl px-4 py-12 lg:px-6">
-			<p className="mx-auto mb-12 max-w-2xl text-center text-lg leading-relaxed text-muted-foreground">
+			<p className="mx-auto mb-14 max-w-2xl text-balance text-center font-serif text-xl leading-relaxed text-foreground/70 sm:text-2xl">
 				Türkmen edebiýatynyň klassyk we häzirki zaman şahyrlary, olaryň goşgulary — bir ýerde.
 			</p>
 
