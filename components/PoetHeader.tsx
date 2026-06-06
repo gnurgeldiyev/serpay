@@ -46,7 +46,7 @@ export function PoetHeader({ poet }: PoetHeaderProps) {
 
       {/* Info - All centered below avatar */}
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-[family-name:var(--font-inria-serif-bold)] mb-4">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-sans font-bold mb-4">
           {poet.fullname}
         </h1>
         

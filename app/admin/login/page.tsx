@@ -14,7 +14,7 @@ export default async function LoginPage() {
       {/* Header */}
       <header className="px-4 py-6">
         <Link href="/" className="inline-block">
-          <h1 className="text-2xl font-[family-name:var(--font-inria-serif-bold)]">
+          <h1 className="text-2xl font-sans font-bold">
             Serpaý
           </h1>
         </Link>

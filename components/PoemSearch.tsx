@@ -55,7 +55,7 @@ export function PoemSearch({ poems, poetUrl }: PoemSearchProps) {
               className="group block py-4 hover:bg-muted/50 transition-colors -mx-4 px-4 rounded-lg"
             >
               <div className="flex items-center justify-between">
-                <h4 className="text-lg font-medium text-foreground group-hover:text-primary transition-colors">
+                <h4 className="text-lg font-serif font-medium text-foreground group-hover:text-primary transition-colors">
                   {poem.title}
                 </h4>
                 {poem.year && (

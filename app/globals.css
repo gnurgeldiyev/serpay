@@ -1,11 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-bricolage), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: var(--font-fraunces), Georgia, Cambria, "Times New Roman", serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
-  --font-inria-serif-bold: 'InriaSerif-Bold', serif;
-  --font-inria-serif-regular: 'InriaSerif-Regular', serif;
-  
+
   --color-background: oklch(0.99 0 0);
   --color-foreground: oklch(0.15 0 0);
   --color-muted: oklch(0.96 0 0);
@@ -44,7 +43,7 @@ html, body {
 }
 
 body {
-  @apply bg-background text-foreground;
+  @apply bg-background text-foreground font-sans;
   font-feature-settings: "rlig" 1, "calt" 1;
 }
 

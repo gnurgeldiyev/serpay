@@ -1,13 +1,15 @@
-import localFont from 'next/font/local'
+import { Fraunces, Bricolage_Grotesque } from 'next/font/google'
 
-export const inriaSerifBold = localFont({
-  src: '../assets/font/InriaSerif-Bold.woff2',
-  variable: '--font-inria-serif-bold',
+// Default UI / sans font — used everywhere except poems.
+export const bricolage = Bricolage_Grotesque({
+  subsets: ['latin', 'latin-ext'], // latin-ext covers Turkmen ý ş ž ň
+  variable: '--font-bricolage',
   display: 'swap',
 })
 
-export const inriaSerifRegular = localFont({
-  src: '../assets/font/InriaSerif-Regular.woff2',
-  variable: '--font-inria-serif-regular',
+// Serif font for the poem reading experience (titles + content).
+export const fraunces = Fraunces({
+  subsets: ['latin', 'latin-ext'],
+  variable: '--font-fraunces',
   display: 'swap',
 })

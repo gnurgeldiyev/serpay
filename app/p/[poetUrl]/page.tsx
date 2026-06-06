@@ -218,13 +218,13 @@ export default async function PoetPage({ params }: PageProps) {
         
         {/* Poems grouped by letter */}
         <div className="mt-12">
-          <h2 className="text-2xl font-[family-name:var(--font-inria-serif-bold)] mb-8">
+          <h2 className="text-2xl font-sans font-bold mb-8">
             Goşgular ({poet.poems.length})
           </h2>
           
           {sortedLetters.map((letter) => (
             <div key={letter} className="mb-8">
-              <h3 className="text-lg font-[family-name:var(--font-inria-serif-bold)] text-muted-foreground mb-4">
+              <h3 className="text-lg font-sans font-semibold text-muted-foreground mb-4">
                 {letter}
               </h3>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -235,7 +235,7 @@ export default async function PoetPage({ params }: PageProps) {
                     className="group"
                   >
                     <div className="p-4 rounded-lg border bg-card hover:shadow-md transition-all">
-                      <h4 className="font-[family-name:var(--font-inria-serif-regular)] text-lg group-hover:text-primary transition-colors">
+                      <h4 className="font-serif text-lg group-hover:text-primary transition-colors">
                         {poem.title}
                       </h4>
                       {poem.category.length > 0 && (

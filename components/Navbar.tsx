@@ -8,7 +8,7 @@ export function Navbar() {
 			<div className="mx-auto px-4 py-8">
 				<div className="text-center">
 					<Link href="/" className="inline-block">
-						<h1 className="text-4xl font-[family-name:var(--font-inria-serif-bold)]">
+						<h1 className="text-4xl font-sans font-bold">
 							Serpaý
 						</h1>
 						<p className="text-md text-muted-foreground">Goşgular Çemeni</p>

@@ -179,7 +179,7 @@ export default async function PoemPage({ params }: PageProps) {
         
         {/* Poem header */}
         <header className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-[family-name:var(--font-inria-serif-bold)] mb-4">
+          <h1 className="text-3xl sm:text-4xl font-serif font-bold mb-4">
             {poem.title}
           </h1>
           <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
@@ -206,7 +206,7 @@ export default async function PoemPage({ params }: PageProps) {
         
         {/* Poem content */}
         <div 
-          className="prose prose-lg max-w-none font-[family-name:var(--font-inria-serif-regular)] whitespace-pre-line [&_p]:mb-4"
+          className="prose prose-lg max-w-none font-serif whitespace-pre-line [&_p]:mb-4"
         >
           {poem.content}
         </div>
