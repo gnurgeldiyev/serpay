@@ -27,6 +27,11 @@ interface PoemEditorProps {
 
 export function PoemEditor({ content, onChange, placeholder }: PoemEditorProps) {
   const editor = useEditor({
+    // Tiptap 3: avoid SSR hydration mismatch in Next.js
+    immediatelyRender: false,
+    // Tiptap 3 disables this by default; re-enable so toolbar active states
+    // (editor.isActive(...)) update on selection/transaction changes.
+    shouldRerenderOnTransaction: true,
     extensions: [
       StarterKit.configure({
         heading: {

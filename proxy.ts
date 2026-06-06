@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-export function middleware(request: NextRequest) {
-  // Skip middleware for login page to prevent loops
+export function proxy(request: NextRequest) {
+  // Skip proxy for login page to prevent loops
   if (request.nextUrl.pathname === '/admin/login') {
     return NextResponse.next()
   }
