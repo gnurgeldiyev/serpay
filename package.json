@@ -11,7 +11,8 @@
     "lint": "next lint",
     "scrape:all": "tsx scripts/scrape-all-poems.ts",
     "seed": "tsx scripts/seed-standalone.ts",
-    "update:avatars": "tsx scripts/update-avatars.ts"
+    "update:avatars": "tsx scripts/update-avatars.ts",
+    "migrate:slugs": "tsx scripts/migrate-slugs.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",

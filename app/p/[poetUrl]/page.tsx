@@ -9,30 +9,31 @@ import { PoemSearch } from '@/components/PoemSearch'
 async function getPoet(poetUrl: string) {
   await dbConnect()
   
-  // Decode the URL to handle special characters
+  // Decode the param, then match either the clean slug or the legacy url
+  // (so old percent-encoded Turkmen links keep resolving).
   const decodedUrl = decodeURIComponent(poetUrl)
-  
-  const poet = await Poet.findOne({ 
-    url: decodedUrl,
+
+  const poet = await Poet.findOne({
+    $or: [{ slug: decodedUrl }, { url: decodedUrl }],
     is_deleted: { $ne: true }
   }).lean()
-  
+
   if (!poet) {
     return null
   }
-  
+
   const poems = await Poem.find({
     author: poet._id,
     is_deleted: { $ne: true }
   })
-  .select('title url category year')
+  .select('title url slug category year')
   .sort({ title: 1 })
   .lean()
-  
+
   return {
     id: poet._id.toString(),
     fullname: poet.fullname,
-    url: poet.url,
+    url: poet.slug || poet.url,
     bio: poet.bio || '',
     birth_date: poet.birth_date,
     death_date: poet.death_date,
@@ -43,7 +44,7 @@ async function getPoet(poetUrl: string) {
     poems: poems.map(poem => ({
       id: poem._id.toString(),
       title: poem.title,
-      url: poem.url,
+      url: poem.slug || poem.url,
       category: poem.category || [],
       year: poem.year
     }))
@@ -85,6 +86,7 @@ export async function generateStaticParams() {
     {
       $project: {
         url: 1,
+        slug: 1,
         poems_count: { $size: '$poems' }
       }
     },
@@ -93,7 +95,7 @@ export async function generateStaticParams() {
   ])
 
   return topPoets.map(poet => ({
-    poetUrl: poet.url
+    poetUrl: poet.slug || poet.url
   }))
 }
 
@@ -135,7 +137,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       images: poet.avatar ? [poet.avatar] : []
     },
     alternates: {
-      canonical: `https://serpay.penjire.com/p/${poetUrl}`
+      canonical: `https://serpay.penjire.com/p/${poet.url}`
     },
     other: {
       'og:profile:first_name': poet.fullname.split(' ')[0],

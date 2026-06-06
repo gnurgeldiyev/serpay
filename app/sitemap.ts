@@ -10,19 +10,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   await dbConnect()
   
   // Get all poets
-  const poets = await Poet.find({ 
-    is_deleted: { $ne: true } 
+  const poets = await Poet.find({
+    is_deleted: { $ne: true }
   })
-  .select('url updated_at')
+  .select('url slug updated_at')
   .lean()
-  
+
   // Get all poems with their poets
-  const poems = await Poem.find({ 
+  const poems = await Poem.find({
     is_deleted: { $ne: true },
     is_approved: true
   })
-  .populate('author', 'url')
-  .select('url updated_at author')
+  .populate('author', 'url slug')
+  .select('url slug updated_at author')
   .lean()
   
   // Static pages
@@ -49,20 +49,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   
   // Poet pages
   const poetPages = poets.map(poet => ({
-    url: `${SITE_URL}/p/${poet.url}`,
+    url: `${SITE_URL}/p/${poet.slug || poet.url}`,
     lastModified: poet.updated_at || new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }))
-  
+
   // Poem pages
   const poemPages = poems.map(poem => {
-    const poetUrl = poem.author && typeof poem.author === 'object' && 'url' in poem.author
-      ? poem.author.url
-      : ''
-    
+    const author = poem.author && typeof poem.author === 'object' ? poem.author as { url?: string; slug?: string } : null
+    const poetUrl = author ? (author.slug || author.url || '') : ''
+
     return {
-      url: `${SITE_URL}/p/${poetUrl}/${poem.url}`,
+      url: `${SITE_URL}/p/${poetUrl}/${poem.slug || poem.url}`,
       lastModified: poem.updated_at || new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.7,

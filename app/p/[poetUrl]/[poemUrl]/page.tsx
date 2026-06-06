@@ -8,21 +8,22 @@ import { Poet, Poem } from '@/lib/db/models'
 async function getPoem(poetUrl: string, poemUrl: string) {
   await dbConnect()
   
-  // Decode URLs to handle special characters
+  // Decode params, then match either the clean slug or the legacy url
+  // (so old percent-encoded Turkmen links keep resolving).
   const decodedPoetUrl = decodeURIComponent(poetUrl)
   const decodedPoemUrl = decodeURIComponent(poemUrl)
-  
-  const poet = await Poet.findOne({ 
-    url: decodedPoetUrl,
-    is_deleted: { $ne: true } 
+
+  const poet = await Poet.findOne({
+    $or: [{ slug: decodedPoetUrl }, { url: decodedPoetUrl }],
+    is_deleted: { $ne: true }
   }).lean()
-  
+
   if (!poet) {
     return null
   }
-  
-  const poem = await Poem.findOne({ 
-    url: decodedPoemUrl,
+
+  const poem = await Poem.findOne({
+    $or: [{ slug: decodedPoemUrl }, { url: decodedPoemUrl }],
     author: poet._id,
     is_deleted: { $ne: true }
   })
@@ -37,7 +38,9 @@ async function getPoem(poetUrl: string, poemUrl: string) {
     ? {
         id: poem.author._id.toString(),
         fullname: 'fullname' in poem.author ? String(poem.author.fullname) : '',
-        url: 'url' in poem.author ? String(poem.author.url) : '',
+        url: 'slug' in poem.author && poem.author.slug
+          ? String(poem.author.slug)
+          : 'url' in poem.author ? String(poem.author.url) : '',
         avatar: 'avatar' in poem.author ? poem.author.avatar : undefined
       }
     : {
@@ -50,6 +53,7 @@ async function getPoem(poetUrl: string, poemUrl: string) {
   return {
     id: poem._id.toString(),
     title: poem.title,
+    slug: poem.slug || poem.url,
     content: poem.content,
     category: poem.category || [],
     year: poem.year,
@@ -109,7 +113,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       images: poem.author.avatar && typeof poem.author.avatar === 'string' ? [poem.author.avatar] : []
     },
     alternates: {
-      canonical: `https://serpay.penjire.com/p/${poetUrl}/${poemUrl}`
+      canonical: `https://serpay.penjire.com/p/${poem.author.url}/${poem.slug}`
     },
     keywords: [
       poem.author.fullname,
@@ -148,7 +152,7 @@ export default async function PoemPage({ params }: PageProps) {
       "name": "Serpaý",
       "url": "https://serpay.penjire.com"
     },
-    "url": `https://serpay.penjire.com/p/${poetUrl}/${poemUrl}`,
+    "url": `https://serpay.penjire.com/p/${poem.author.url}/${poem.slug}`,
     "isPartOf": {
       "@type": "WebSite",
       "name": "Serpaý – Goşgular Çemeni",

@@ -97,3 +97,4 @@ Screenshot*.png
 
 # MCP configuration
 .mcp.json
+.env*

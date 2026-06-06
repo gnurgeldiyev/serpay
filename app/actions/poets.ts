@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache'
 import dbConnect from '@/lib/db/mongodb'
 import { Poet, Poem } from '@/lib/db/models'
 import { auth } from '@/lib/auth-wrapper'
+import { slugify } from '@/lib/utils'
 
 export async function deletePoet(poetId: string) {
   const session = await auth()
@@ -45,9 +46,12 @@ export async function createPoet(formData: FormData) {
 
   await dbConnect()
   
+  const url = formData.get('url') as string
+  const fullname = formData.get('fullname') as string
   const data = {
-    fullname: formData.get('fullname') as string,
-    url: formData.get('url') as string,
+    fullname,
+    url,
+    slug: slugify(url || fullname),
     birth_date: formData.get('birth_date') as string || undefined,
     death_date: formData.get('death_date') as string || undefined,
     avatar: formData.get('avatar') as string || undefined,
@@ -79,9 +83,12 @@ export async function updatePoet(poetId: string, formData: FormData) {
 
   await dbConnect()
   
+  const url = formData.get('url') as string
+  const fullname = formData.get('fullname') as string
   const data = {
-    fullname: formData.get('fullname') as string,
-    url: formData.get('url') as string,
+    fullname,
+    url,
+    slug: slugify(url || fullname),
     birth_date: formData.get('birth_date') as string || undefined,
     death_date: formData.get('death_date') as string || undefined,
     avatar: formData.get('avatar') as string || undefined,
@@ -103,7 +110,7 @@ export async function updatePoet(poetId: string, formData: FormData) {
   revalidatePath('/admin/poets')
   revalidatePath(`/admin/poets/${poetId}/edit`)
   revalidatePath('/')
-  revalidatePath(`/p/${encodeURIComponent(data.url)}`)
-  
+  revalidatePath(`/p/${encodeURIComponent(data.slug || data.url)}`)
+
   redirect('/admin/poets')
 }

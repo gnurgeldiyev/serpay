@@ -28,12 +28,12 @@ async function getPoemsGroupedByPoet() {
         poet: {
           id: poet._id.toString(),
           fullname: poet.fullname,
-          url: poet.url
+          url: poet.slug || poet.url
         },
         poems: poems.map(poem => ({
           id: poem._id.toString(),
           title: poem.title,
-          url: poem.url,
+          url: poem.slug || poem.url,
           created_at: poem.created_at
         }))
       }

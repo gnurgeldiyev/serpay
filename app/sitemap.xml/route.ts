@@ -17,19 +17,19 @@ export async function GET() {
   await dbConnect()
   
   // Get all poets
-  const poets = await Poet.find({ 
-    is_deleted: { $ne: true } 
+  const poets = await Poet.find({
+    is_deleted: { $ne: true }
   })
-  .select('url updated_at')
+  .select('url slug updated_at')
   .lean()
-  
+
   // Get all poems with their poets
-  const poems = await Poem.find({ 
+  const poems = await Poem.find({
     is_deleted: { $ne: true },
     is_approved: true
   })
-  .populate('author', 'url')
-  .select('url updated_at author')
+  .populate('author', 'url slug')
+  .select('url slug updated_at author')
   .lean()
   
   // Generate sitemap XML
@@ -61,7 +61,7 @@ export async function GET() {
   // Poet pages
   poets.forEach(poet => {
     urls.push(`  <url>
-    <loc>${SITE_URL}/p/${escapeXml(poet.url)}</loc>
+    <loc>${SITE_URL}/p/${escapeXml(poet.slug || poet.url)}</loc>
     <lastmod>${(poet.updated_at || new Date()).toISOString()}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -70,13 +70,13 @@ export async function GET() {
   
   // Poem pages
   poems.forEach(poem => {
-    const poetUrl = poem.author && typeof poem.author === 'object' && 'url' in poem.author
-      ? String(poem.author.url)
-      : ''
-    
-    if (poetUrl && typeof poem.url === 'string') {
+    const author = poem.author && typeof poem.author === 'object' ? poem.author as { url?: string; slug?: string } : null
+    const poetUrl = author ? String(author.slug || author.url || '') : ''
+    const poemSlug = poem.slug || poem.url
+
+    if (poetUrl && typeof poemSlug === 'string') {
       urls.push(`  <url>
-    <loc>${SITE_URL}/p/${escapeXml(poetUrl)}/${escapeXml(poem.url)}</loc>
+    <loc>${SITE_URL}/p/${escapeXml(poetUrl)}/${escapeXml(poemSlug)}</loc>
     <lastmod>${(poem.updated_at || new Date()).toISOString()}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

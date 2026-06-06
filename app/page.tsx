@@ -71,7 +71,7 @@ async function getPoets(): Promise<PoetWithCount[]> {
 					_id: 0,
 					id: { $toString: '$_id' },
 					fullname: 1,
-					url: 1,
+					url: { $ifNull: ['$slug', '$url'] },
 					avatar: { $ifNull: ['$avatar', null] },
 					birth_date: { $ifNull: ['$birth_date', null] },
 					death_date: { $ifNull: ['$death_date', null] },

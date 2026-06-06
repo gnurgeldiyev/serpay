@@ -11,8 +11,12 @@ export async function GET(
     await dbConnect()
     
     const { poetUrl } = await params
-    
-    const poet = await Poet.findOne({ url: poetUrl, is_deleted: false }).lean()
+    const decodedPoetUrl = decodeURIComponent(poetUrl)
+
+    const poet = await Poet.findOne({
+      $or: [{ slug: decodedPoetUrl }, { url: decodedPoetUrl }],
+      is_deleted: false
+    }).lean()
     
     if (!poet) {
       return NextResponse.json({ error: 'Poet not found' }, { status: 404 })
@@ -28,7 +32,7 @@ export async function GET(
     const poetData = {
       id: poet._id.toString(),
       fullname: poet.fullname,
-      url: poet.url,
+      url: poet.slug || poet.url,
       birth_date: poet.birth_date,
       death_date: poet.death_date,
       bio: poet.bio,
@@ -38,7 +42,7 @@ export async function GET(
       poems: poems.map(poem => ({
         id: poem._id.toString(),
         title: poem.title,
-        url: poem.url,
+        url: poem.slug || poem.url,
         year: poem.year,
         content: poem.content,
         created_at: poem.created_at
