@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { Search } from 'lucide-react'
+import { slugify } from '@/lib/utils'
 
 interface Poem {
   id: string
@@ -20,52 +21,53 @@ export function PoemSearch({ poems, poetUrl }: PoemSearchProps) {
   const [searchTerm, setSearchTerm] = useState('')
 
   const filteredPoems = useMemo(() => {
-    if (!searchTerm) return poems
-    
-    return poems.filter(poem =>
-      poem.title.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    const q = slugify(searchTerm)
+    if (!q) return []
+    return poems.filter((poem) => slugify(poem.title).includes(q))
   }, [poems, searchTerm])
 
+  const active = searchTerm.trim().length > 0
+
   return (
-    <div>
-      <div className="relative mb-6">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+    <div className="mx-auto max-w-xl">
+      <div className="group relative">
+        <Search className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-brand" />
         <input
           type="text"
           placeholder="Goşgy gözle..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full rounded-lg border border-input bg-background py-2 pl-10 pr-4 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+          aria-label="Goşgy gözle"
+          className="w-full rounded-full border border-border bg-card py-4 pl-14 pr-5 text-base shadow-sm transition-all duration-200 placeholder:text-muted-foreground/70 focus:border-brand focus:shadow-md focus:outline-none focus:ring-4 focus:ring-brand/10"
         />
       </div>
 
-      {searchTerm && (
-        <div className="mb-4 text-sm text-muted-foreground">
-          {filteredPoems.length} netije tapyldy
-        </div>
-      )}
+      {active && (
+        <div className="mt-6">
+          <p className="mb-2 text-center text-sm text-muted-foreground">
+            {filteredPoems.length} netije tapyldy
+          </p>
 
-      {searchTerm && filteredPoems.length > 0 && (
-        <div className="divide-y divide-border">
-          {filteredPoems.map((poem) => (
-            <Link 
-              key={poem.id} 
-              href={`/p/${poetUrl}/${poem.url}`}
-              className="group block py-4 hover:bg-muted/50 transition-colors -mx-4 px-4 rounded-lg"
-            >
-              <div className="flex items-center justify-between">
-                <h4 className="text-lg font-serif font-medium text-foreground group-hover:text-primary transition-colors">
-                  {poem.title}
-                </h4>
-                {poem.year && (
-                  <span className="text-sm text-muted-foreground">
-                    {poem.year}
-                  </span>
-                )}
-              </div>
-            </Link>
-          ))}
+          {filteredPoems.length > 0 && (
+            <div className="divide-y divide-border">
+              {filteredPoems.map((poem) => (
+                <Link
+                  key={poem.id}
+                  href={`/p/${poetUrl}/${poem.url}`}
+                  className="group flex items-center justify-between gap-3 py-4 transition-colors"
+                >
+                  <h4 className="font-serif text-lg font-medium text-foreground transition-colors group-hover:text-primary">
+                    {poem.title}
+                  </h4>
+                  {poem.year && (
+                    <span className="shrink-0 text-sm text-muted-foreground">
+                      {poem.year}
+                    </span>
+                  )}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
