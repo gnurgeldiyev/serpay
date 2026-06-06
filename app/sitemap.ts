@@ -16,34 +16,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   .select('url slug updated_at')
   .lean()
 
-  // Get all poems with their poets
+  // Get all poems with their poets. Match the public pages, which list every
+  // non-deleted poem (they do not filter on is_approved), so the sitemap
+  // mirrors exactly what is reachable and indexable on the site.
   const poems = await Poem.find({
-    is_deleted: { $ne: true },
-    is_approved: true
+    is_deleted: { $ne: true }
   })
   .populate('author', 'url slug')
   .select('url slug updated_at author')
   .lean()
-  
-  // Static pages
+
+  // Static pages (only routes that actually exist)
   const staticPages = [
     {
       url: SITE_URL,
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
       priority: 1,
-    },
-    {
-      url: `${SITE_URL}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${SITE_URL}/contact`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly' as const,
-      priority: 0.5,
     },
   ]
   

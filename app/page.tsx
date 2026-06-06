@@ -28,7 +28,10 @@ export const metadata: Metadata = {
 		"türkmen şahyrlary",
 		"goşgular",
 		"serpaý"
-	]
+	],
+	alternates: {
+		canonical: "https://serpay.penjire.com"
+	}
 };
 
 export const revalidate = 3600; // Revalidate every hour
@@ -172,11 +175,49 @@ async function getFeaturedPoem(): Promise<FeaturedPoemData | null> {
 	}
 }
 
+const SITE_URL = "https://serpay.penjire.com";
+
 export default async function HomePage() {
 	const [poets, featured] = await Promise.all([getPoets(), getFeaturedPoem()]);
 
+	const structuredData = {
+		"@context": "https://schema.org",
+		"@graph": [
+			{
+				"@type": "WebSite",
+				"@id": `${SITE_URL}/#website`,
+				name: "Serpaý – Goşgular Çemeni",
+				alternateName: "Serpaý",
+				url: SITE_URL,
+				description: "Türkmen edebiýatyndan goşgular çemeni. Klassyk we häzirki zaman şahyrlarynyň eserleri.",
+				inLanguage: "tk",
+				publisher: { "@id": `${SITE_URL}/#organization` }
+			},
+			{
+				"@type": "Organization",
+				"@id": `${SITE_URL}/#organization`,
+				name: "Serpaý",
+				url: SITE_URL,
+				logo: `${SITE_URL}/favicon.png`
+			},
+			{
+				"@type": "CollectionPage",
+				"@id": `${SITE_URL}/#webpage`,
+				url: SITE_URL,
+				name: "Serpaý – Goşgular Çemeni",
+				isPartOf: { "@id": `${SITE_URL}/#website` },
+				about: { "@id": `${SITE_URL}/#organization` },
+				inLanguage: "tk"
+			}
+		]
+	};
+
 	return (
 		<div className="mx-auto max-w-7xl px-4 py-12 lg:px-6">
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+			/>
 			<p className="mx-auto mb-14 max-w-2xl text-balance text-center font-serif text-xl leading-relaxed text-foreground/70 sm:text-2xl">
 				Türkmen edebiýatynyň klassyk we häzirki zaman şahyrlary, olaryň goşgulary — bir ýerde.
 			</p>

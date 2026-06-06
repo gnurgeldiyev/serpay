@@ -134,11 +134,15 @@ export default async function PoemPage({ params }: PageProps) {
     notFound()
   }
   
-  // JSON-LD structured data for SEO
+  // JSON-LD structured data for SEO. The full poem text is included so answer
+  // engines can quote it directly with attribution.
+  const poemPageUrl = `https://serpay.penjire.com/p/${poem.author.url}/${poem.slug}`
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
     "name": poem.title,
+    "headline": poem.title,
+    "text": poem.content,
     "author": {
       "@type": "Person",
       "name": poem.author.fullname,
@@ -153,21 +157,51 @@ export default async function PoemPage({ params }: PageProps) {
       "name": "Serpaý",
       "url": "https://serpay.penjire.com"
     },
-    "url": `https://serpay.penjire.com/p/${poem.author.url}/${poem.slug}`,
+    "url": poemPageUrl,
     "isPartOf": {
       "@type": "WebSite",
       "name": "Serpaý – Goşgular Çemeni",
       "url": "https://serpay.penjire.com"
     }
   }
-  
+
+  // Breadcrumb trail: Home > Poet > Poem
+  const breadcrumbData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Baş sahypa",
+        "item": "https://serpay.penjire.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": poem.author.fullname,
+        "item": `https://serpay.penjire.com/p/${poem.author.url}`
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": poem.title,
+        "item": poemPageUrl
+      }
+    ]
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbData) }}
+      />
+
       <article className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-10 pb-24">
         {/* Back button */}
         <Link
