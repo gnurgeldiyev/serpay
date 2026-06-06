@@ -100,19 +100,58 @@ async function getPoets(): Promise<PoetWithCount[]> {
 	}
 }
 
+type PopulatedAuthor = { fullname: string; url: string; slug?: string; is_deleted?: boolean };
+
+/**
+ * Deterministic "random" index that rotates once per day (Turkmenistan time).
+ * Same day → same index across hourly regenerations; at midnight it advances.
+ * A 32-bit bit-mixing hash of the day number gives a well-distributed pick so
+ * consecutive days don't land on neighbouring poems.
+ */
+function dailyIndex(count: number): number {
+	const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Ashgabat" });
+	const dayNumber = Math.floor(Date.parse(`${today}T00:00:00Z`) / 86_400_000);
+
+	let h = dayNumber | 0;
+	h = (h ^ 61) ^ (h >>> 16);
+	h = h + (h << 3);
+	h = h ^ (h >>> 4);
+	h = Math.imul(h, 0x27d4eb2d);
+	h = h ^ (h >>> 15);
+
+	return (h >>> 0) % count;
+}
+
 async function getFeaturedPoem(): Promise<FeaturedPoemData | null> {
 	try {
 		await dbConnect();
 
-		const poem = await Poem.findOne({ is_deleted: { $ne: true } })
-			.sort({ created_at: -1 })
-			.select('title url slug content year author')
-			.populate('author', 'fullname url slug is_deleted')
+		const filter = { is_deleted: { $ne: true } };
+		const select = "title url slug content year author";
+		const authorFields = "fullname url slug is_deleted";
+
+		const count = await Poem.countDocuments(filter);
+		if (count === 0) return null;
+
+		// Sort by _id so skip(index) maps to a stable poem within the day.
+		let poem = await Poem.findOne(filter)
+			.sort({ _id: 1 })
+			.skip(dailyIndex(count))
+			.select(select)
+			.populate("author", authorFields)
 			.lean();
 
-		const author = poem?.author as
-			| { fullname: string; url: string; slug?: string; is_deleted?: boolean }
-			| undefined;
+		let author = poem?.author as PopulatedAuthor | undefined;
+
+		// Fallback to the newest valid poem if that day's pick has no live author.
+		if (!poem || !author || author.is_deleted) {
+			poem = await Poem.findOne(filter)
+				.sort({ created_at: -1 })
+				.select(select)
+				.populate("author", authorFields)
+				.lean();
+			author = poem?.author as PopulatedAuthor | undefined;
+		}
 
 		if (!poem || !author || author.is_deleted) return null;
 
