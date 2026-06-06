@@ -100,7 +100,7 @@ async function getPoets(): Promise<PoetWithCount[]> {
 	}
 }
 
-type PopulatedAuthor = { fullname: string; url: string; slug?: string; is_deleted?: boolean };
+type PopulatedAuthor = { fullname: string; url: string; slug?: string; avatar?: string; is_deleted?: boolean };
 
 /**
  * Deterministic "random" index that rotates once per day (Turkmenistan time).
@@ -128,7 +128,7 @@ async function getFeaturedPoem(): Promise<FeaturedPoemData | null> {
 
 		const filter = { is_deleted: { $ne: true } };
 		const select = "title url slug content year author";
-		const authorFields = "fullname url slug is_deleted";
+		const authorFields = "fullname url slug avatar is_deleted";
 
 		const count = await Poem.countDocuments(filter);
 		if (count === 0) return null;
@@ -162,6 +162,7 @@ async function getFeaturedPoem(): Promise<FeaturedPoemData | null> {
 			title: poem.title,
 			excerpt: excerpt(poem.content, 200),
 			poetName: author.fullname,
+			poetAvatar: author.avatar || undefined,
 			year: poem.year || undefined,
 			href: `/p/${poetUrl}/${poemUrl}`
 		};
