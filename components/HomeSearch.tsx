@@ -97,26 +97,31 @@ export function HomeSearch() {
 
 	return (
 		<MotionConfig reducedMotion="user">
-			<section className="mt-16 border-t border-border/70 pt-12">
+			<section className="mt-20 border-t border-border/70 pt-14">
 				<div className="mx-auto max-w-2xl">
 					<div className="text-center">
-						<h3 className="font-serif text-2xl font-bold tracking-tight text-foreground">
+						<div className="mb-5 flex items-center justify-center gap-2" aria-hidden="true">
+							<span className="h-px w-8 bg-border" />
+							<span className="h-1.5 w-1.5 rotate-45 bg-primary/70" />
+							<span className="h-px w-8 bg-border" />
+						</div>
+						<h3 className="font-serif text-3xl font-bold tracking-tight text-foreground">
 							Goşgy gözle
 						</h3>
-						<p className="mt-2 text-sm text-muted-foreground">
+						<p className="mt-3 text-sm text-muted-foreground">
 							Goşgynyň ady ýa-da içindäki setir boýunça gözläň
 						</p>
 					</div>
 
-					<div className="relative mx-auto mt-6 max-w-md">
-						<Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+					<div className="group relative mx-auto mt-8 max-w-xl">
+						<Search className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-brand" />
 						<input
 							type="text"
 							value={query}
 							onChange={(e) => setQuery(e.target.value)}
 							placeholder="Goşgynyň adyny ýa-da bir setirini ýazyň..."
 							aria-label="Goşgy gözle"
-							className="w-full rounded-xl border border-input bg-background py-3 pl-12 pr-11 text-base transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+							className="w-full rounded-full border border-border bg-card py-4 pl-14 pr-12 text-base shadow-sm transition-all duration-200 placeholder:text-muted-foreground/70 focus:border-brand focus:shadow-md focus:outline-none focus:ring-4 focus:ring-brand/10"
 						/>
 						<AnimatePresence>
 							{loading && (
@@ -126,7 +131,7 @@ export function HomeSearch() {
 									animate={{ opacity: 1, scale: 1 }}
 									exit={{ opacity: 0, scale: 0.6 }}
 									transition={{ duration: 0.18 }}
-									className="absolute right-4 top-1/2 -translate-y-1/2"
+									className="absolute right-5 top-1/2 -translate-y-1/2"
 								>
 									<Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
 								</motion.span>
