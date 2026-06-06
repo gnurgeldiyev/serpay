@@ -32,13 +32,13 @@ export function PoetCard({ poet }: PoetCardProps) {
 
 	return (
 		<Link href={`/p/${poet.url}`} className="group block">
-			<div className="relative mb-3 aspect-3/4 overflow-hidden rounded-2xl bg-muted ring-1 ring-border/60 transition-shadow duration-300 group-hover:shadow-lg group-hover:ring-primary/30">
+			<div className="relative mb-4 aspect-3/4 overflow-hidden rounded-2xl bg-muted ring-1 ring-border/60 transition-all duration-300 group-hover:ring-2 group-hover:ring-primary/40">
 				{poet.avatar && !imageError ? (
 					<Image
 						src={poet.avatar}
 						alt={poet.fullname}
 						fill
-						className="object-cover grayscale-[0.35] transition-all duration-500 group-hover:scale-105 group-hover:grayscale-0"
+						className="object-cover grayscale-[0.4] transition-all duration-600 ease-out group-hover:scale-[1.06] group-hover:grayscale-0"
 						sizes="(max-width: 320px) 40vw, 20vw"
 						onError={() => setImageError(true)}
 					/>
@@ -50,14 +50,20 @@ export function PoetCard({ poet }: PoetCardProps) {
 					</div>
 				)}
 				{/* subtle bottom gradient for grounding the image */}
-				<div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-linear-to-t from-black/10 to-transparent" aria-hidden="true" />
+				<div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-black/15 to-transparent" aria-hidden="true" />
 			</div>
 
-			<h3 className="text-center text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
+			<h3 className="text-center font-serif text-base font-medium text-foreground transition-colors group-hover:text-primary">
 				{poet.fullname}
 			</h3>
 
-			<p className="mt-0.5 text-center text-xs text-muted-foreground">
+			{/* animated underline accent */}
+			<span
+				className="mx-auto mt-1.5 block h-px w-0 bg-primary/50 transition-[width] duration-300 ease-out group-hover:w-8"
+				aria-hidden="true"
+			/>
+
+			<p className="mt-1.5 text-center text-xs text-muted-foreground">
 				{[years, poet.poems_count ? `${poet.poems_count} goşgy` : null]
 					.filter(Boolean)
 					.join(" · ")}
