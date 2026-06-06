@@ -23,8 +23,9 @@ export function PoetGrid({ poets }: { poets: Poet[] }) {
 			</div>
 
 			<div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-				{poets.map((poet) => (
-					<PoetCard key={poet.id} poet={poet} />
+				{poets.map((poet, i) => (
+					// Eager-load the first row (≤5 cols) — it holds the LCP image.
+					<PoetCard key={poet.id} poet={poet} priority={i < 5} />
 				))}
 			</div>
 		</div>

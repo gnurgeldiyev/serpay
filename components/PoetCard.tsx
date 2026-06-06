@@ -15,6 +15,8 @@ interface PoetCardProps {
 		death_date?: string;
 		poems_count?: number;
 	};
+	/** Eager-load + preload this image (use for the first, above-the-fold row). */
+	priority?: boolean;
 }
 
 function initials(name: string): string {
@@ -26,7 +28,7 @@ function initials(name: string): string {
 		.join("");
 }
 
-export function PoetCard({ poet }: PoetCardProps) {
+export function PoetCard({ poet, priority = false }: PoetCardProps) {
 	const [imageError, setImageError] = useState(false);
 	const years = lifeYears(poet.birth_date, poet.death_date);
 
@@ -40,6 +42,7 @@ export function PoetCard({ poet }: PoetCardProps) {
 						fill
 						className="object-cover grayscale-[0.4] transition-all duration-600 ease-out group-hover:scale-[1.06] group-hover:grayscale-0"
 						sizes="(max-width: 320px) 40vw, 20vw"
+						priority={priority}
 						onError={() => setImageError(true)}
 					/>
 				) : (
