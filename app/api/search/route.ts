@@ -61,8 +61,13 @@ export async function GET(request: NextRequest) {
     const select = 'title url slug year author content'
     const authorFields = 'fullname url slug is_deleted'
 
+    // Optional scope to a single poet (e.g. the poet page search).
+    const poet = request.nextUrl.searchParams.get('poet')
+    const base: Record<string, unknown> = { is_deleted: { $ne: true } }
+    if (poet && /^[a-f0-9]{24}$/i.test(poet)) base.author = poet
+
     // 1) Title matches take priority.
-    const titleMatches = await Poem.find({ title: rx, is_deleted: { $ne: true } })
+    const titleMatches = await Poem.find({ ...base, title: rx })
       .populate('author', authorFields)
       .select(select)
       .limit(MAX_RESULTS)
@@ -72,8 +77,8 @@ export async function GET(request: NextRequest) {
     const remaining = MAX_RESULTS - titleMatches.length
     const contentMatches = remaining > 0
       ? await Poem.find({
+          ...base,
           content: rx,
-          is_deleted: { $ne: true },
           _id: { $nin: titleMatches.map((p) => p._id) }
         })
         .populate('author', authorFields)

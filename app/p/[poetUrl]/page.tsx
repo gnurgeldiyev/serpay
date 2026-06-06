@@ -212,7 +212,7 @@ export default async function PoetPage({ params }: PageProps) {
 
         {/* Search */}
         <div className="mt-14 mb-10">
-          <PoemSearch poems={poet.poems} poetUrl={poet.url} />
+          <PoemSearch poetId={poet.id} />
         </div>
 
         {/* Poems grouped by letter */}
