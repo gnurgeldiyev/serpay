@@ -15,7 +15,9 @@
     "scrape:all": "tsx scripts/scrape-all-poems.ts",
     "seed": "tsx scripts/seed-standalone.ts",
     "update:avatars": "tsx scripts/update-avatars.ts",
-    "migrate:slugs": "tsx scripts/migrate-slugs.ts"
+    "migrate:slugs": "tsx scripts/migrate-slugs.ts",
+    "fix:poems": "tsx scripts/fix-poem-content.ts",
+    "diagnose:poems": "tsx scripts/diagnose-poems.ts"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.16",

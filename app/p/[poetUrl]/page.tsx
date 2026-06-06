@@ -189,12 +189,36 @@ export default async function PoetPage({ params }: PageProps) {
       "url": `https://serpay.penjire.com/p/${poet.url}/${poem.url}`
     }))
   }
-  
+
+  // Breadcrumb trail: Home > Poet
+  const breadcrumbData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Baş sahypa",
+        "item": "https://serpay.penjire.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": poet.fullname,
+        "item": `https://serpay.penjire.com/p/${poet.url}`
+      }
+    ]
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbData) }}
       />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-24">

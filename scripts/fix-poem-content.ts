@@ -1,0 +1,173 @@
+import 'dotenv/config'
+import fs from 'fs'
+import path from 'path'
+import mongoose from 'mongoose'
+import Poem from '../lib/db/models/poem'
+
+/**
+ * Fix poem `content`:
+ *   1) Unicode NFC — recompose decomposed Turkmen letters (e.g. "y"+U+0301 -> "ý",
+ *      "o"+U+0308 -> "ö", "c"+U+0327 -> "ç", "z"+U+030C -> "ž"). This removes the
+ *      stray combining marks that render incorrectly.
+ *   2) Newlines — FORMAT-AWARE so we never merge stanzas:
+ *      - "doubled" poems (a blank run of 4+ exists -> stanzas) get de-doubled:
+ *        line break "\n\n" -> "\n", stanza break "\n{3,}" -> "\n\n".
+ *      - already-clean poems (max run <= 2) keep their newlines untouched.
+ *   3) Trim trailing whitespace per line (keeps intentional leading indentation)
+ *      and strip leading/trailing blank lines.
+ *
+ * Idempotent: re-running a fixed poem is a no-op.
+ *
+ *   npx tsx scripts/fix-poem-content.ts          # DRY RUN (writes nothing)
+ *   npx tsx scripts/fix-poem-content.ts --apply  # writes (after a JSON backup)
+ */
+
+function loadEnvLocal() {
+  if (process.env.MONGODB_URI) return
+  const file = path.resolve(process.cwd(), '.env.local')
+  if (!fs.existsSync(file)) return
+  for (const line of fs.readFileSync(file, 'utf8').split('\n')) {
+    const m = line.match(/^\s*([\w.-]+)\s*=\s*(.*)\s*$/)
+    if (!m) continue
+    let val = m[2].trim()
+    if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) val = val.slice(1, -1)
+    if (!(m[1] in process.env)) process.env[m[1]] = val
+  }
+}
+
+const STANZA = '\u0000' // NUL placeholder — never appears in poem text
+
+export function fixContent(raw: string): string {
+  let s = String(raw ?? '').normalize('NFC')
+  s = s.replace(/\r\n?/g, '\n')        // normalize CR/CRLF to LF
+  s = s.replace(/[ \t]+$/gm, '')       // trim trailing whitespace per line
+
+  const maxRun = Math.max(0, ...(s.match(/\n+/g) || []).map((r) => r.length))
+  if (maxRun >= 4) {
+    // Doubled format: protect stanza breaks, halve line breaks, restore stanzas.
+    s = s
+      .replace(/\n{3,}/g, STANZA)
+      .replace(/\n{2}/g, '\n')
+      .split(STANZA)
+      .join('\n\n')
+  }
+
+  s = s.replace(/\n{3,}/g, '\n\n')     // cap any remaining blank runs at one
+  s = s.replace(/^\n+/, '').replace(/\n+$/, '') // strip leading/trailing blanks
+  return s
+}
+
+/** NFC-recompose a title and collapse whitespace (titles are single-line). */
+export function fixTitle(raw: string): string {
+  return String(raw ?? '').normalize('NFC').replace(/\s+/g, ' ').trim()
+}
+
+function main() {
+  loadEnvLocal()
+  const apply = process.argv.includes('--apply')
+  const uri = process.env.MONGODB_URI
+  if (!uri) throw new Error('MONGODB_URI is not set')
+
+  return mongoose.connect(uri).then(async () => {
+    console.log(`Connected. Mode: ${apply ? 'APPLY (will write)' : 'DRY RUN (no writes)'}\n`)
+
+    const poems = await Poem.find({}).select('title content').lean()
+
+    type Change = {
+      id: string
+      title: string
+      contentBefore: string
+      contentAfter: string
+      titleBefore: string
+      titleAfter: string
+      set: { content?: string; title?: string }
+    }
+
+    const changed: Change[] = []
+    for (const p of poems) {
+      const contentBefore = String(p.content ?? '')
+      const contentAfter = fixContent(contentBefore)
+      const titleBefore = String(p.title ?? '')
+      const titleAfter = fixTitle(titleBefore)
+
+      const set: { content?: string; title?: string } = {}
+      if (contentAfter !== contentBefore) set.content = contentAfter
+      if (titleAfter !== titleBefore) set.title = titleAfter
+      if (Object.keys(set).length) {
+        changed.push({ id: String(p._id), title: p.title, contentBefore, contentAfter, titleBefore, titleAfter, set })
+      }
+    }
+
+    const titleChanges = changed.filter((c) => c.set.title !== undefined)
+    const contentChanges = changed.filter((c) => c.set.content !== undefined)
+
+    console.log(`Poems total: ${poems.length}`)
+    console.log(`Poems to change: ${changed.length} (content: ${contentChanges.length}, title: ${titleChanges.length})\n`)
+
+    // Show a few content samples (raw, newlines visible)
+    for (const c of contentChanges.slice(0, 2)) {
+      console.log(`--- content "${c.title}" ---`)
+      console.log('BEFORE:', JSON.stringify(c.contentBefore.slice(0, 160)))
+      console.log('AFTER :', JSON.stringify(c.contentAfter.slice(0, 160)))
+      console.log()
+    }
+    // Show title changes
+    for (const c of titleChanges.slice(0, 8)) {
+      console.log(`title: ${JSON.stringify(c.titleBefore)} -> ${JSON.stringify(c.titleAfter)}`)
+    }
+
+    // Post-fix safety check across content + titles
+    const stillBad = changed.filter(
+      (c) =>
+        /[̀-ͯ]/.test(c.contentAfter) ||
+        /\n{3,}/.test(c.contentAfter) ||
+        /[̀-ͯ]/.test(c.titleAfter)
+    )
+    if (stillBad.length) {
+      console.log(`\n⚠️  ${stillBad.length} still have combining marks / 3+ newlines after fix:`)
+      stillBad.slice(0, 5).forEach((c) => console.log(`   - ${c.title}`))
+    } else {
+      console.log('\n✓ Post-fix check: no combining marks and no 3+ newline runs remain.')
+    }
+
+    if (!apply) {
+      console.log('\nDRY RUN complete. Re-run with --apply to write changes.')
+      await mongoose.connection.close()
+      return
+    }
+
+    if (changed.length === 0) {
+      console.log('\nNothing to change.')
+      await mongoose.connection.close()
+      return
+    }
+
+    // Backup BEFORE writing (store before-values of whatever changed).
+    const stamp = new Date().toISOString().replace(/[:.]/g, '-')
+    const backupPath = path.resolve(process.cwd(), `scripts/backup-poem-content-${stamp}.json`)
+    fs.writeFileSync(
+      backupPath,
+      JSON.stringify(
+        changed.map((c) => ({
+          id: c.id,
+          ...(c.set.content !== undefined ? { content: c.contentBefore } : {}),
+          ...(c.set.title !== undefined ? { title: c.titleBefore } : {}),
+        })),
+        null,
+        2
+      ),
+      'utf8'
+    )
+    console.log(`\nBackup written: ${backupPath}`)
+
+    const ops = changed.map((c) => ({
+      updateOne: { filter: { _id: new mongoose.Types.ObjectId(c.id) }, update: { $set: c.set } },
+    }))
+    const res = await Poem.bulkWrite(ops)
+    console.log(`Applied. modified=${res.modifiedCount}/${changed.length}`)
+
+    await mongoose.connection.close()
+  })
+}
+
+main().catch((e) => { console.error(e); process.exit(1) })
