@@ -1,28 +1,30 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { Metadata } from 'next'
+import { Avatar } from '@/components/Avatar'
 import dbConnect from '@/lib/db/mongodb'
 import { Poet, Poem } from '@/lib/db/models'
 
 async function getPoem(poetUrl: string, poemUrl: string) {
   await dbConnect()
   
-  // Decode URLs to handle special characters
+  // Decode params, then match either the clean slug or the legacy url
+  // (so old percent-encoded Turkmen links keep resolving).
   const decodedPoetUrl = decodeURIComponent(poetUrl)
   const decodedPoemUrl = decodeURIComponent(poemUrl)
-  
-  const poet = await Poet.findOne({ 
-    url: decodedPoetUrl,
-    is_deleted: { $ne: true } 
+
+  const poet = await Poet.findOne({
+    $or: [{ slug: decodedPoetUrl }, { url: decodedPoetUrl }],
+    is_deleted: { $ne: true }
   }).lean()
-  
+
   if (!poet) {
     return null
   }
-  
-  const poem = await Poem.findOne({ 
-    url: decodedPoemUrl,
+
+  const poem = await Poem.findOne({
+    $or: [{ slug: decodedPoemUrl }, { url: decodedPoemUrl }],
     author: poet._id,
     is_deleted: { $ne: true }
   })
@@ -37,7 +39,9 @@ async function getPoem(poetUrl: string, poemUrl: string) {
     ? {
         id: poem.author._id.toString(),
         fullname: 'fullname' in poem.author ? String(poem.author.fullname) : '',
-        url: 'url' in poem.author ? String(poem.author.url) : '',
+        url: 'slug' in poem.author && poem.author.slug
+          ? String(poem.author.slug)
+          : 'url' in poem.author ? String(poem.author.url) : '',
         avatar: 'avatar' in poem.author ? poem.author.avatar : undefined
       }
     : {
@@ -50,6 +54,7 @@ async function getPoem(poetUrl: string, poemUrl: string) {
   return {
     id: poem._id.toString(),
     title: poem.title,
+    slug: poem.slug || poem.url,
     content: poem.content,
     category: poem.category || [],
     year: poem.year,
@@ -109,7 +114,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       images: poem.author.avatar && typeof poem.author.avatar === 'string' ? [poem.author.avatar] : []
     },
     alternates: {
-      canonical: `https://serpay.penjire.com/p/${poetUrl}/${poemUrl}`
+      canonical: `https://serpay.penjire.com/p/${poem.author.url}/${poem.slug}`
     },
     keywords: [
       poem.author.fullname,
@@ -148,7 +153,7 @@ export default async function PoemPage({ params }: PageProps) {
       "name": "Serpaý",
       "url": "https://serpay.penjire.com"
     },
-    "url": `https://serpay.penjire.com/p/${poetUrl}/${poemUrl}`,
+    "url": `https://serpay.penjire.com/p/${poem.author.url}/${poem.slug}`,
     "isPartOf": {
       "@type": "WebSite",
       "name": "Serpaý – Goşgular Çemeni",
@@ -163,48 +168,76 @@ export default async function PoemPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       
-      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <article className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-10 pb-24">
         {/* Back button */}
         <Link
           href={`/p/${poem.author.url}`}
-          className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 transition-colors"
+          className="group mb-14 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
         >
-          <ArrowLeft className="h-4 w-4" />
-          {poem.author.fullname}
+          <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
+          <span>{poem.author.fullname}</span>
         </Link>
-        
+
         {/* Poem header */}
-        <header className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-[family-name:var(--font-inria-serif-bold)] mb-4">
+        <header className="text-center">
+          <h1 className="font-serif text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl">
             {poem.title}
           </h1>
-          <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+
+          <div className="mt-5 flex items-center justify-center gap-2" aria-hidden="true">
+            <span className="h-px w-8 bg-border" />
+            <span className="h-1.5 w-1.5 rotate-45 bg-primary/70" />
+            <span className="h-px w-8 bg-border" />
+          </div>
+
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
             <Link
               href={`/p/${poem.author.url}`}
-              className="hover:text-foreground transition-colors"
+              className="font-medium text-foreground transition-colors hover:text-primary"
             >
               {poem.author.fullname}
             </Link>
             {poem.year && (
               <>
-                <span>•</span>
+                <span className="h-1 w-1 rotate-45 bg-primary/40" aria-hidden="true" />
                 <time>{poem.year}</time>
               </>
             )}
             {poem.category.length > 0 && (
               <>
-                <span>•</span>
+                <span className="h-1 w-1 rotate-45 bg-primary/40" aria-hidden="true" />
                 <span>{poem.category.join(', ')}</span>
               </>
             )}
           </div>
         </header>
-        
+
         {/* Poem content */}
-        <div 
-          className="prose prose-lg max-w-none font-[family-name:var(--font-inria-serif-regular)] whitespace-pre-line [&_p]:mb-4"
-        >
+        <div className="mx-auto mt-12 max-w-2xl whitespace-pre-line text-center font-serif text-lg leading-loose text-foreground/90 sm:text-xl">
           {poem.content}
+        </div>
+
+        {/* Author footer */}
+        <div className="mx-auto mt-16 max-w-2xl border-t border-border/70 pt-10">
+          <Link
+            href={`/p/${poem.author.url}`}
+            className="group flex items-center justify-center gap-4"
+          >
+            <Avatar
+              src={typeof poem.author.avatar === 'string' ? poem.author.avatar : undefined}
+              name={poem.author.fullname}
+              size={56}
+            />
+            <div>
+              <p className="font-serif text-lg font-medium text-foreground transition-colors group-hover:text-primary">
+                {poem.author.fullname}
+              </p>
+              <span className="mt-0.5 inline-flex items-center gap-1 text-sm font-medium text-brand">
+                Ähli goşgulary
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </span>
+            </div>
+          </Link>
         </div>
       </article>
     </>

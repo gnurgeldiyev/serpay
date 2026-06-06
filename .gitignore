@@ -97,3 +97,7 @@ Screenshot*.png
 
 # MCP configuration
 .mcp.json
+.env*
+
+# Next.js auto-generated types (regenerates on dev/build)
+next-env.d.ts

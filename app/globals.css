@@ -1,11 +1,19 @@
 @import "tailwindcss";
 
-@theme {
-  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+/*
+ * Fonts use `@theme inline` so the `font-sans`/`font-serif` utilities emit
+ * `var(--font-bricolage)` / `var(--font-fraunces)` directly. Those variables
+ * are set by next/font on <body>, so they only resolve when referenced on an
+ * element inside <body> — a plain `@theme` would resolve them at :root (where
+ * they're undefined) and silently fall back to system fonts.
+ */
+@theme inline {
+  --font-sans: var(--font-bricolage), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: var(--font-inria-serif), Georgia, Cambria, "Times New Roman", serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
-  --font-inria-serif-bold: 'InriaSerif-Bold', serif;
-  --font-inria-serif-regular: 'InriaSerif-Regular', serif;
-  
+}
+
+@theme {
   --color-background: oklch(0.99 0 0);
   --color-foreground: oklch(0.15 0 0);
   --color-muted: oklch(0.96 0 0);
@@ -16,16 +24,24 @@
   --color-popover-foreground: oklch(0.15 0 0);
   --color-border: oklch(0.92 0 0);
   --color-input: oklch(0.92 0 0);
-  --color-primary: oklch(0.24 0 0);
-  --color-primary-foreground: oklch(0.98 0 0);
+  /* Primary — warm literary maroon. Drives links, hovers, buttons, focus. */
+  --color-primary: oklch(0.44 0.12 22);
+  --color-primary-foreground: oklch(0.98 0.01 60);
   --color-secondary: oklch(0.96 0 0);
   --color-secondary-foreground: oklch(0.24 0 0);
   --color-accent: oklch(0.96 0 0);
   --color-accent-foreground: oklch(0.24 0 0);
   --color-destructive: oklch(0.5 0.5 15);
   --color-destructive-foreground: oklch(0.98 0 0);
-  --color-ring: oklch(0.46 0 0);
-  
+  --color-ring: oklch(0.44 0.12 22);
+
+  /* Brand surfaces — warm cream tint + border for accent blocks. */
+  --color-brand: oklch(0.44 0.12 22);
+  --color-brand-strong: oklch(0.38 0.13 24);
+  --color-brand-foreground: oklch(0.98 0.01 60);
+  --color-brand-subtle: oklch(0.97 0.018 45);
+  --color-brand-border: oklch(0.9 0.035 38);
+
   --radius-sm: 0.125rem;
   --radius: 0.25rem;
   --radius-md: 0.375rem;
@@ -35,8 +51,15 @@
 
 /* Dark mode removed - only light mode is supported */
 
-* {
-  @apply border-border;
+/*
+ * Default every border to the neutral border color (Tailwind v4 ships
+ * `currentColor`). Kept in @layer base so explicit `border-*` utilities
+ * (e.g. border-brand-border) still win — unlayered rules would override them.
+ */
+@layer base {
+  * {
+    @apply border-border;
+  }
 }
 
 html, body {
@@ -44,7 +67,7 @@ html, body {
 }
 
 body {
-  @apply bg-background text-foreground;
+  @apply bg-background text-foreground font-sans;
   font-feature-settings: "rlig" 1, "calt" 1;
 }
 

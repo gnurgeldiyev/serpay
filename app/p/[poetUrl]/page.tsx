@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 import { Metadata } from 'next'
 import dbConnect from '@/lib/db/mongodb'
 import { Poet, Poem } from '@/lib/db/models'
@@ -9,30 +10,31 @@ import { PoemSearch } from '@/components/PoemSearch'
 async function getPoet(poetUrl: string) {
   await dbConnect()
   
-  // Decode the URL to handle special characters
+  // Decode the param, then match either the clean slug or the legacy url
+  // (so old percent-encoded Turkmen links keep resolving).
   const decodedUrl = decodeURIComponent(poetUrl)
-  
-  const poet = await Poet.findOne({ 
-    url: decodedUrl,
+
+  const poet = await Poet.findOne({
+    $or: [{ slug: decodedUrl }, { url: decodedUrl }],
     is_deleted: { $ne: true }
   }).lean()
-  
+
   if (!poet) {
     return null
   }
-  
+
   const poems = await Poem.find({
     author: poet._id,
     is_deleted: { $ne: true }
   })
-  .select('title url category year')
+  .select('title url slug category year')
   .sort({ title: 1 })
   .lean()
-  
+
   return {
     id: poet._id.toString(),
     fullname: poet.fullname,
-    url: poet.url,
+    url: poet.slug || poet.url,
     bio: poet.bio || '',
     birth_date: poet.birth_date,
     death_date: poet.death_date,
@@ -43,7 +45,7 @@ async function getPoet(poetUrl: string) {
     poems: poems.map(poem => ({
       id: poem._id.toString(),
       title: poem.title,
-      url: poem.url,
+      url: poem.slug || poem.url,
       category: poem.category || [],
       year: poem.year
     }))
@@ -85,6 +87,7 @@ export async function generateStaticParams() {
     {
       $project: {
         url: 1,
+        slug: 1,
         poems_count: { $size: '$poems' }
       }
     },
@@ -93,7 +96,7 @@ export async function generateStaticParams() {
   ])
 
   return topPoets.map(poet => ({
-    poetUrl: poet.url
+    poetUrl: poet.slug || poet.url
   }))
 }
 
@@ -135,7 +138,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       images: poet.avatar ? [poet.avatar] : []
     },
     alternates: {
-      canonical: `https://serpay.penjire.com/p/${poetUrl}`
+      canonical: `https://serpay.penjire.com/p/${poet.url}`
     },
     other: {
       'og:profile:first_name': poet.fullname.split(' ')[0],
@@ -194,59 +197,60 @@ export default async function PoetPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-24">
         {/* Back button */}
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 transition-colors"
+          className="group mb-10 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
         >
-          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          <span className="text-sm sm:text-base">Baş sahypa</span>
+          <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
+          <span>Baş sahypa</span>
         </Link>
-        
+
         {/* Poet info */}
         <PoetHeader poet={poet} />
-        
+
         {/* Search */}
-        <div className="mt-12 mb-8">
-          <PoemSearch poems={poet.poems} poetUrl={poet.url} />
+        <div className="mt-14 mb-10">
+          <PoemSearch poetId={poet.id} />
         </div>
-        
+
         {/* Poems grouped by letter */}
         <div className="mt-12">
-          <h2 className="text-2xl font-[family-name:var(--font-inria-serif-bold)] mb-8">
-            Goşgular ({poet.poems.length})
-          </h2>
-          
+          <div className="mb-10 flex items-center gap-3">
+            <h2 className="font-serif text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              Goşgular
+            </h2>
+            <span className="rounded-full bg-brand-subtle px-2.5 py-0.5 text-sm font-medium text-brand">
+              {poet.poems.length}
+            </span>
+          </div>
+
           {sortedLetters.map((letter) => (
-            <div key={letter} className="mb-8">
-              <h3 className="text-lg font-[family-name:var(--font-inria-serif-bold)] text-muted-foreground mb-4">
-                {letter}
-              </h3>
+            <div key={letter} className="mb-10">
+              <div className="mb-4 flex items-center gap-4">
+                <h3 className="font-serif text-xl font-bold text-primary">
+                  {letter}
+                </h3>
+                <span className="h-px flex-1 bg-border" aria-hidden="true" />
+              </div>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {poemsByLetter[letter].map((poem) => (
                   <Link
                     key={poem.id}
                     href={`/p/${poet.url}/${poem.url}`}
-                    className="group"
+                    className="group rounded-xl border border-border bg-card px-5 py-4 transition-colors hover:border-primary/40 hover:bg-brand-subtle/40"
                   >
-                    <div className="p-4 rounded-lg border bg-card hover:shadow-md transition-all">
-                      <h4 className="font-[family-name:var(--font-inria-serif-regular)] text-lg group-hover:text-primary transition-colors">
-                        {poem.title}
-                      </h4>
-                      {poem.category.length > 0 && (
-                        <p className="text-sm text-muted-foreground mt-1">
-                          {poem.category.join(', ')}
-                        </p>
-                      )}
-                      {poem.year && (
-                        <p className="text-sm text-muted-foreground mt-1">
-                          {poem.year}
-                        </p>
-                      )}
-                    </div>
+                    <h4 className="font-serif text-lg font-medium text-foreground transition-colors group-hover:text-primary">
+                      {poem.title}
+                    </h4>
+                    {(poem.category.length > 0 || poem.year) && (
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        {[poem.category.join(', '), poem.year]
+                          .filter(Boolean)
+                          .join(' · ')}
+                      </p>
+                    )}
                   </Link>
                 ))}
               </div>

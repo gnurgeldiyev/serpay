@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
-import { ThemeProvider } from '@/components/theme-provider'
 import { Navbar } from '@/components/Navbar'
+import { Footer } from '@/components/Footer'
 import { Toaster } from '@/components/ui/sonner'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { PageLoader } from '@/components/PageLoader'
-import { inriaSerifBold, inriaSerifRegular } from './fonts'
+import { bricolage, inriaSerif } from './fonts'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -34,20 +34,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="tk" suppressHydrationWarning>
-      <body className={`${inriaSerifBold.variable} ${inriaSerifRegular.variable}`}>
+    <html lang="tk">
+      <body className={`${bricolage.variable} ${inriaSerif.variable}`}>
         <PageLoader />
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem={false}
-          disableTransitionOnChange
-          forcedTheme="light"
-        >
-          <Navbar />
-          <main className="min-h-screen">{children}</main>
-          <Toaster />
-        </ThemeProvider>
+        <Navbar />
+        <main className="min-h-screen">{children}</main>
+        <Footer />
+        <Toaster />
         <Analytics />
         <SpeedInsights />
       </body>

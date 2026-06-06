@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import dbConnect from '@/lib/db/mongodb'
 import Poet from '@/lib/db/models/poet'
+import { slugify } from '@/lib/utils'
 
 export async function GET(request: NextRequest) {
   try {
@@ -13,7 +14,7 @@ export async function GET(request: NextRequest) {
     const poetsPublic = poets.map(poet => ({
       id: poet._id.toString(),
       fullname: poet.fullname,
-      url: poet.url,
+      url: poet.slug || poet.url,
       birth_date: poet.birth_date,
       death_date: poet.death_date,
       bio: poet.bio,
@@ -38,6 +39,7 @@ export async function POST(request: NextRequest) {
     const poet = await Poet.create({
       fullname: body.fullname,
       url: body.url,
+      slug: slugify(body.url || body.fullname),
       birth_date: body.birth_date,
       death_date: body.death_date,
       bio: body.bio,

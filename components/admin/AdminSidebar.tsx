@@ -92,7 +92,7 @@ export function AdminSidebar({ userName }: AdminSidebarProps) {
           {/* Logo */}
           <div className="px-6 py-6 border-b">
             <Link href="/admin" className="block">
-              <h2 className="text-2xl font-[family-name:var(--font-inria-serif-bold)]">
+              <h2 className="text-2xl font-sans font-bold">
                 Serpaý Admin
               </h2>
             </Link>

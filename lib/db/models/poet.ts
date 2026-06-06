@@ -3,6 +3,7 @@ import mongoose, { Document, Model, Schema } from 'mongoose'
 export interface IPoet extends Document {
   fullname: string
   url: string
+  slug?: string
   birth_date?: string
   death_date?: string
   bio?: string
@@ -15,6 +16,7 @@ export interface IPoet extends Document {
     id: string
     fullname: string
     url: string
+    slug?: string
     birth_date?: string
     death_date?: string
     bio?: string
@@ -33,6 +35,11 @@ const poetSchema = new Schema<IPoet>({
   url: {
     type: String,
     required: true
+  },
+  slug: {
+    type: String,
+    index: true,
+    default: null
   },
   birth_date: {
     type: String,
@@ -70,6 +77,7 @@ poetSchema.methods.toPublic = function() {
     id: this._id.toString(),
     fullname: this.fullname,
     url: this.url,
+    slug: this.slug || this.url,
     birth_date: this.birth_date,
     death_date: this.death_date,
     bio: this.bio,

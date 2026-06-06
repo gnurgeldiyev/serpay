@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache'
 import dbConnect from '@/lib/db/mongodb'
 import { Poem, Poet } from '@/lib/db/models'
 import { auth } from '@/lib/auth-wrapper'
+import { slugify } from '@/lib/utils'
 
 export async function deletePoem(poemId: string) {
   const session = await auth()
@@ -55,6 +56,7 @@ export async function createPoem(formData: FormData) {
     const data = {
       title,
       url,
+      slug: slugify(title),
       content,
       author: poetId,
       created_by: session.id,
@@ -83,7 +85,7 @@ export async function createPoem(formData: FormData) {
     
     revalidatePath('/admin/poems')
     revalidatePath('/')
-    revalidatePath(`/p/${encodeURIComponent(poet.url)}`)
+    revalidatePath(`/p/${encodeURIComponent(poet.slug || poet.url)}`)
   } catch (error) {
     console.error('Create poem error:', error)
     return { success: false, error: 'Failed to create poem' }
@@ -116,6 +118,7 @@ export async function updatePoem(poemId: string, formData: FormData) {
     const data = {
       title,
       url,
+      slug: slugify(title),
       content,
       author: poetId,
       updated_at: new Date()
@@ -144,14 +147,15 @@ export async function updatePoem(poemId: string, formData: FormData) {
     
     // Revalidate both old and new poet pages with encoded URLs
     if (oldPoem && oldPoem.author && typeof oldPoem.author === 'object' && 'url' in oldPoem.author) {
-      const authorUrl = (oldPoem.author as any).url
+      const authorUrl = (oldPoem.author as any).slug || (oldPoem.author as any).url
       if (typeof authorUrl === 'string') {
         revalidatePath(`/p/${encodeURIComponent(authorUrl)}`)
       }
     }
     if (newPoet) {
-      revalidatePath(`/p/${encodeURIComponent(newPoet.url)}`)
-      revalidatePath(`/p/${encodeURIComponent(newPoet.url)}/${encodeURIComponent(url)}`)
+      const newPoetSlug = newPoet.slug || newPoet.url
+      revalidatePath(`/p/${encodeURIComponent(newPoetSlug)}`)
+      revalidatePath(`/p/${encodeURIComponent(newPoetSlug)}/${encodeURIComponent(slugify(title))}`)
     }
     
     return { success: true, message: 'Goşgy üstünlikli üýtgedildi' }
@@ -184,6 +188,7 @@ export async function createPoemForPoet(poetId: string, formData: FormData) {
     const data = {
       title,
       url,
+      slug: slugify(title),
       content,
       author: poetId,
       created_by: session.id,
@@ -214,7 +219,7 @@ export async function createPoemForPoet(poetId: string, formData: FormData) {
     revalidatePath(`/admin/poets/${poetId}/poems`)
     revalidatePath('/admin/poems')
     revalidatePath('/')
-    revalidatePath(`/p/${encodeURIComponent(poet.url)}`)
+    revalidatePath(`/p/${encodeURIComponent(poet.slug || poet.url)}`)
   } catch (error) {
     console.error('Create poem for poet error:', error)
     return { success: false, error: 'Failed to create poem' }
@@ -246,6 +251,7 @@ export async function updatePoemForPoet(poetId: string, poemId: string, formData
     const data = {
       title,
       url,
+      slug: slugify(title),
       content,
       updated_at: new Date()
     }
@@ -276,8 +282,8 @@ export async function updatePoemForPoet(poetId: string, poemId: string, formData
     revalidatePath('/admin/poems')
     revalidatePath('/')
     if (poet) {
-      revalidatePath(`/p/${encodeURIComponent(poet.url)}`)
-      revalidatePath(`/p/${encodeURIComponent(poet.url)}/${encodeURIComponent(url)}`)
+      revalidatePath(`/p/${encodeURIComponent(poet.slug || poet.url)}`)
+      revalidatePath(`/p/${encodeURIComponent(poet.slug || poet.url)}/${encodeURIComponent(slugify(title))}`)
     }
     
     return { success: true, message: 'Goşgy üstünlikli üýtgedildi' }
@@ -314,7 +320,7 @@ export async function deletePoemForPoet(poetId: string, poemId: string) {
     revalidatePath('/admin/poems')
     revalidatePath('/')
     if (poet) {
-      revalidatePath(`/p/${encodeURIComponent(poet.url)}`)
+      revalidatePath(`/p/${encodeURIComponent(poet.slug || poet.url)}`)
     }
     
     return { success: true }
@@ -358,7 +364,7 @@ export async function bulkDeletePoems(poetId: string, poemIds: string[]) {
     revalidatePath('/admin/poems')
     revalidatePath('/')
     if (poet) {
-      revalidatePath(`/p/${encodeURIComponent(poet.url)}`)
+      revalidatePath(`/p/${encodeURIComponent(poet.slug || poet.url)}`)
     }
     
     return { success: true }

@@ -12,20 +12,23 @@ export async function GET(
     
     const { poetUrl, poemUrl } = await params
     
-    // Decode the URL parameters
+    // Decode params, then match either the clean slug or the legacy url
     const decodedPoetUrl = decodeURIComponent(poetUrl)
     const decodedPoemUrl = decodeURIComponent(poemUrl)
-    
-    const poet = await Poet.findOne({ url: decodedPoetUrl, is_deleted: false }).lean()
-    
+
+    const poet = await Poet.findOne({
+      $or: [{ slug: decodedPoetUrl }, { url: decodedPoetUrl }],
+      is_deleted: false
+    }).lean()
+
     if (!poet) {
       return NextResponse.json({ error: 'Poet not found' }, { status: 404 })
     }
-    
-    const poem = await Poem.findOne({ 
+
+    const poem = await Poem.findOne({
       author: poet._id,
-      url: decodedPoemUrl,
-      is_approved: true 
+      $or: [{ slug: decodedPoemUrl }, { url: decodedPoemUrl }],
+      is_approved: true
     }).lean()
     
     if (!poem) {
@@ -35,7 +38,7 @@ export async function GET(
     const poemData = {
       id: poem._id.toString(),
       title: poem.title,
-      url: poem.url,
+      url: poem.slug || poem.url,
       content: poem.content,
       year: poem.year,
       notes: poem.notes,
@@ -45,7 +48,7 @@ export async function GET(
       author: {
         id: poet._id.toString(),
         fullname: poet.fullname,
-        url: poet.url,
+        url: poet.slug || poet.url,
         avatar: poet.avatar
       }
     }

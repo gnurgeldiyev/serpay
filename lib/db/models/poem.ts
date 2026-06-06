@@ -3,6 +3,7 @@ import mongoose, { Document, Model, Schema } from 'mongoose'
 export interface IPoem extends Document {
   title: string
   url: string
+  slug?: string
   author: mongoose.Types.ObjectId
   year?: string
   content: string
@@ -23,6 +24,11 @@ const poemSchema = new Schema<IPoem>({
   url: {
     type: String,
     required: true
+  },
+  slug: {
+    type: String,
+    index: true,
+    default: null
   },
   author: {
     type: Schema.Types.ObjectId,
