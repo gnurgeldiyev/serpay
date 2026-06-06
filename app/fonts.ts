@@ -1,4 +1,4 @@
-import { Fraunces, Bricolage_Grotesque } from 'next/font/google'
+import { Bricolage_Grotesque, Inria_Serif } from 'next/font/google'
 
 // Default UI / sans font — used everywhere except poems.
 export const bricolage = Bricolage_Grotesque({
@@ -8,8 +8,10 @@ export const bricolage = Bricolage_Grotesque({
 })
 
 // Serif font for the poem reading experience (titles + content).
-export const fraunces = Fraunces({
+// Inria Serif is not a variable font, so weights are explicit (regular + bold).
+export const inriaSerif = Inria_Serif({
   subsets: ['latin', 'latin-ext'],
-  variable: '--font-fraunces',
+  weight: ['400', '700'],
+  variable: '--font-inria-serif',
   display: 'swap',
 })

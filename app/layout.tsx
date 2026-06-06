@@ -4,7 +4,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { PageLoader } from '@/components/PageLoader'
-import { bricolage, fraunces } from './fonts'
+import { bricolage, inriaSerif } from './fonts'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -34,7 +34,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="tk">
-      <body className={`${bricolage.variable} ${fraunces.variable}`}>
+      <body className={`${bricolage.variable} ${inriaSerif.variable}`}>
         <PageLoader />
         <Navbar />
         <main className="min-h-screen">{children}</main>
