@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Navbar } from '@/components/Navbar'
+import { Footer } from '@/components/Footer'
 import { Toaster } from '@/components/ui/sonner'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
@@ -38,6 +39,7 @@ export default function RootLayout({
         <PageLoader />
         <Navbar />
         <main className="min-h-screen">{children}</main>
+        <Footer />
         <Toaster />
         <Analytics />
         <SpeedInsights />

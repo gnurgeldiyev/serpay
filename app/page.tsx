@@ -1,7 +1,9 @@
-import { PoetCard } from "@/components/PoetCard";
+import { PoetGrid } from "@/components/PoetGrid";
+import { FeaturedPoem, type FeaturedPoemData } from "@/components/FeaturedPoem";
 import { Metadata } from "next";
 import dbConnect from "@/lib/db/mongodb";
-import { Poet } from "@/lib/db/models";
+import { Poet, Poem } from "@/lib/db/models";
+import { excerpt } from "@/lib/utils";
 
 export const metadata: Metadata = {
 	title: "Serpaý – Goşgular Çemeni",
@@ -43,7 +45,7 @@ type PoetWithCount = {
 async function getPoets(): Promise<PoetWithCount[]> {
 	try {
 		await dbConnect();
-		
+
 		const poets = await Poet.aggregate([
 			{ $match: { is_deleted: { $ne: true } } },
 			{
@@ -80,7 +82,7 @@ async function getPoets(): Promise<PoetWithCount[]> {
 			},
 			{ $sort: { fullname: 1 } }
 		]);
-		
+
 		// Ensure all data is properly serialized as plain objects
 		return JSON.parse(JSON.stringify(poets.map(poet => ({
 			id: poet.id,
@@ -97,22 +99,56 @@ async function getPoets(): Promise<PoetWithCount[]> {
 	}
 }
 
+async function getFeaturedPoem(): Promise<FeaturedPoemData | null> {
+	try {
+		await dbConnect();
+
+		const poem = await Poem.findOne({ is_deleted: { $ne: true } })
+			.sort({ created_at: -1 })
+			.select('title url slug content year author')
+			.populate('author', 'fullname url slug is_deleted')
+			.lean();
+
+		const author = poem?.author as
+			| { fullname: string; url: string; slug?: string; is_deleted?: boolean }
+			| undefined;
+
+		if (!poem || !author || author.is_deleted) return null;
+
+		const poetUrl = author.slug || author.url;
+		const poemUrl = poem.slug || poem.url;
+
+		return {
+			title: poem.title,
+			excerpt: excerpt(poem.content, 200),
+			poetName: author.fullname,
+			year: poem.year || undefined,
+			href: `/p/${poetUrl}/${poemUrl}`
+		};
+	} catch (error) {
+		console.error("Error fetching featured poem:", error);
+		return null;
+	}
+}
+
 export default async function HomePage() {
-	const poets = await getPoets();
+	const [poets, featured] = await Promise.all([getPoets(), getFeaturedPoem()]);
 
 	return (
 		<div className="mx-auto max-w-7xl px-4 py-12 lg:px-6">
-			<div className="mx-auto max-w-2xl lg:max-w-none">
-				<h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl mb-6 md:mb-12">
-					Şahyrlar
-				</h2>
+			<p className="mx-auto mb-12 max-w-2xl text-center text-lg leading-relaxed text-muted-foreground">
+				Türkmen edebiýatynyň klassyk we häzirki zaman şahyrlary, olaryň goşgulary — bir ýerde.
+			</p>
 
-				<div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-					{poets.map((poet) => (
-						<PoetCard key={poet.id} poet={poet} />
-					))}
-				</div>
-			</div>
+			{featured && <FeaturedPoem poem={featured} />}
+
+			{poets.length > 0 ? (
+				<PoetGrid poets={poets} />
+			) : (
+				<p className="py-16 text-center text-muted-foreground">
+					Häzirlikçe şahyr goşulmady.
+				</p>
+			)}
 		</div>
 	);
 }
