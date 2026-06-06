@@ -26,26 +26,12 @@ export function PoetGrid({ poets }: { poets: Poet[] }) {
 
 	return (
 		<div>
-			<div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-				<h2 className="font-serif text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-					Şahyrlar
-					<span className="ml-3 align-middle text-base font-sans font-normal text-muted-foreground">
-						{poets.length}
-					</span>
-				</h2>
-
-				<div className="relative w-full sm:max-w-xs">
-					<Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-					<input
-						type="text"
-						value={query}
-						onChange={(e) => setQuery(e.target.value)}
-						placeholder="Şahyr gözle..."
-						aria-label="Şahyr gözle"
-						className="w-full rounded-lg border border-input bg-background py-2 pl-10 pr-4 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-					/>
-				</div>
-			</div>
+			<h2 className="mb-8 font-serif text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+				Şahyrlar
+				<span className="ml-3 align-middle text-base font-sans font-normal text-muted-foreground">
+					{poets.length}
+				</span>
+			</h2>
 
 			{filtered.length > 0 ? (
 				<div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
@@ -58,6 +44,29 @@ export function PoetGrid({ poets }: { poets: Poet[] }) {
 					“{query}” boýunça şahyr tapylmady.
 				</p>
 			)}
+
+			<section className="mt-16 border-t border-border/70 pt-12">
+				<div className="mx-auto max-w-md text-center">
+					<h3 className="font-serif text-2xl font-bold tracking-tight text-foreground">
+						Şahyr gözle
+					</h3>
+					<p className="mt-2 text-sm text-muted-foreground">
+						Gözleýän şahyryňyzyň adyny ýazyň
+					</p>
+
+					<div className="relative mt-6">
+						<Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+						<input
+							type="text"
+							value={query}
+							onChange={(e) => setQuery(e.target.value)}
+							placeholder="Adyny ýazyň..."
+							aria-label="Şahyr gözle"
+							className="w-full rounded-xl border border-input bg-background py-3 pl-12 pr-4 text-base transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+						/>
+					</div>
+				</div>
+			</section>
 		</div>
 	);
 }
