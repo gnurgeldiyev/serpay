@@ -101,3 +101,6 @@ Screenshot*.png
 
 # Next.js auto-generated types (regenerates on dev/build)
 next-env.d.ts
+
+# Local data backups from content-fix scripts
+scripts/backup-*.json
