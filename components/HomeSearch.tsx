@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Search, Loader2 } from "lucide-react";
+import { AnimatePresence, MotionConfig, motion } from "motion/react";
 
 type Result = {
 	id: string;
@@ -87,72 +88,120 @@ export function HomeSearch() {
 		};
 	}, [trimmed]);
 
+	const showResults = trimmed.length >= 2 && results.length > 0;
+	const showEmpty =
+		trimmed.length >= 2 && !loading && searched && results.length === 0;
+
+	// Apple-like: gentle spring for position/size, quick fade for opacity.
+	const spring = { type: "spring", stiffness: 520, damping: 42, mass: 1 } as const;
+
 	return (
-		<section className="mt-16 border-t border-border/70 pt-12">
-			<div className="mx-auto max-w-2xl">
-				<div className="text-center">
-					<h3 className="font-serif text-2xl font-bold tracking-tight text-foreground">
-						Goşgy gözle
-					</h3>
-					<p className="mt-2 text-sm text-muted-foreground">
-						Goşgynyň ady ýa-da içindäki setir boýunça gözläň
-					</p>
-				</div>
-
-				<div className="relative mx-auto mt-6 max-w-md">
-					<Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-					<input
-						type="text"
-						value={query}
-						onChange={(e) => setQuery(e.target.value)}
-						placeholder="Goşgynyň adyny ýa-da bir setirini ýazyň..."
-						aria-label="Goşgy gözle"
-						className="w-full rounded-xl border border-input bg-background py-3 pl-12 pr-11 text-base transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-					/>
-					{loading && (
-						<Loader2 className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 animate-spin text-muted-foreground" />
-					)}
-				</div>
-
-				{trimmed.length >= 2 && (
-					<div className="mt-8">
-						{results.length > 0 ? (
-							<ul className="divide-y divide-border">
-								{results.map((r) => (
-									<li key={r.id}>
-										<Link
-											href={r.href}
-											className="group block py-4 transition-colors"
-										>
-											<div className="flex items-baseline justify-between gap-3">
-												<h4 className="font-serif text-lg font-medium text-foreground transition-colors group-hover:text-primary">
-													<Highlight text={r.title} query={trimmed} />
-												</h4>
-												<span className="shrink-0 text-sm text-muted-foreground">
-													{r.poetName}
-													{r.year ? ` · ${r.year}` : ""}
-												</span>
-											</div>
-											{r.matchedIn === "content" && r.snippet && (
-												<p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
-													<Highlight text={r.snippet} query={trimmed} />
-												</p>
-											)}
-										</Link>
-									</li>
-								))}
-							</ul>
-						) : (
-							!loading &&
-							searched && (
-								<p className="py-8 text-center text-muted-foreground">
-									“{trimmed}” boýunça goşgy tapylmady.
-								</p>
-							)
-						)}
+		<MotionConfig reducedMotion="user">
+			<section className="mt-16 border-t border-border/70 pt-12">
+				<div className="mx-auto max-w-2xl">
+					<div className="text-center">
+						<h3 className="font-serif text-2xl font-bold tracking-tight text-foreground">
+							Goşgy gözle
+						</h3>
+						<p className="mt-2 text-sm text-muted-foreground">
+							Goşgynyň ady ýa-da içindäki setir boýunça gözläň
+						</p>
 					</div>
-				)}
-			</div>
-		</section>
+
+					<div className="relative mx-auto mt-6 max-w-md">
+						<Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+						<input
+							type="text"
+							value={query}
+							onChange={(e) => setQuery(e.target.value)}
+							placeholder="Goşgynyň adyny ýa-da bir setirini ýazyň..."
+							aria-label="Goşgy gözle"
+							className="w-full rounded-xl border border-input bg-background py-3 pl-12 pr-11 text-base transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+						/>
+						<AnimatePresence>
+							{loading && (
+								<motion.span
+									key="spinner"
+									initial={{ opacity: 0, scale: 0.6 }}
+									animate={{ opacity: 1, scale: 1 }}
+									exit={{ opacity: 0, scale: 0.6 }}
+									transition={{ duration: 0.18 }}
+									className="absolute right-4 top-1/2 -translate-y-1/2"
+								>
+									<Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+								</motion.span>
+							)}
+						</AnimatePresence>
+					</div>
+
+					{/* Layout-animated container so height changes glide instead of jumping. */}
+					<motion.div layout transition={{ layout: spring }} className="overflow-hidden">
+						<ul className="mt-8 divide-y divide-border">
+							<AnimatePresence mode="popLayout" initial={false}>
+								{showResults &&
+									results.map((r, i) => (
+										<motion.li
+											key={r.id}
+											layout
+											initial={{ opacity: 0, y: 12, filter: "blur(3px)" }}
+											animate={{
+												opacity: 1,
+												y: 0,
+												filter: "blur(0px)",
+												transition: {
+													...spring,
+													delay: Math.min(i, 8) * 0.035,
+													opacity: { duration: 0.25, delay: Math.min(i, 8) * 0.035 },
+												},
+											}}
+											exit={{
+												opacity: 0,
+												y: -8,
+												filter: "blur(3px)",
+												transition: { duration: 0.18, ease: [0.4, 0, 1, 1] },
+											}}
+										>
+											<Link
+												href={r.href}
+												className="group block py-4 transition-colors"
+											>
+												<div className="flex items-baseline justify-between gap-3">
+													<h4 className="font-serif text-lg font-medium text-foreground transition-colors group-hover:text-primary">
+														<Highlight text={r.title} query={trimmed} />
+													</h4>
+													<span className="shrink-0 text-sm text-muted-foreground">
+														{r.poetName}
+														{r.year ? ` · ${r.year}` : ""}
+													</span>
+												</div>
+												{r.matchedIn === "content" && r.snippet && (
+													<p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+														<Highlight text={r.snippet} query={trimmed} />
+													</p>
+												)}
+											</Link>
+										</motion.li>
+									))}
+							</AnimatePresence>
+						</ul>
+
+						<AnimatePresence initial={false}>
+							{showEmpty && (
+								<motion.p
+									key="empty"
+									initial={{ opacity: 0, y: 8 }}
+									animate={{ opacity: 1, y: 0 }}
+									exit={{ opacity: 0, y: -4 }}
+									transition={{ duration: 0.22 }}
+									className="py-8 text-center text-muted-foreground"
+								>
+									“{trimmed}” boýunça goşgy tapylmady.
+								</motion.p>
+							)}
+						</AnimatePresence>
+					</motion.div>
+				</div>
+			</section>
+		</MotionConfig>
 	);
 }
