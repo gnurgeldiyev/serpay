@@ -1,10 +1,19 @@
 @import "tailwindcss";
 
-@theme {
+/*
+ * Fonts use `@theme inline` so the `font-sans`/`font-serif` utilities emit
+ * `var(--font-bricolage)` / `var(--font-fraunces)` directly. Those variables
+ * are set by next/font on <body>, so they only resolve when referenced on an
+ * element inside <body> — a plain `@theme` would resolve them at :root (where
+ * they're undefined) and silently fall back to system fonts.
+ */
+@theme inline {
   --font-sans: var(--font-bricolage), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-serif: var(--font-fraunces), Georgia, Cambria, "Times New Roman", serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+}
 
+@theme {
   --color-background: oklch(0.99 0 0);
   --color-foreground: oklch(0.15 0 0);
   --color-muted: oklch(0.96 0 0);
