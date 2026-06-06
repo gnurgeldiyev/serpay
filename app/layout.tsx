@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { ThemeProvider } from '@/components/theme-provider'
 import { Navbar } from '@/components/Navbar'
 import { Toaster } from '@/components/ui/sonner'
 import { Analytics } from '@vercel/analytics/next'
@@ -34,20 +33,12 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="tk" suppressHydrationWarning>
+    <html lang="tk">
       <body className={`${inriaSerifBold.variable} ${inriaSerifRegular.variable}`}>
         <PageLoader />
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem={false}
-          disableTransitionOnChange
-          forcedTheme="light"
-        >
-          <Navbar />
-          <main className="min-h-screen">{children}</main>
-          <Toaster />
-        </ThemeProvider>
+        <Navbar />
+        <main className="min-h-screen">{children}</main>
+        <Toaster />
         <Analytics />
         <SpeedInsights />
       </body>
