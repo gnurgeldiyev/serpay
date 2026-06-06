@@ -11,7 +11,7 @@ export type FeaturedPoemData = {
 
 export function FeaturedPoem({ poem }: { poem: FeaturedPoemData }) {
 	return (
-		<section className="mb-16">
+		<section className="mt-16">
 			<Link
 				href={poem.href}
 				className="group relative block overflow-hidden rounded-3xl border border-brand-border bg-brand-subtle px-6 py-10 transition-shadow duration-300 hover:shadow-lg sm:px-12 sm:py-14"

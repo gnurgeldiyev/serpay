@@ -140,8 +140,6 @@ export default async function HomePage() {
 				Türkmen edebiýatynyň klassyk we häzirki zaman şahyrlary, olaryň goşgulary — bir ýerde.
 			</p>
 
-			{featured && <FeaturedPoem poem={featured} />}
-
 			{poets.length > 0 ? (
 				<PoetGrid poets={poets} />
 			) : (
@@ -149,6 +147,8 @@ export default async function HomePage() {
 					Häzirlikçe şahyr goşulmady.
 				</p>
 			)}
+
+			{featured && <FeaturedPoem poem={featured} />}
 		</div>
 	);
 }
