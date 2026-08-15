@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation'
+import { notFound, permanentRedirect } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { Metadata } from 'next'
@@ -8,7 +8,7 @@ import { Poet, Poem } from '@/lib/db/models'
 
 async function getPoem(poetUrl: string, poemUrl: string) {
   await dbConnect()
-  
+
   // Decode params, then match either the clean slug or the legacy url
   // (so old percent-encoded Turkmen links keep resolving).
   const decodedPoetUrl = decodeURIComponent(poetUrl)
@@ -23,9 +23,19 @@ async function getPoem(poetUrl: string, poemUrl: string) {
     return null
   }
 
+  const possiblePoemUrls = [
+    decodedPoemUrl,
+    decodedPoemUrl.normalize('NFC'),
+    decodedPoemUrl.normalize('NFD')
+  ]
+
   const poem = await Poem.findOne({
-    $or: [{ slug: decodedPoemUrl }, { url: decodedPoemUrl }],
     author: poet._id,
+    $or: [
+      { slug: { $in: possiblePoemUrls } },
+      { url: { $in: possiblePoemUrls } },
+      { url_aliases: { $in: possiblePoemUrls } }
+    ],
     is_deleted: { $ne: true }
   })
   .populate('author')
@@ -56,6 +66,7 @@ async function getPoem(poetUrl: string, poemUrl: string) {
     title: poem.title,
     slug: poem.slug || poem.url,
     content: poem.content,
+    notes: poem.notes,
     category: poem.category || [],
     year: poem.year,
     created_at: poem.created_at,
@@ -132,6 +143,12 @@ export default async function PoemPage({ params }: PageProps) {
   
   if (!poem) {
     notFound()
+  }
+
+  const decodedPoemUrl = decodeURIComponent(poemUrl)
+  const decodedPoetUrl = decodeURIComponent(poetUrl)
+  if (decodedPoemUrl !== poem.slug || decodedPoetUrl !== poem.author.url) {
+    permanentRedirect(`/p/${encodeURIComponent(poem.author.url)}/${encodeURIComponent(poem.slug)}`)
   }
   
   // JSON-LD structured data for SEO. The full poem text is included so answer
@@ -247,9 +264,18 @@ export default async function PoemPage({ params }: PageProps) {
         </header>
 
         {/* Poem content */}
-        <div className="mx-auto mt-12 max-w-2xl whitespace-pre-line text-center font-serif text-lg leading-loose text-foreground/90 sm:text-xl">
+        <div
+          className="mx-auto mt-12 max-w-2xl whitespace-pre-wrap text-center font-serif text-lg leading-loose text-foreground/90 sm:text-xl"
+          style={{ tabSize: 3 }}
+        >
           {poem.content}
         </div>
+
+        {poem.notes && (
+          <aside className="mx-auto mt-8 max-w-2xl whitespace-pre-line text-sm italic text-muted-foreground">
+            {poem.notes}
+          </aside>
+        )}
 
         {/* Author footer */}
         <div className="mx-auto mt-16 max-w-2xl border-t border-border/70 pt-10">

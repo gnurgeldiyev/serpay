@@ -24,11 +24,21 @@ export async function GET(
     if (!poet) {
       return NextResponse.json({ error: 'Poet not found' }, { status: 404 })
     }
+    const possiblePoemUrls = [
+      decodedPoemUrl,
+      decodedPoemUrl.normalize('NFC'),
+      decodedPoemUrl.normalize('NFD')
+    ]
 
     const poem = await Poem.findOne({
       author: poet._id,
-      $or: [{ slug: decodedPoemUrl }, { url: decodedPoemUrl }],
-      is_approved: true
+      $or: [
+        { slug: { $in: possiblePoemUrls } },
+        { url: { $in: possiblePoemUrls } },
+        { url_aliases: { $in: possiblePoemUrls } }
+      ],
+      is_approved: true,
+      is_deleted: { $ne: true }
     }).lean()
     
     if (!poem) {
