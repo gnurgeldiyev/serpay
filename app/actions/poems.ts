@@ -46,17 +46,12 @@ export async function createPoem(formData: FormData) {
     const content = formData.get('content') as string
     
     // Generate URL from title
-    const url = title
-      .toLowerCase()
-      .replace(/[^a-zçäöüýňşž0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .trim()
+    const url = slugify(title)
     
     const data = {
       title,
       url,
-      slug: slugify(title),
+      slug: url,
       content,
       author: poetId,
       created_by: session.id,
@@ -108,17 +103,12 @@ export async function updatePoem(poemId: string, formData: FormData) {
     const content = formData.get('content') as string
     
     // Generate URL from title
-    const url = title
-      .toLowerCase()
-      .replace(/[^a-zçäöüýňşž0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .trim()
+    const url = slugify(title)
     
     const data = {
       title,
       url,
-      slug: slugify(title),
+      slug: url,
       content,
       author: poetId,
       updated_at: new Date()
@@ -178,17 +168,12 @@ export async function createPoemForPoet(poetId: string, formData: FormData) {
     const content = formData.get('content') as string
     
     // Generate URL from title
-    const url = title
-      .toLowerCase()
-      .replace(/[^a-zçäöüýňşž0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .trim()
+    const url = slugify(title)
     
     const data = {
       title,
       url,
-      slug: slugify(title),
+      slug: url,
       content,
       author: poetId,
       created_by: session.id,
@@ -241,17 +226,12 @@ export async function updatePoemForPoet(poetId: string, poemId: string, formData
     const content = formData.get('content') as string
     
     // Generate URL from title
-    const url = title
-      .toLowerCase()
-      .replace(/[^a-zçäöüýňşž0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .trim()
+    const url = slugify(title)
     
     const data = {
       title,
       url,
-      slug: slugify(title),
+      slug: url,
       content,
       updated_at: new Date()
     }

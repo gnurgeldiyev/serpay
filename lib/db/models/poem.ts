@@ -4,6 +4,7 @@ export interface IPoem extends Document {
   title: string
   url: string
   slug?: string
+  url_aliases?: string[]
   author: mongoose.Types.ObjectId
   year?: string
   content: string
@@ -29,6 +30,10 @@ const poemSchema = new Schema<IPoem>({
     type: String,
     index: true,
     default: null
+  },
+  url_aliases: {
+    type: [String],
+    default: []
   },
   author: {
     type: Schema.Types.ObjectId,
